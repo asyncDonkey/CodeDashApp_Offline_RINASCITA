@@ -352,39 +352,43 @@ const startGameSequence = async () => {
 
 document.addEventListener('DOMContentLoaded', function () {
     console.log('[Main.js] DOMContentLoaded: Inizializzazione applicazione.');
-    startLoadingSequence(); 
+    startLoadingSequence();
     initLeaderboard();
     initProfileControls();
     MissionManager.initMissions();
 
-    document.getElementById('start-game-btn')?.addEventListener('click', startGameSequence);
+    const startGameBtn = document.getElementById('start-game-btn');
+    if (startGameBtn) {
+        startGameBtn.addEventListener('click', startGameSequence);
+        // Touchend listener no longer needed here, handled by global listener below.
+    }
 
     let localTotalBits = 0;
     let localTotalDigitalFruits = 0;
 
     window.addEventListener('menubitscollected', () => {
-    let pendingTotalBits = 0;
-    let pendingTotalDigitalFruits = 0;
-    const collectedCounts = menuAnimation.collectedItemCounts;
-    for (const itemType in collectedCounts) {
-        const itemDefinition = bitTypes[itemType];
-        if (itemDefinition) {
-            if (itemDefinition.value > 0 && !itemDefinition.fruitEquivalent) {
-                pendingTotalBits += (itemDefinition.value || 0) * (collectedCounts[itemType] || 0);
-            } else if (itemDefinition.fruitEquivalent) {
-                pendingTotalDigitalFruits += (itemDefinition.fruitEquivalent || 0) * (collectedCounts[itemType] || 0);
+        let pendingTotalBits = 0;
+        let pendingTotalDigitalFruits = 0;
+        const collectedCounts = menuAnimation.collectedItemCounts;
+        for (const itemType in collectedCounts) {
+            const itemDefinition = bitTypes[itemType];
+            if (itemDefinition) {
+                if (itemDefinition.value > 0 && !itemDefinition.fruitEquivalent) {
+                    pendingTotalBits += (itemDefinition.value || 0) * (collectedCounts[itemType] || 0);
+                } else if (itemDefinition.fruitEquivalent) {
+                    pendingTotalDigitalFruits += (itemDefinition.fruitEquivalent || 0) * (collectedCounts[itemType] || 0);
+                }
             }
         }
-    }
 
-    const bitCountValueElement = document.getElementById('bit-count-value');
-    if (bitCountValueElement) {
-        bitCountValueElement.textContent = (currentUserData?.gameStats?.totalBits || 0) + pendingTotalBits;
-    }
-    const digitalFruitCountValueElement = document.getElementById('digital-fruit-count-value');
-    if (digitalFruitCountValueElement) {
-        digitalFruitCountValueElement.textContent = (currentUserData?.gameStats?.totalDigitalFruits || 0) + pendingTotalDigitalFruits;
-    }
+        const bitCountValueElement = document.getElementById('bit-count-value');
+        if (bitCountValueElement) {
+            bitCountValueElement.textContent = (currentUserData?.gameStats?.totalBits || 0) + pendingTotalBits;
+        }
+        const digitalFruitCountValueElement = document.getElementById('digital-fruit-count-value');
+        if (digitalFruitCountValueElement) {
+            digitalFruitCountValueElement.textContent = (currentUserData?.gameStats?.totalDigitalFruits || 0) + pendingTotalDigitalFruits;
+        }
         initializeLocalUser();
     });
 
@@ -419,23 +423,25 @@ document.addEventListener('DOMContentLoaded', function () {
     const shopBtn = document.getElementById('shop-btn');
     if (shopBtn) {
         shopBtn.style.display = 'flex';
-        shopBtn.addEventListener('click', async () => { 
+        shopBtn.addEventListener('click', async () => {
             await initShop();
             const shopModal = document.getElementById('shopModal');
             if (shopModal) shopModal.style.display = 'flex';
         });
+        // Touchend listener no longer needed here, handled by global listener below.
     }
 
     const leaderboardBtn = document.getElementById('leaderboard-btn');
     if (leaderboardBtn) {
-        leaderboardBtn.style.display = 'none';
+        leaderboardBtn.style.display = 'none'; // Initially hidden
+        // Touchend listener no longer needed here, handled by global listener below.
     }
-
     const skinsBtn = document.getElementById('skins-btn');
     if (skinsBtn) {
         skinsBtn.addEventListener('click', async () => {
             await renderSkinsModal(currentUserData);
         });
+        // Touchend listener no longer needed here, handled by global listener below.
     }
 
     const companionsBtn = document.getElementById('companions-btn');
@@ -443,6 +449,7 @@ document.addEventListener('DOMContentLoaded', function () {
         companionsBtn.addEventListener('click', async () => {
             await renderCompanionsModal(currentUserData);
         });
+        // Touchend listener no longer needed here, handled by global listener below.
     }
 
     const powerupsBtn = document.getElementById('powerups-btn');
@@ -450,96 +457,18 @@ document.addEventListener('DOMContentLoaded', function () {
         powerupsBtn.addEventListener('click', async () => {
             await renderPowerupsModal(currentUserData);
         });
+        // Touchend listener no longer needed here, handled by global listener below.
     }
 
-
-    const shopModal = document.getElementById('shopModal');
-    const closeShopModalBtn = document.getElementById('closeShopModal');
-    if (closeShopModalBtn && shopModal) {
-        closeShopModalBtn.addEventListener('click', () => {
-            shopModal.style.display = 'none';
-        });
-    }
-
-    const leaderboardModal = document.getElementById('leaderboardModal');
-    const closeLeaderboardModalBtn = document.getElementById('closeLeaderboardModal');
-    if(closeLeaderboardModalBtn && leaderboardModal) {
-        closeLeaderboardModalBtn.addEventListener('click', () => {
-            leaderboardModal.style.display = 'none';
-        });
-    }
-
-    const creditsModal = document.getElementById('creditsModal');
-    const closeCreditsModalBtn = document.getElementById('closeCreditsModalBtn');
     const creditsBtn = document.getElementById('credits-btn');
-
-    const skinsModal = document.getElementById('skinsModal');
-    const closeSkinsModalBtn = document.getElementById('closeSkinsModal');
-    const companionsModal = document.getElementById('companionsModal');
-    const closeCompanionsModalBtn = document.getElementById('closeCompanionsModal');
-    const powerupsModal = document.getElementById('powerupsModal');
-    const closePowerupsModalBtn = document.getElementById('closePowerupsModal');
-
-
-    if (closeCreditsModalBtn && creditsModal) {
-        closeCreditsModalBtn.addEventListener('click', () => {
-            creditsModal.style.display = 'none';
-        });
-    }
-
-    if (closeSkinsModalBtn && skinsModal) {
-        closeSkinsModalBtn.addEventListener('click', () => {
-            skinsModal.style.display = 'none';
-        });
-    }
-    if (closeCompanionsModalBtn && companionsModal) {
-        closeCompanionsModalBtn.addEventListener('click', () => {
-            companionsModal.style.display = 'none';
-        });
-    }
-    if (closePowerupsModalBtn && powerupsModal) {
-        closePowerupsModalBtn.addEventListener('click', () => {
-            powerupsModal.style.display = 'none';
-        });
-    }
-
-
-    window.addEventListener('click', (event) => {
-        const shopModal = document.getElementById('shopModal');
-        const leaderboardModal = document.getElementById('leaderboardModal');
-        const creditsModal = document.getElementById('creditsModal');
-        const profileModal = document.getElementById('profileModal');
-        const skinsModal = document.getElementById('skinsModal'); 
-        const companionsModal = document.getElementById('companionsModal');
-        const powerupsModal = document.getElementById('powerupsModal');
-
-        if (event.target == shopModal) {
-            shopModal.style.display = 'none';
-        }
-        if (event.target == leaderboardModal) {
-            leaderboardModal.style.display = 'none';
-        }
-        if (event.target == creditsModal) {
-            creditsModal.style.display = 'none';
-        }
-        if (event.target == profileModal) {
-            profileModal.style.display = 'none';
-        }
-        if (skinsModal && event.target == skinsModal) skinsModal.style.display = 'none';
-        if (companionsModal && event.target == companionsModal) companionsModal.style.display = 'none';
-        if (powerupsModal && event.target == powerupsModal) powerupsModal.style.display = 'none';
-    });
-
-    document.getElementById('glitchpedia-btn')?.addEventListener('click', () => {
-        showToast('Glitchpedia offline non disponibile.', 'info');
-    });
-    
     if (creditsBtn) {
         creditsBtn.addEventListener('click', () => {
+            const creditsModal = document.getElementById('creditsModal');
             if (creditsModal) {
                 creditsModal.style.display = 'flex';
             }
         });
+        // Touchend listener no longer needed here, handled by global listener below.
     }
 
     const showLoginModalBtn = document.getElementById('show-login-modal-btn');
@@ -547,204 +476,275 @@ document.addEventListener('DOMContentLoaded', function () {
         showLoginModalBtn.style.display = 'none';
     }
     
-    document.getElementById('user-avatar-icon')?.addEventListener('click', () => openProfileModal(currentUserData));
+    const userAvatarIcon = document.getElementById('user-avatar-icon'); 
+    if (userAvatarIcon) {
+        userAvatarIcon.addEventListener('click', () => openProfileModal(currentUserData));
+        // Touchend listener no longer needed here, handled by global listener below.
+    }
+
+    const glitchpediaBtn = document.getElementById('glitchpedia-btn');
+    if (glitchpediaBtn) {
+        glitchpediaBtn.addEventListener('click', () => {
+            showToast('Glitchpedia offline non disponibile.', 'info');
+        });
+        // Touchend listener no longer needed here, handled by global listener below.
+    }
+
+    // NEW: Global touchend listener to ensure click events are dispatched reliably on touch devices
+    document.addEventListener('touchend', function(e) {
+        let target = e.target;
+        // Check if the target or its parent is a common clickable element
+        // Added .top-bar-icon-btn, .menu-btn based on your HTML structure
+        while (target && target !== document.body) {
+            if (target.matches('button, a, .menu-btn, .top-bar-icon-btn, [onclick], [role="button"], [tabindex]:not([tabindex="-1"])')) {
+                // Prevent default touch behavior (e.g., phantom clicks, scroll issues)
+                e.preventDefault();
+                // Programmatically dispatch a click event
+                target.click(); // This will trigger the existing click listeners
+                break; // Stop after finding the first relevant target
+            }
+            target = target.parentElement;
+        }
+    }, { passive: false }); // Use passive: false to allow e.preventDefault()
+
+    // Modal closing logic directly within DOMContentLoaded
+    const modalsToManage = [
+        { id: 'shopModal', closeBtnId: 'closeShopModal' },
+        { id: 'leaderboardModal', closeBtnId: 'closeLeaderboardModal' },
+        { id: 'creditsModal', closeBtnId: 'closeCreditsModalBtn' },
+        { id: 'profileModal', closeBtnId: 'closeProfileModal' }, 
+        { id: 'skinsModal', closeBtnId: 'closeSkinsModal' },
+        { id: 'companionsModal', closeBtnId: 'closeCompanionsModal' },
+        { id: 'powerupsModal', closeBtnId: 'closePowerupsModal' }
+    ];
+
+    modalsToManage.forEach(({ id, closeBtnId }) => {
+        const modalElement = document.getElementById(id);
+        const closeButton = document.getElementById(closeBtnId);
+
+        if (modalElement) {
+            // Close when 'X' button is clicked
+            if (closeButton) {
+                closeButton.addEventListener('click', () => {
+                    modalElement.style.display = 'none';
+                });
+            } else {
+                console.warn(`Close button with ID '${closeBtnId}' for modal '${id}' not found.`);
+            }
+
+            // Close when clicking outside the modal content (for both click and touchend)
+            modalElement.addEventListener('click', (event) => {
+                if (event.target === modalElement) {
+                    modalElement.style.display = 'none';
+                }
+            });
+            modalElement.addEventListener('touchend', (event) => {
+                if (event.target === modalElement) {
+                    event.preventDefault(); // Prevent default touch behavior
+                    modalElement.style.display = 'none';
+                }
+            });
+        } else {
+            console.warn(`Modal element with ID '${id}' not found.`);
+        }
+    });
 
     const rainStatusIndicator = document.getElementById('rain-status-indicator');
     console.log("Rain Status Indicator element:", rainStatusIndicator);
 
     window.addEventListener('rainStatusChanged', (event) => {
-    console.log("Rain status changed event received:", event.detail.isRaining);
-    const isRaining = event.detail.isRaining;
-    if (rainStatusIndicator) {
-        const statusText = isRaining ? 'true' : 'false';
-        const statusClass = isRaining ? 'rain-status-true' : 'rain-status-false';
-        rainStatusIndicator.innerHTML = `isRaining = <span class="${statusClass}">${statusText}</span>`;
-        rainStatusIndicator.style.display = 'block';
-    }
-    window.openOfflineDB = openOfflineDB;
-    window.getUser = getUser;
-    window.saveUser = saveUser;
-});
-
-setTimeout(() => {
-    const isRainingInitial = window.menuAnimation ? window.menuAnimation.isDigitalRainActive : false; 
-    if (rainStatusIndicator) {
-        const statusText = isRainingInitial ? 'true' : 'false';
-        const statusClass = isRainingInitial ? 'rain-status-true' : 'rain-status-false';
-        rainStatusIndicator.innerHTML = `isRaining = <span class="${statusClass}">${statusText}</span>`;
-        rainStatusIndicator.style.display = 'block';
-    }
-}, 1000);
-
-async function initializeLocalUser() {
-    const localUserId = 'default_offline_user'; 
-    
-    try {
-        await openOfflineDB(); 
-        let userProfile = await getUser(localUserId);
-
-        if (!userProfile) {
-            console.log('[Main.js] Nessun profilo utente locale trovato. Creazione di un profilo di default.');
-            userProfile = {
-                userId: localUserId,
-                nickname: 'Offline Player',
-                createdAt: Date.now(),
-                updatedAt: Date.now(),
-                profileUpdatedAt: Date.now(),
-                gameStats: { /* ... le tue statistiche di gioco di default ... */ },
-                inventory: {
-                    equipped: {
-                        bulletSkin: null,
-                        donkeySkin: "skin_donkey_default_info",
-                        permanentPowerups: [],
-                        companion: null,
-                    },
-                    unlockedItems: ["skin_donkey_default_info"],
-                },
-                email: null,
-                photoURL: '',
-                avatarSeed: localUserId,
-                nationalityCode: null,
-                isAdmin: false,
-                statusMessage: "",
-                externalLinks: [],
-                earnedBadges: [],
-                bio: "",
-                activeNicknameAnimation: null,
-                hasPublishedArticles: false,
-                hasDefeatedGlitchzilla: false,
-            };
-            await saveUser(userProfile);
-            console.log('[Main.js] Profilo di default creato e salvato localmente.');
-        }; 
-        currentUserData = userProfile; 
-        window.currentUserData = currentUserData; 
-
-        const accountContainer = document.getElementById('account-icon-container');
-        const avatarIconImg = document.getElementById('user-avatar-icon');
-        const bitCounter = document.getElementById('bit-counter');
-        const digitalFruitCounter = document.getElementById('digital-fruit-counter');
-        const loginIconLink = document.getElementById('show-login-modal-btn'); 
-        const skinsBtn = document.getElementById('skins-btn');
-        const companionsBtn = document.getElementById('companions-btn');
-        const powerupsBtn = document.getElementById('powerups-btn');
-
-        if (loginIconLink) loginIconLink.style.display = 'none'; 
-        if (avatarIconImg) avatarIconImg.style.display = 'block';
-        if (bitCounter) bitCounter.style.display = 'flex';
-        if (digitalFruitCounter) digitalFruitCounter.style.display = 'flex';
-        if (accountContainer) accountContainer.classList.add('is-avatar-container');
-        if (skinsBtn) skinsBtn.style.display = 'flex';
-        if (companionsBtn) companionsBtn.style.display = 'flex';
-        if (powerupsBtn) powerupsBtn.style.display = 'flex';
-
-        let photoURLToUse;
-        if (currentUserData.photoURL) {
-            photoURLToUse = currentUserData.photoURL;
-        } else if (currentUserData.avatarSeed) {
-            photoURLToUse = generateBlockieAvatar(currentUserData.avatarSeed, 50);
-        } else {
-            photoURLToUse = generateBlockieAvatar(localUserId, 50);
+        console.log("Rain status changed event received:", event.detail.isRaining);
+        const isRaining = event.detail.isRaining;
+        if (rainStatusIndicator) {
+            const statusText = isRaining ? 'true' : 'false';
+            const statusClass = isRaining ? 'rain-status-true' : 'rain-status-false';
+            rainStatusIndicator.innerHTML = `isRaining = <span class="${statusClass}">${statusText}</span>`;
+            rainStatusIndicator.style.display = 'block';
         }
-        if (avatarIconImg) avatarIconImg.src = photoURLToUse;
+        window.openOfflineDB = openOfflineDB;
+        window.getUser = getUser;
+        window.saveUser = saveUser;
+    });
 
-        document.getElementById('bit-count-value').textContent = currentUserData.gameStats?.totalBits || 0;
-        if (digitalFruitCounter) {
-            document.getElementById('digital-fruit-count-value').textContent = currentUserData.gameStats?.totalDigitalFruits || 0;
+    setTimeout(() => {
+        const isRainingInitial = window.menuAnimation ? window.menuAnimation.isDigitalRainActive : false;
+        if (rainStatusIndicator) {
+            const statusText = isRainingInitial ? 'true' : 'false';
+            const statusClass = isRainingInitial ? 'rain-status-true' : 'rain-status-false';
+            rainStatusIndicator.innerHTML = `isRaining = <span class="${statusClass}">${statusText}</span>`;
+            rainStatusIndicator.style.display = 'block';
         }
+    }, 1000);
 
-        window.dispatchEvent(new CustomEvent('menubitscollected'));
+    async function initializeLocalUser() {
+        const localUserId = 'default_offline_user';
 
-        const authModal = document.getElementById('authModal'); 
-        if (authModal) authModal.style.display = 'none';
-
-    } catch (error) {
-        console.error('[Main.js] Errore critico durante il caricamento/inizializzazione utente locale:', error);
-        showToast('Errore critico, impossibile avviare il gioco offline.', 'error');
-    }
-}
-initializeLocalUser();
-
-if (window.Capacitor && Capacitor.isNativePlatform()) {
-    const { App } = Capacitor.Plugins; 
-
-    if (App) {
-        console.log('[Main.js] Rilevata piattaforma nativa. Attivo listener App (versione offline).');
-
-        App.addListener('pause', () => {
-            console.log('[App Event] App in background (pause event).');
-            if (currentGameState === GAME_STATE.PLAYING) {
-                pauseGame(true);
-                console.log('[App Event] Gioco e musica fermati automaticamente.');
-            } else if (currentGameState === GAME_STATE.MENU) { 
-                menuAnimation.stop(); 
-                AudioManager.stopMusic(); 
-                console.log('[App Event] Animazione menu e musica fermate automaticamente.');
-            } else { 
-                AudioManager.stopMusic(); 
-                console.log('[App Event] Musica fermata.');
-            }
-        });
-
-        App.addListener('resume', () => {
-            console.log('[App Event] App tornata in foreground (resume event).');
-            if (currentGameState === GAME_STATE.MENU) {
-                initializeMenu();
-                console.log('[App Event] Menu animazione e musica riprese automaticamente.');
-            } else if (currentGameState === GAME_STATE.PAUSE) { 
-                console.log('[App Event] Gioco era in pausa. Torna allo schermo di pausa, attende Resume.');
-            }
-        });
-    } else {
-        console.error('[Main.js] Plugin App di Capacitor non trovato. I listener di pausa/resume non saranno attivi.');
-    }
-}
-
-window.returnToMainMenu = async () => {
-    stopGameLoop();
-    const gameContainerWrapper = document.getElementById('game-container-wrapper');
-    const scoreInputContainer = document.getElementById('scoreInputContainerDonkey');
-    const mobileControlsDiv = document.getElementById('mobileControls');
-
-    if (gameContainerWrapper) gameContainerWrapper.style.display = 'none';
-    if (scoreInputContainer) scoreInputContainer.style.display = 'none';
-    if (mobileControlsDiv) mobileControlsDiv.style.display = 'none';
-
-    const topBarLeft = document.getElementById('top-bar-left');
-    const topBarRight = document.getElementById('top-bar-right');
-    if (topBarLeft) topBarLeft.style.display = 'flex';
-    if (topBarRight) topBarRight.style.display = 'flex';
-
-    if (currentUserData) {
         try {
-            const avatarIconImg = document.getElementById('user-avatar-icon');
+            await openOfflineDB();
+            let userProfile = await getUser(localUserId);
+
+            if (!userProfile) {
+                console.log('[Main.js] Nessun profilo utente locale trovato. Creazione di un profilo di default.');
+                userProfile = {
+                    userId: localUserId,
+                    nickname: 'Offline Player',
+                    createdAt: Date.now(),
+                    updatedAt: Date.now(),
+                    profileUpdatedAt: Date.now(),
+                    gameStats: { /* ... le tue statistiche di gioco di default ... */ },
+                    inventory: {
+                        equipped: {
+                            bulletSkin: null,
+                            donkeySkin: "skin_donkey_default_info",
+                            permanentPowerups: [],
+                            companion: null,
+                        },
+                        unlockedItems: ["skin_donkey_default_info"],
+                    },
+                    email: null,
+                    photoURL: '',
+                    avatarSeed: localUserId,
+                    nationalityCode: null,
+                    isAdmin: false,
+                    statusMessage: "",
+                    externalLinks: [],
+                    earnedBadges: [],
+                    bio: "",
+                    activeNicknameAnimation: null,
+                    hasPublishedArticles: false,
+                    hasDefeatedGlitchzilla: false,
+                };
+                await saveUser(userProfile);
+                console.log('[Main.js] Profilo di default creato e salvato localmente.');
+            };
+            currentUserData = userProfile;
+            window.currentUserData = currentUserData;
+
             const accountContainer = document.getElementById('account-icon-container');
+            const avatarIconImg = document.getElementById('user-avatar-icon');
+            const bitCounter = document.getElementById('bit-counter');
+            const digitalFruitCounter = document.getElementById('digital-fruit-counter');
+            const loginIconLink = document.getElementById('show-login-modal-btn');
+            const skinsBtn = document.getElementById('skins-btn');
+            const companionsBtn = document.getElementById('companions-btn');
+            const powerupsBtn = document.getElementById('powerups-btn');
 
-            if (avatarIconImg) {
-                let photoURLToUse;
-                if (currentUserData.photoURL) {
-                    photoURLToUse = currentUserData.photoURL;
-                } else if (currentUserData.avatarSeed) {
-                    photoURLToUse = generateBlockieAvatar(currentUserData.avatarSeed, 50);
-                } else {
-                    photoURLToUse = generateBlockieAvatar(currentUserData.userId, 50);
-                }
-                avatarIconImg.src = photoURLToUse;
-                avatarIconImg.style.display = 'block';
+            if (loginIconLink) loginIconLink.style.display = 'none';
+            if (avatarIconImg) avatarIconImg.style.display = 'block';
+            if (bitCounter) bitCounter.style.display = 'flex';
+            if (digitalFruitCounter) digitalFruitCounter.style.display = 'flex';
+            if (accountContainer) accountContainer.classList.add('is-avatar-container');
+            if (skinsBtn) skinsBtn.style.display = 'flex';
+            if (companionsBtn) companionsBtn.style.display = 'flex';
+            if (powerupsBtn) powerupsBtn.style.display = 'flex';
 
-                if (accountContainer) {
-                    accountContainer.style.display = 'flex';
-                    accountContainer.classList.add('is-avatar-container');
-                }
+            let photoURLToUse;
+            if (currentUserData.photoURL) {
+                photoURLToUse = currentUserData.photoURL;
+            } else if (currentUserData.avatarSeed) {
+                photoURLToUse = generateBlockieAvatar(currentUserData.avatarSeed, 50);
+            } else {
+                photoURLToUse = generateBlockieAvatar(localUserId, 50);
             }
+            if (avatarIconImg) avatarIconImg.src = photoURLToUse;
+
+            document.getElementById('bit-count-value').textContent = currentUserData.gameStats?.totalBits || 0;
+            if (digitalFruitCounter) {
+                document.getElementById('digital-fruit-count-value').textContent = currentUserData.gameStats?.totalDigitalFruits || 0;
+            }
+
+            window.dispatchEvent(new CustomEvent('menubitscollected'));
+
+            const authModal = document.getElementById('authModal');
+            if (authModal) authModal.style.display = 'none';
+
         } catch (error) {
-            console.error("Error re-fetching user data for avatar:", error);
-            showToast("Errore nel caricare l'icona del profilo.", "error");
+            console.error('[Main.js] Errore critico durante il caricamento/inizializzazione utente locale:', error);
+            showToast('Errore critico, impossibile avviare il gioco offline.', 'error');
+        }
+    }
+    initializeLocalUser();
+
+    if (window.Capacitor && Capacitor.isNativePlatform()) {
+        const { App } = Capacitor.Plugins;
+
+        if (App) {
+            console.log('[Main.js] Rilevata piattaforma nativa. Attivo listener App (versione offline).');
+
+            App.addListener('pause', () => {
+                console.log('[App Event] App in background (pause event).');
+                if (currentGameState === GAME_STATE.PLAYING) {
+                    pauseGame(true);
+                    console.log('[App Event] Gioco e musica fermati automaticamente.');
+                } else if (currentGameState === GAME_STATE.MENU) {
+                    menuAnimation.stop();
+                    AudioManager.stopMusic();
+                    console.log('[App Event] Animazione menu e musica fermate automaticamente.');
+                } else {
+                    AudioManager.stopMusic();
+                    console.log('[App Event] Musica fermata.');
+                }
+            });
+
+            App.addListener('resume', () => {
+                console.log('[App Event] App tornata in foreground (resume event).');
+                if (currentGameState === GAME_STATE.MENU) {
+                    initializeMenu();
+                    console.log('[App Event] Menu animazione e musica riprese automaticamente.');
+                } else if (currentGameState === GAME_STATE.PAUSE) {
+                    console.log('[App Event] Gioco era in pausa. Torna allo schermo di pausa, attende Resume.');
+                }
+            });
+        } else {
+            console.error('[Main.js] Plugin App di Capacitor non trovato. I listener di pausa/resume non saranno attivi.');
         }
     }
 
-    initializeMenu();
-    MissionManager.resetMissions();
-    window.dispatchEvent(new CustomEvent('rainStatusChanged', { detail: { isRaining: false } }));
-};
+    window.returnToMainMenu = async () => {
+        stopGameLoop();
+        const gameContainerWrapper = document.getElementById('game-container-wrapper');
+        const scoreInputContainer = document.getElementById('scoreInputContainerDonkey');
+        const mobileControlsDiv = document.getElementById('mobileControls');
+
+        if (gameContainerWrapper) gameContainerWrapper.style.display = 'none';
+        if (scoreInputContainer) scoreInputContainer.style.display = 'none';
+        if (mobileControlsDiv) mobileControlsDiv.style.display = 'none';
+
+        const topBarLeft = document.getElementById('top-bar-left');
+        const topBarRight = document.getElementById('top-bar-right');
+        if (topBarLeft) topBarLeft.style.display = 'flex';
+        if (topBarRight) topBarRight.style.display = 'flex';
+
+        if (currentUserData) {
+            try {
+                const avatarIconImg = document.getElementById('user-avatar-icon');
+                const accountContainer = document.getElementById('account-icon-container');
+
+                if (avatarIconImg) {
+                    let photoURLToUse;
+                    if (currentUserData.photoURL) {
+                        photoURLToUse = currentUserData.photoURL;
+                    } else if (currentUserData.avatarSeed) {
+                        photoURLToUse = generateBlockieAvatar(currentUserData.avatarSeed, 50);
+                    } else {
+                        photoURLToUse = generateBlockieAvatar(currentUserData.userId, 50);
+                    }
+                    avatarIconImg.src = photoURLToUse;
+                    avatarIconImg.style.display = 'block';
+
+                    if (accountContainer) {
+                        accountContainer.style.display = 'flex';
+                        accountContainer.classList.add('is-avatar-container');
+                    }
+                }
+            } catch (error) {
+                console.error("Error re-fetching user data for avatar:", error);
+                showToast("Errore nel caricare l'icona del profilo.", "error");
+            }
+        }
+
+        initializeMenu();
+        MissionManager.resetMissions();
+        window.dispatchEvent(new CustomEvent('rainStatusChanged', { detail: { isRaining: false } }));
+    };
 });
