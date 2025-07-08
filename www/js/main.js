@@ -141,23 +141,6 @@ const PROCESSING_PHRASES = [
     "Checking integrity hash..."
 ];
 
-// Add this helper function within main.js, outside initializeMenu()
-// This function will be removed as menuAnimation will handle image loading
-/*
-const loadImage = (src) => {
-    return new Promise((resolve, reject) => {
-        const img = new Image();
-        img.onload = () => resolve(img);
-        img.onerror = (err) => {
-            console.error(`Impossibile caricare lo sprite: ${src}`);
-            reject(new Error(`Fallimento caricamento ${src}`));
-        };
-        img.src = src;
-    });
-};
-*/
-
-
 // Funzione centralizzata per avviare il menu (chiamata sia all'inizio sia al ritorno dal gioco)
 export function initializeMenu(initialDonkeyPos = null) {
     console.log("Inizializzazione del menu...");
@@ -493,8 +476,16 @@ document.addEventListener('DOMContentLoaded', function () {
     // NEW: Global touchend listener to ensure click events are dispatched reliably on touch devices
     document.addEventListener('touchend', function(e) {
         let target = e.target;
-        // Check if the target or its parent is a common clickable element
-        // Added .top-bar-icon-btn, .menu-btn based on your HTML structure
+
+        // NEW: Check if the target is the menuCanvas itself
+        const menuCanvas = document.getElementById('menuCanvas');
+        if (menuCanvas && (target === menuCanvas || menuCanvas.contains(target))) {
+            // Let menuAnimation.js handle clicks/taps on the canvas directly.
+            // Do not preventDefault here, and do not manually dispatch click.
+            return;
+        }
+
+        // Original logic for other clickable elements
         while (target && target !== document.body) {
             if (target.matches('button, a, .menu-btn, .top-bar-icon-btn, [onclick], [role="button"], [tabindex]:not([tabindex="-1"])')) {
                 // Prevent default touch behavior (e.g., phantom clicks, scroll issues)
@@ -505,7 +496,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             target = target.parentElement;
         }
-    }, { passive: false }); // Use passive: false to allow e.preventDefault()
+    }, { passive: false });
 
     // Modal closing logic directly within DOMContentLoaded
     const modalsToManage = [

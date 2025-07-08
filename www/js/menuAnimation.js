@@ -755,6 +755,14 @@ export const menuAnimation = {
         this.resizeCanvas();
 
         this.canvas.addEventListener('click', this.handleCanvasClick.bind(this));
+        // NUOVO: Aggiungi un listener per touchend per i dispositivi touch
+        // Per assicurare che i bits siano cliccabili anche su mobile
+        this.canvas.addEventListener('touchend', (e) => {
+            // Previene il click "fantasma" che touchend a volte genera
+            e.preventDefault();
+            // Chiama la stessa funzione che gestisce il click
+            this.handleCanvasClick(e);
+        }, { passive: false }); // Usare passive: false per permettere preventDefault
 
         this.donkey.state = 'roaming';
         this.resolveExitPromise = null;
@@ -802,6 +810,7 @@ export const menuAnimation = {
             AudioManager.loadSound('sfx_hum', 'audio/sfx/sfx_hum.mp3'),
             AudioManager.loadSound('sfx_menu_eat', 'audio/sfx/sfx_menu_eat.ogg'),
             AudioManager.loadSound('sfx_donkey_digest', 'audio/sfx/sfx_donkey_digest.ogg'),
+            AudioManager.loadSound('sfx_donkey_comment', 'audio/sfx/sfx_donkey_comment.ogg'),
         ])
         .then(() => {
             // After initial load, updateMenuPlayerDisplay will be called from main.js initializeMenu
@@ -922,20 +931,46 @@ export const menuAnimation = {
     },
 
     handleCanvasClick(event) {
-        if (!this.isUserAuthenticated) return;
+        if (!this.isUserAuthenticated) {
+            return;
+        }
+
+        let clientX, clientY; // Declare clientX and clientY here
+        let clickX, clickY;   // Declare clickX and clickY here to ensure scope
+
+        // Determine if it's a touch event or a mouse event
+        if (event.touches && event.touches.length > 0) { // For touchstart/touchmove
+            clientX = event.touches[0].clientX;
+            clientY = event.touches[0].clientY;
+        } else if (event.changedTouches && event.changedTouches.length > 0) { // For touchend
+            clientX = event.changedTouches[0].clientX;
+            clientY = event.changedTouches[0].clientY;
+        } else { // For mouse click events
+            clientX = event.clientX;
+            clientY = event.clientY;
+        }
+
+        // Handle cases where clientX/Y might still be undefined or null for some edge cases
+        if (typeof clientX === 'undefined' || clientX === null || typeof clientY === 'undefined' || clientY === null) {
+            console.warn('[MenuAnimation] clientX or clientY is undefined/null from event. Skipping click processing.');
+            return;
+        }
 
         const rect = this.canvas.getBoundingClientRect();
-        const clickX = event.clientX - rect.left;
-        const clickY = event.clientY - rect.top;
+        clickX = clientX - rect.left;
+        clickY = clientY - rect.top;
 
         for (let i = this.bits.length - 1; i >= 0; i--) {
             const bit = this.bits[i];
             if (clickX >= bit.x && clickX <= bit.x + bit.width &&
                 clickY >= bit.y && clickY <= bit.y + bit.height) {
-                if (this.donkey.state !== 'targeting' && this.donkey.state !== 'digesting') {
-                    console.log('Bit cliccato, l\'asino lo insegue!');
+                console.log(`[MenuAnimation] Click detected on bit ${i}! Donkey state: ${this.donkey.state}`);
+                if (this.donkey.state !== 'targeting' && this.donkey.state !== 'digesting' && this.donkey.state !== 'processing') {
+                    console.log('Bit clicked, donkey is targeting it!');
                     this.donkey.setTarget(bit);
                     break;
+                } else {
+                    console.log(`[MenuAnimation] Donkey is busy (${this.donkey.state}), cannot target new bit.`);
                 }
             }
         }
