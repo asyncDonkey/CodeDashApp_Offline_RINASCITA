@@ -1735,3 +1735,7 @@ body.game-fullscreen-active.game-fullscreen-landscape #mission-display {
         font-size: 1.1em;
     }
 }
+
+.close-button {
+    display: none !important;
+}

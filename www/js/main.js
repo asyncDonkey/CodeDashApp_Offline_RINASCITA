@@ -101,10 +101,6 @@ export const MENU_SKIN_ASSET_MAP = {
         walk: 'images/skins/badge_skins/skin_donkey_data_guru_walk.png',
         digest: 'images/skins/badge_skins/skin_donkey_data_guru_digest.png'
     },
-    'skin_donkey_fruit_overlord': {
-        walk: 'images/skins/badge_skins/skin_donkey_fruit_overlord_walk.png',
-        digest: 'images/skins/badge_skins/skin_donkey_fruit_overlord_digest.png'
-    },
     'skin_donkey_fruit_master': {
         walk: 'images/skins/badge_skins/skin_donkey_fruit_master_walk.png',
         digest: 'images/skins/badge_skins/skin_donkey_fruit_master_digest.png'
@@ -479,7 +475,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const userAvatarIcon = document.getElementById('user-avatar-icon'); 
     if (userAvatarIcon) {
         userAvatarIcon.addEventListener('click', () => openProfileModal(currentUserData));
-        // Touchend listener no longer needed here, handled by global listener below.
+        // TO FIX: Add a direct touchend listener for reliable mobile interaction
+        userAvatarIcon.addEventListener('touchend', (e) => {
+            e.preventDefault(); // Prevent phantom clicks
+            openProfileModal(currentUserData); // Directly call the modal function
+        }, { passive: false });
     }
 
     const glitchpediaBtn = document.getElementById('glitchpedia-btn');
