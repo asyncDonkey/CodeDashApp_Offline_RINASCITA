@@ -474,6 +474,7 @@ body.game-fullscreen-active #scoreInputContainerDonkey[style*='display: flex'] {
     color: var(--primary-text); /* Testo modale bianco */
     padding: 25px;
     border: 1px solid var(--border-color); /* Bordo dal colore brillante */
+    box-shadow: var(--bright-glow);
     border-radius: 8px;
     width: 90%;
     max-width: 700px;
@@ -594,10 +595,10 @@ body.game-fullscreen-active #scoreInputContainerDonkey[style*='display: flex'] {
     box-shadow: var(--bright-glow);
     border-radius: 8px;
     width: 90%;
-    max-width: 650px;
+    max-width: 700px;
     text-align: center;
     font-family: 'Courier Prime', monospace;
-    max-height: 90vh;
+    max-height: 95vh;
     overflow-y: auto;
     box-sizing: border-box;
 }
@@ -706,7 +707,7 @@ body.game-fullscreen-active #scoreInputContainerDonkey[style*='display: flex'] {
     cursor: pointer;
 }
 
-/* 5. Aggiustiamo lo spazio tra icona e testo nei pulsanti (opzionale) */
+/* 4. Aggiustiamo lo spazio tra icona e testo nei pulsanti (opzionale) */
 .game-over-button {
     gap: 12px; /* Aumenta lo spazio se necessario */
 }
@@ -715,21 +716,20 @@ body.modal-open {
     overflow: hidden; /* Questo impedirà lo scroll dello sfondo */
 }
 
-/* Per i campi input specifici della modale di login/registrazione */
+/* For specific input fields in the login/register modal */
 #loginModal .auth-form input[type='email'],
 #loginModal .auth-form input[type='password'],
 #loginModal .auth-form input[type='text'],
 #loginModal .auth-form input[type='tel'],
 #loginModal .auth-form select {
-    width: 100%; /* Forza la larghezza al 100% per adattarsi meglio allo scroll */
-    box-sizing: border-box; /* Cruciale: include padding e bordo nella larghezza totale */
-    /* Rimuovi width: calc(100% - 22px); se presente nel login-register.css */
+    width: 100%; /* Full width for better scroll adaptation */
+    box-sizing: border-box; /* Include padding and border in total width */
 }
 
 /* Main Menu Container */
 #main-menu {
     display: none;
-    position: fixed; /* O 'absolute' se app-root è fixed/absolute e copre tutto */
+    position: fixed; /* Or 'absolute' if app-root is fixed/absolute and covers everything */
     top: 0;
     left: 0;
     width: 100vw;
@@ -738,10 +738,10 @@ body.modal-open {
     opacity: 0;
     transition: opacity 0.5s ease-in;
     background-color: transparent;
-    /* IMPORTANTE: Aggiungi position: relative; se non è già fixed/absolute a livello superiore */
-    /* Se #main-menu è già fixed come nello snippet, non è necessario. */
-    /* Ma se in futuro lo rendi solo "display:flex" con un genitore, questa sarà cruciale */
-    /* per il posizionamento assoluto dei figli. */
+    /* IMPORTANT: Add position: relative; if it's not already fixed/absolute at a higher level */
+    /* If #main-menu is already fixed as in the snippet, it is not necessary. */
+    /* But if in the future you make it only "display:flex" with a parent, this will be crucial */
+    /* for absolute positioning of children. */
 }
 
 #menuCanvas {
@@ -764,10 +764,10 @@ body.modal-open {
     width: 100%;
     height: 100%;
     z-index: 902;
-    pointer-events: none; /* Questo è corretto, permette ai click di passare */
+    pointer-events: none; /* This is correct, allows clicks to pass through */
 }
 
-/* --- Keyframes per gli effetti --- */
+/* --- Keyframes for effects --- */
 @keyframes blink {
     0%, 100% { opacity: 1; }
     50% { opacity: 0; }
@@ -781,13 +781,13 @@ body.modal-open {
     100% { text-shadow: 1px 0 0 var(--accent-cyan-glow), -1px 0 0 var(--accent-pink-glow); }
 }
 
-/* --- Stile Pulsanti Menu --- */
+/* --- Menu Button Style --- */
 .menu-btn {
     background: none;
     border: none;
     color: var(--primary-text);
     font-family: 'Courier Prime', monospace;
-    font-size: 24px; /* Dimensione base, poi modificata per top bar */
+    font-size: 24px; /* Base size, then modified for top bar */
     text-transform: uppercase;
     cursor: pointer;
     padding: 10px;
@@ -795,93 +795,93 @@ body.modal-open {
     transition: text-shadow 0.2s ease, transform 0.2s ease;
 }
 
-/* Pulsante Play (solo icona) */
+/* Play button (icon only) */
 .menu-btn.icon-btn i {
     font-size: 100px;
     line-height: 1;
-    color: var(--accent-blue); /* Blu brillante per le icone principali */
-    text-shadow: 0 0 10px var(--accent-blue-glow); /* Glow blu */
+    color: var(--accent-blue); /* Bright blue for main icons */
+    text-shadow: 0 0 10px var(--accent-blue-glow); /* Blue glow */
 }
 
-/* Pulsanti con testo */
+/* Buttons with text */
 .menu-btn span {
     letter-spacing: 1px;
 }
 
-/* Cursore lampeggiante per i pulsanti con testo */
+/* Blinking cursor for text buttons */
 .menu-buttons .menu-btn span::before {
     content: '>$';
     margin-right: 10px;
     animation: blink 1.2s infinite step-end;
-    color: var(--accent-green); /* Verde brillante per il cursore */
-    text-shadow: 0 0 5px var(--accent-green-glow); /* Glow verde */
+    color: var(--accent-green); /* Bright green for cursor */
+    text-shadow: 0 0 5px var(--accent-green-glow); /* Green glow */
 }
 
 .menu-btn.icon-btn:hover i {
     animation: none;
-    color: var(--highlight-text); /* Icona bianca pura su hover */
-    text-shadow: 0 0 20px var(--bright-glow), 0 0 30px var(--bright-glow); /* Glow bianco più intenso */
+    color: var(--highlight-text); /* Pure white icon on hover */
+    text-shadow: 0 0 20px var(--bright-glow), 0 0 30px var(--bright-glow); /* More intense white glow */
 }
 
-/* Stile per l'icona account separata, in alto a destra */
-/* Regola l'icona del profilo nel menu principale */
+/* Style for separate account icon, top right */
+/* Adjust the profile icon in the main menu */
 #account-icon-container {
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    /* Aggiungiamo un bordo e un glow bianco al contenitore dell'icona del profilo */
-    border: 2px solid var(--highlight-text); /* Bordo bianco */
+    /* Add a border and white glow to the profile icon container */
+    border: 2px solid var(--highlight-text); /* White border */
     border-radius: 50%;
-    box-shadow: 0 0 10px var(--white-glow); /* Glow bianco */
-    width: 38px; /* Ingrandita poco poco */
-    height: 38px; /* Ingrandita poco poco */
+    box-shadow: 0 0 10px var(--white-glow); /* White glow */
+    width: 38px; /* Slightly enlarged */
+    height: 38px; /* Slightly enlarged */
     transition: all var(--transition-fast);
 }
 #account-icon-container.is-avatar-container {
-    width: 38px; /* Allineato all'ingrandimento */
+    width: 38px; /* Aligned with enlargement */
     height: 38px;
     border-width: 3px;
-    border-color: var(--primary-text); /* Bordo blu quando è l'avatar utente */
-    box-shadow: 0 0 15px var(--bright-glow); /* Glow blu per l'avatar */
+    border-color: var(--primary-text); /* Blue border when it's the user avatar */
+    box-shadow: 0 0 15px var(--bright-glow); /* Blue glow for avatar */
 }
 
 #account-icon-container.is-avatar-container:hover {
-    border-color: var(--highlight-text); /* Bordo bianco su hover */
-    box-shadow: 0 0 20px var(--bright-glow); /* Glow bianco più intenso su hover */
+    border-color: var(--highlight-text); /* White border on hover */
+    box-shadow: 0 0 20px var(--bright-glow); /* More intense white glow on hover */
 }
 
 #account-icon-container #show-login-modal-btn i {
-    font-size: 26px; /* Icona leggermente più grande */
-    color: var(--primary-text); /* Testo bianco */
+    font-size: 26px; /* Slightly larger icon */
+    color: var(--primary-text); /* White text */
     transition: all var(--transition-fast);
-    text-shadow: 0 0 8px var(--white-glow); /* Glow bianco */
+    text-shadow: 0 0 8px var(--white-glow); /* White glow */
 }
 
 #account-icon-container #show-login-modal-btn:hover i {
-    color: var(--highlight-text); /* Bianco puro su hover */
+    color: var(--highlight-text); /* Pure white on hover */
     transform: scale(1.1);
-    text-shadow: 0 0 20px var(--bright-glow); /* Glow bianco più intenso */
+    text-shadow: 0 0 20px var(--bright-glow); /* More intense white glow */
 }
 
-/* 4. Logica di visualizzazione (gestita da JS) */
+/* 4. Display logic (managed by JS) */
 #user-avatar-icon { display: none; }
 #show-login-modal-btn { display: none; }
 
 #donkey-speech-bubble {
     position: absolute;
-    /* display: none; */ /* Lascia questo commentato, la visibilità sarà controllata da .visible */
+    /* display: none; */ /* Leave this commented, visibility will be controlled by .visible */
     
-    padding: 0; /* Rimuovi il padding per eliminare lo spazio della "bolla" */
-    background-color: transparent; /* Sfondo trasparente */
-    border: none; /* Rimuovi il bordo */
-    border-radius: 0; /* Rimuovi il raggio del bordo */
+    padding: 0; /* Remove padding to eliminate "bubble" space */
+    background-color: transparent; /* Transparent background */
+    border: none; /* Remove border */
+    border-radius: 0; /* Remove border-radius */
 
-    color: var(--highlight-text); /* Colore del testo */
+    color: var(--highlight-text); /* Text color */
     font-family: 'Courier Prime', Courier, monospace, cursive;
     font-size: 18px;
     font-weight: normal;
-    text-shadow: 0 0 8px var(--white-glow); /* Glow bianco */
+    text-shadow: 0 0 8px var(--white-glow); /* White glow */
     opacity: 0;
     transition: opacity var(--transition-normal);
     z-index: 1000;
@@ -890,89 +890,89 @@ body.modal-open {
     text-align: center;
 }
 #donkey-speech-bubble.visible {
-    display: block; /* <-- RI-ABILITA QUESTA RIGA */
-    opacity: 1; /* <-- RI-ABILITA QUESTA RIGA */
+    display: block; /* <-- RE-ENABLE THIS LINE */
+    opacity: 1; /* <-- RE-ENABLE THIS LINE */
 }
 #donkey-speech-bubble::after {
     content: none; 
 }
 
-/* --- Stile Terminale per il Main Menu --- */
+/* --- Terminal Style for Main Menu --- */
 
-/* Keyframe per l'animazione del cursore lampeggiante */
+/* Keyframes for blinking cursor animation */
 @keyframes blink {
     0%, 100% { opacity: 1; }
     50% { opacity: 0; }
 }
 
-/* Stile base per i pulsanti del menu */
+/* Base style for menu buttons */
 .menu-buttons .menu-btn {
     background: none;
     border: none;
     box-shadow: none;
     padding: 10px 15px;
     margin: 5px 15px;
-    color: var(--primary-text); /* Testo bianco per i pulsanti */
+    color: var(--primary-text); /* White text for buttons */
     font-family: 'Courier Prime', monospace;
     font-size: 20px;
-    text-shadow: 0 0 8px var(--white-glow); /* Glow bianco */
+    text-shadow: 0 0 8px var(--white-glow); /* White glow */
     transition: all var(--transition-normal);
     position: relative;
 }
-/* Stile per icone e testo dentro ai pulsanti */
+/* Style for icons and text inside buttons */
 .menu-buttons .menu-btn i,
 .menu-buttons .menu-btn span {
     vertical-align: middle;
 }
 
-/* Stile per il pulsante "start" che ha solo l'icona */
+/* Style for the "start" button which has only the icon */
 .menu-buttons .menu-btn.icon-btn i {
     font-size: 80px;
     line-height: 1;
-    color: var(--accent-blue); /* Blu brillante per le icone principali */
-    text-shadow: 0 0 10px var(--accent-blue-glow); /* Glow blu */
+    color: var(--accent-blue); /* Bright blue for main icons */
+    text-shadow: 0 0 10px var(--accent-blue-glow); /* Blue glow */
 }
 
 .menu-btn:hover {
-    animation: text-glitch var(--transition-fast) linear infinite; /* Glitch per i pulsanti testuali */
+    animation: text-glitch var(--transition-fast) linear infinite; /* Glitch for text buttons */
     transform: scale(1.05);
-    color: var(--highlight-text); /* Testo bianco puro su hover */
-    text-shadow: 0 0 15px var(--bright-glow); /* Glow bianco intenso su hover */
+    color: var(--highlight-text); /* Pure white text on hover */
+    text-shadow: 0 0 15px var(--bright-glow); /* Intense white glow on hover */
 }
 
-/* --- Stile "Now Playing" --- */
+/* --- "Now Playing" Style --- */
 #now-playing-container {
     position: absolute;
     bottom: 20px;
     left: 20px;
     font-family: 'Courier Prime', Courier, monospace;
     font-size: 14px;
-    color: var(--primary-text); /* Testo bianco */
-    background-color: var(--secondary-bg); /* Sfondo scuro */
+    color: var(--primary-text); /* White text */
+    background-color: var(--secondary-bg); /* Dark background */
     padding: 3px 8px;
     border-radius: 4px;
-    text-shadow: 0 0 5px var(--white-glow); /* Glow bianco */
+    text-shadow: 0 0 5px var(--white-glow); /* White glow */
     z-index: 10;
 }
 
 #now-playing-container > span {
-    color: var(--secondary-text); /* Testo "NOW PLAYING:" e "by" in grigio */
+    color: var(--secondary-text); /* "NOW PLAYING:" and "by" text in gray */
 }
 
 #now-playing-container .track-title {
     font-weight: bold;
-    color: var(--primary-text); /* Titolo e artista in bianco */
+    color: var(--primary-text); /* Title and artist in white */
 }
 
-/* AZIONI 1.3 e 1.4: Stili per i nuovi overlay di guida al tocco */
+/* ACTIONS 1.3 and 1.4: Styles for new touch guide overlays */
 .touch-overlay-guide {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     font-family: 'Pixelify Sans', cursive;
     font-size: 2.5em;
-    color: rgba(255, 255, 255, 0.4); /* Bianco semi-trasparente */
-    text-shadow: 0 0 10px var(--accent-cyan-glow); /* Glow ciano/blu */
+    color: rgba(255, 255, 255, 0.4); /* Semi-transparent white */
+    text-shadow: 0 0 10px var(--accent-cyan-glow); /* Cyan/blue glow */
     pointer-events: none;
     user-select: none;
     opacity: 1;
@@ -990,57 +990,57 @@ body.modal-open {
     transform: translate(50%, -50%);
 }
 
-/* --- Stile per i nuovi contenitori in alto --- */
+/* --- Style for new top containers --- */
 .top-bar-section {
     position: fixed;
-    top: 20px; /* Margine dall'alto */
+    top: 20px; /* Top margin */
     display: flex; 
-    align-items: center; /* Allinea verticalmente gli elementi */
-    z-index: 950; /* Assicurati che siano sopra il menu */
-    gap: 15px; /* Spazio tra gli elementi nella barra (generico) */
-    pointer-events: none; /* Rende la barra stessa trasparente ai click */
+    align-items: center; /* Vertically align elements */
+    z-index: 950; /* Ensure they are above the menu */
+    gap: 15px; /* Spacing between elements in the bar (generic) */
+    pointer-events: none; /* Make the bar itself transparent to clicks */
 }
 #top-bar-left {
-    left: 20px; /* Posiziona a sinistra */
-    flex-direction: row; /* Ora gli elementi sono in riga */
-    align-items: center; /* Allinea al centro verticalmente */
-    gap: 10px; /* Spazio tra i contatori e il nuovo gruppo di icone */
+    left: 20px; /* Position to the left */
+    flex-direction: row; /* Elements are now in a row */
+    align-items: center; /* Vertically center */
+    gap: 10px; /* Spacing between counters and the new icon group */
 }
 
 #top-bar-right {
-    right: 20px; /* Posiziona a destra */
-    flex-direction: column; /* Impila i pulsanti verticalmente */
-    justify-content: flex-start; /* Allinea in alto */
-    align-items: flex-end; /* Allinea a destra */
-    gap: 8px; /* Spazio tra i pulsanti verticali */
+    right: 20px; /* Position to the right */
+    flex-direction: column; /* Stack buttons vertically */
+    justify-content: flex-start; /* Align top */
+    align-items: flex-end; /* Align right */
+    gap: 8px; /* Spacing between vertical buttons */
 }
 
-/* Rendi cliccabili i pulsanti e il contatore all'interno delle top bar */
+/* Make buttons and counter inside top bars clickable */
 .top-bar-section .menu-btn,
 .top-bar-section #bit-counter,
 .top-bar-section #digital-fruit-counter,
 .top-bar-section #account-icon-container {
-    pointer-events: auto; /* Sovrascrive il pointer-events: none del genitore */
+    pointer-events: auto; /* Overrides pointer-events: none of parent */
 }
 
-/* Stile per i pulsanti che devono avere solo l'icona e stare in alto */
+/* Style for buttons that should only have an icon and be at the top */
 .top-bar-icon-btn {
     font-size: 30px;
     padding: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--primary-text); /* Testo bianco */
-    text-shadow: 0 0 8px var(--white-glow); /* Glow bianco */
-    width: 50px; /* Larghezza fissa per pulsanti icona */
-    height: 50px; /* Altezza fissa per pulsanti icona */
-    border-radius: 50%; /* Rende i pulsanti tondi */
+    color: var(--primary-text); /* White text */
+    text-shadow: 0 0 8px var(--white-glow); /* White glow */
+    width: 50px; /* Fixed width for icon buttons */
+    height: 50px; /* Fixed height for icon buttons */
+    border-radius: 50%; /* Make buttons round */
 }
 
 .top-bar-icon-btn i {
-    font-size: 1em; /* Mantenuto a 1em come richiesto */
+    font-size: 1em; /* Kept at 1em as requested */
 }
-/* Stile per i pulsanti che devono avere icona e testo e stare in alto */
+/* Style for buttons that should have an icon and text and be at the top */
 .top-bar-text-btn {
     font-size: 0.9em;
     padding: 6px 10px;
@@ -1048,38 +1048,38 @@ body.modal-open {
     align-items: center;
     gap: 5px;
     white-space: nowrap;
-    color: var(--primary-text); /* Testo bianco */
-    text-shadow: 0 0 8px var(--white-glow); /* Glow bianco */
+    color: var(--primary-text); /* White text */
+    text-shadow: 0 0 8px var(--white-glow); /* White glow */
 }
 .top-bar-text-btn i {
     font-size: 1.2em;
 }
-/* Cursore lampeggiante prima dei pulsanti testuali della top bar */
+/* Blinking cursor before text buttons in the top bar */
 .top-bar-text-btn span::before {
     content: '>$';
     margin-right: 5px;
     animation: blink 1.2s infinite step-end;
-    color: var(--accent-pink); /* Verde brillante per il cursore */
+    color: var(--accent-pink); /* Bright green for cursor */
     text-shadow: 0 0 5px var(--accent-pink-glow);
 }
 
-/* Effetti Hover specifici per i pulsanti della top bar */
+/* Specific Hover Effects for top bar buttons */
 .top-bar-icon-btn:hover i,
 .top-bar-text-btn:hover i {
     animation: none;
-    color: var(--highlight-text); /* Bianco puro su hover */
+    color: var(--highlight-text); /* Pure white on hover */
     text-shadow: 0 0 15px var(--bright-glow), 0 0 25px var(--bright-glow);
 }
 .top-bar-text-btn:hover span {
-    animation: text-glitch var(--transition-fast) linear infinite; /* Usa variabile di transizione */
+    animation: text-glitch var(--transition-fast) linear infinite; /* Use transition variable */
 }
 #digital-fruit-counter {
-    background-color: var(--secondary-bg); /* Sfondo scuro */
-    color: var(--highlight-text); /* Giallo per il contatore */
+    background-color: var(--secondary-bg); /* Dark background */
+    color: var(--highlight-text); /* Yellow for counter */
     padding: 8px 15px;
     border-radius: 20px;
-    border: 2px solid var(--highlight-text); /* Bordo brillante */
-    box-shadow: 0 0 10px var(--bright-glow); /* Glow giallo */
+    border: 2px solid var(--highlight-text); /* Bright border */
+    box-shadow: 0 0 10px var(--bright-glow); /* Yellow glow */
     display: flex;
     align-items: center;
     gap: 10px;
@@ -1091,17 +1091,17 @@ body.modal-open {
 
 #digital-fruit-counter i {
     font-size: 1em;
-    color: var(--accent-pink); /* Icona gialla */
+    color: var(--accent-pink); /* Yellow icon */
 }
 
-/* Stile per il contatore dei Bit - Rimosso il posizionamento fisso */
+/* Style for the Bit counter - Removed fixed positioning */
 #bit-counter {
-    background-color: var(--secondary-bg); /* Sfondo scuro */
-    color: var(--highlight-text); /* Giallo per il contatore */
+    background-color: var(--secondary-bg); /* Dark background */
+    color: var(--highlight-text); /* Yellow for counter */
     padding: 8px 15px;
     border-radius: 20px;
-    border: 2px solid var(--highlight-text); /* Bordo brillante */
-    box-shadow: 0 0 10px var(--bright-glow); /* Glow giallo */
+    border: 2px solid var(--highlight-text); /* Bright border */
+    box-shadow: 0 0 10px var(--bright-glow); /* Yellow glow */
     display: flex;
     align-items: center;
     gap: 10px;
@@ -1113,22 +1113,22 @@ body.modal-open {
 
 #bit-counter i {
     font-size: 1.4em;
-    color: var(--accent-pink); /* Icona gialla */
+    color: var(--accent-pink); /* Yellow icon */
 }
 
-/* Stile per il pulsante Negozio (usa lo stile di .menu-btn già esistente) */
+/* Style for the Shop button (uses existing .menu-btn style) */
 #shop-btn {
-    /* Eredita già gli stili da .menu-btn, perfetto! */
+    /* Inherits styles from .menu-btn, perfect! */
 }
 
-/* Aggiungi questa nuova regola per il loaderCanvas */
+/* Add this new rule for the loaderCanvas */
 #loaderCanvas {
-    position: absolute; /* Posizionalo assolutamente per fungere da sfondo */
+    position: absolute; /* Position absolutely to act as background */
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 0; /* Mettilo dietro gli altri elementi del loader */
+    z-index: 0; /* Place it behind other loader elements */
     
     
     
@@ -1138,31 +1138,34 @@ body.modal-open {
     image-rendering: crisp-edges;
 }
 
-#loader-content-container { /* Contenitore per barra e log */
-    position: relative; /* Ora è un elemento relativo all'interno del flex di #terminal-container */
-    width: 100%; /* Occupa la larghezza disponibile del padre con padding */
-    max-width: 800px; /* Limite di larghezza per il contenuto */
-    height: auto; /* L'altezza si adatta al contenuto */
-    display: flex; /* Per impilare barra e log */
+#loader-content-container { /* Container for bar and log */
+    position: relative; /* Now it's a relative element inside the flex of #terminal-container */
+    width: 100%; /* Occupy available width of parent with padding */
+    max-width: 800px; /* Width limit for content */
+    height: auto; /* Height adapts to content */
+    display: flex; /* To stack bar and log */
     flex-direction: column;
-    align-items: flex-start; /* Allinea a sinistra */
-    z-index: 1; /* Sopra il canvas */
-    pointer-events: none; /* Permette ai click di passare attraverso, tranne per i figli che hanno auto */
+    align-items: flex-start; /* Align left */
+    z-index: 1; /* Above canvas */
+    pointer-events: none; /* Allow clicks to pass through, except for children that have auto */
 }
 
 #codedash-title {
-    font-family: 'Pixelify Sans', cursive; /* Usa Pixelify Sans */
-    font-size: 6em; /* Regola la dimensione a tuo piacimento */
+    font-family: 'Pixelify Sans', cursive; /* Use Pixelify Sans */
+    font-size: 2.5em; /* Smaller font size as requested */
     font-weight: bold;
     text-align: center;
-    color: #ffffff; /* Colore base del testo */
-    position: absolute; /* Posizionalo in alto */
-    top: 10%; /* Regola questa percentuale per spostarlo più in alto o in basso */
+    color: #ffffff; /* Base text color */
+    position: absolute; /* Keep absolute positioning */
     left: 50%;
     transform: translateX(-50%);
-    z-index: 100; /* Assicurati che sia sopra altri elementi */
+    z-index: 100; /* Ensure it's above other elements */
     
-    /* Effetto Glow */
+    /* Position relative to the bottom, just above the progress bar */
+    bottom: 120px; /* Adjust this value as needed to fine-tune placement above the progress bar */
+    top: auto; /* Ensure 'top' is not overriding 'bottom' */
+
+    /* Existing glow animation */
     text-shadow: 
         0 0 5px #0ce6f2,
         0 0 10px #0098db,
@@ -1170,7 +1173,7 @@ body.modal-open {
         0 0 20px #203562,
         0 0 25px #252446,
         0 0 30px #201533;
-    animation: glowAnimation 1.5s infinite alternate; /* Applica l'animazione */
+    animation: glowAnimation 1.5s infinite alternate; /* Apply the animation */
 }
 
 /* Animazione Glow */
@@ -1192,32 +1195,31 @@ body.modal-open {
             0 0 40px #203562,
             0 0 50px #252446,
             0 0 60px #201533,
-            0 0 70px #0ce6f2; /* Aumenta l'intensità del glow */
+            0 0 70px #0ce6f2; /* Increase glow intensity */
     }
 }
 
-/* Assicurati che la schermata di caricamento abbia una posizione relativa o fissa/assoluta */
+/* Ensure the loading screen has a relative or fixed/absolute position */
 #loading-screen {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: var(--primary-bg); /* Sfondo scuro per far risaltare il glow */
+    background-color: var(--primary-bg); /* Dark background to make glow stand out */
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* Stili per il display della missione in-game */
-/* Stili per il display della missione in-game */
+/* Styles for the in-game mission display */
 #mission-display {
     position: absolute;
     bottom: 10px;
     left: 50%;
     transform: translateX(-50%);
     background-color: rgba(0, 0, 0, 0.4);
-    color: var(--primary-text); /* Testo chiaro */
+    color: var(--primary-text); /* Light text */
     padding: 8px 15px;
     border-radius: 5px;
     font-family: 'Courier Prime', monospace;
@@ -1230,26 +1232,26 @@ body.modal-open {
     box-sizing: border-box;
     z-index: 810;
     display: none;
-    box-shadow: 0 0 10px var(--white-glow); /* Effetto glow bianco */
+    box-shadow: 0 0 10px var(--white-glow); /* White glow effect */
 }
 
 #mission-display .mission-title {
     font-weight: bold;
-    color: var(--highlight-text); /* Ciano brillante per il titolo della missione */
+    color: var(--highlight-text); /* Bright cyan for mission title */
     margin-right: 5px;
 }
 
 #mission-display .mission-desc {
-    color: var(--primary-text); /* Testo bianco per la descrizione */
+    color: var(--primary-text); /* White text for description */
 }
 
 #mission-display .mission-progress {
     font-weight: bold;
-    color: var(--accent-pink); /* Viola brillante per il progresso */
+    color: var(--accent-pink); /* Bright purple for progress */
     margin-left: 5px;
 }
 
-/* Regolazioni responsive per schermi più piccoli */
+/* Responsive adjustments for smaller screens */
 @media (max-width: 480px) {
     #mission-display {
         font-size: 0.8em;
@@ -1258,21 +1260,20 @@ body.modal-open {
     }
 }
 
-/* Regolazioni per il layout landscape in fullscreen se necessario */
+/* Adjustments for landscape layout in fullscreen if needed */
 body.game-fullscreen-active.game-fullscreen-landscape #mission-display {
-    top: 5px; /* Regola la posizione in modalità fullscreen landscape */
+    top: 5px; /* Adjust position in fullscreen landscape mode */
     font-size: 0.8em;
 }
 
-/* Stili per il pulsante di Pausa in-game */
-/* Stili per il pulsante di Pausa in-game */
+/* Styles for in-game Pause button */
 #pauseButton {
     position: absolute;
     top: 10px;
     right: 10px;
-    background-color: var(--tertiary-bg); /* Sfondo scuro */
-    color: var(--primary-text); /* Icona bianca */
-    border: 2px solid var(--primary-text); /* Bordo brillante */
+    background-color: var(--tertiary-bg); /* Dark background */
+    color: var(--primary-text); /* White icon */
+    border: 2px solid var(--primary-text); /* Bright border */
     border-radius: 50%;
     width: 45px;
     height: 45px;
@@ -1281,7 +1282,7 @@ body.game-fullscreen-active.game-fullscreen-landscape #mission-display {
     justify-content: center;
     cursor: pointer;
     transition: background-color var(--transition-normal), border-color var(--transition-normal), color var(--transition-normal);
-    box-shadow: 0 2px 10px var(--white-glow); /* Glow bianco */
+    box-shadow: 0 2px 10px var(--white-glow); /* White glow */
     z-index: 820;
 }
 
@@ -1291,24 +1292,24 @@ body.game-fullscreen-active.game-fullscreen-landscape #mission-display {
 }
 
 #pauseButton:hover {
-    background-color: var(--primary-bg); /* Sfondo più scuro su hover */
-    border-color: var(--highlight-text); /* Ciano brillante su hover */
-    color: var(--highlight-text); /* Icona ciano brillante */
+    background-color: var(--primary-bg); /* Darker background on hover */
+    border-color: var(--highlight-text); /* Bright cyan on hover */
+    color: var(--highlight-text); /* Bright cyan icon */
 }
 
-/* Stili per la Modale di Pausa */
+/* Styles for Pause Modal */
 .pause-view .modal-content {
     max-width: 500px;
     background-color: rgba(0, 0, 0, 0.95);
-    border: 3px solid var(--accent-red); /* Bordo rosso */
-    box-shadow: 0 0 30px var(--accent-red-glow); /* Glow rosso */
+    border: 3px solid var(--accent-red); /* Red border */
+    box-shadow: 0 0 30px var(--accent-red-glow); /* Red glow */
 }
 
 .pause-view h2 {
-    color: var(--accent-pink); /* Rosa brillante per il titolo */
+    color: var(--accent-pink); /* Bright pink for title */
     font-size: 2.2em;
     margin-bottom: 30px;
-    text-shadow: 0 0 10px var(--accent-pink-glow); /* Glow rosa */
+    text-shadow: 0 0 10px var(--accent-pink-glow); /* Pink glow */
 }
 
 .pause-view .pause-buttons {
@@ -1317,9 +1318,9 @@ body.game-fullscreen-active.game-fullscreen-landscape #mission-display {
     gap: 15px;
 }
 
-/* Riutilizzo degli stili .game-over-button per i pulsanti di pausa, con override per i colori */
+/* Reuse .game-over-button styles for pause buttons, with color overrides */
 .pause-resume-btn {
-    background-color: var(--accent-green); /* Verde brillante per Resume */
+    background-color: var(--accent-green); /* Bright green for Resume */
     border-color: var(--accent-green);
     color: var(--primary-bg);
 }
@@ -1330,7 +1331,7 @@ body.game-fullscreen-active.game-fullscreen-landscape #mission-display {
 }
 
 .pause-restart-btn {
-    background-color: var(--accent-orange); /* Arancione per Restart */
+    background-color: var(--accent-orange); /* Orange for Restart */
     border-color: var(--accent-orange);
     color: var(--primary-bg);
 }
@@ -1341,7 +1342,7 @@ body.game-fullscreen-active.game-fullscreen-landscape #mission-display {
 }
 
 .pause-main-menu-btn {
-    background-color: var(--accent-cyan); /* Ciano brillante per Main Menu */
+    background-color: var(--accent-cyan); /* Bright cyan for Main Menu */
     border-color: var(--accent-cyan);
     color: var(--primary-bg);
 }
@@ -1351,7 +1352,7 @@ body.game-fullscreen-active.game-fullscreen-landscape #mission-display {
     box-shadow: 0 5px 20px var(--accent-cyan-glow), 0 0 15px var(--accent-cyan-glow);
 }
 
-/* Regolazioni Responsive per schermi piccoli (pulsante pausa) */
+/* Responsive adjustments for small screens (pause button) */
 @media (max-width: 480px) {
     #pauseButton {
         width: 35px;
@@ -1365,7 +1366,7 @@ body.game-fullscreen-active.game-fullscreen-landscape #mission-display {
 }
 
 /* ------------------------------------------- */
-/* Media Queries per Tablet (769px - 1024px) */
+/* Media Queries for Tablets (769px - 1024px) */
 /* ------------------------------------------- */
 @media (min-width: 769px) and (max-width: 1024px) {
     body, html, #app-root, #terminal-container {
@@ -1424,7 +1425,7 @@ body.game-fullscreen-active.game-fullscreen-landscape #mission-display {
     }
 }
 
-/* Media Query per schermi più grandi dei tablet, per una maggiore scalabilità del canvas se necessario */
+/* Media Query for larger screens than tablets, for greater canvas scalability if necessary */
 @media (min-width: 1025px) {
     #gameCanvas {
         max-width: 1000px;
@@ -1433,8 +1434,8 @@ body.game-fullscreen-active.game-fullscreen-landscape #mission-display {
 }
 
 /* ------------------------------------------------ */
-/* Media Query per Schermi Molto Piccoli (Max 420px) */
-/* Risolve sovrapposizioni su dispositivi stretti come Galaxy S22 */
+/* Media Query for Very Small Screens (Max 420px) */
+/* Resolves overlaps on narrow devices like Galaxy S22 */
 /* ------------------------------------------------ */
 @media (max-width: 420px) {
     .top-bar-section {
@@ -1459,13 +1460,13 @@ body.game-fullscreen-active.game-fullscreen-landscape #mission-display {
         font-size: 24px;
     }
     .top-bar-icon-btn {
-        width: 18px; /* Riduci la larghezza */
-        height: 18px; /* Riduci l'altezza */
-        font-size: 18px; /* Riduci la dimensione del font */
+        width: 18px; /* Reduce width */
+        height: 18px; /* Reduce height */
+        font-size: 18px; /* Reduce font size */
         padding: 3px;
     }
     .top-bar-icon-btn i {
-        font-size: 1em; /* Mantenuto a 1em */
+        font-size: 1em; /* Kept at 1em */
     }
     .top-bar-text-btn {
         font-size: 0.65em;
@@ -1478,21 +1479,21 @@ body.game-fullscreen-active.game-fullscreen-landscape #mission-display {
 }
 
 #rain-status-indicator {
-    position: fixed; /* O 'absolute' se il padre è app-root e app-root è position: relative */
-    bottom: 20px; /* Mantieni il posizionamento originale */
-    right: 20px; /* O left: 20px se preferisci a sinistra, vicino a "now playing" */
+    position: fixed; /* Or 'absolute' if parent is app-root and app-root is position: relative */
+    bottom: 20px; /* Keep original positioning */
+    right: 20px; /* Or left: 20px if preferred on the left, near "now playing" */
     font-family: "Courier Prime", monospace; /* Ensures consistent terminal look */
     font-size: 14px;
     color: white; /* Default color for the "isRaining = " part */
     white-space: pre; /* Important for preserving spaces and potential cursor */
-    z-index: 950; /* Un z-index alto per essere sopra il menu principale e il canvas */
-    pointer-events: none; /* Non blocca i click */
+    z-index: 950; /* A high z-index to be above main menu and canvas */
+    pointer-events: none; /* Do not block clicks */
     background-color: rgba(
         0,
         0,
         0,
         0.5
-    ); /* Aggiungi un leggero sfondo per leggibilità */
+    ); /* Add a slight background for readability */
     padding: 5px 10px;
     border-radius: 5px;
 }
@@ -1506,36 +1507,36 @@ body.game-fullscreen-active.game-fullscreen-landscape #mission-display {
     color: #a8141d; /* Dull red for 'false' as requested */
 }
 
-/* Stili per il nuovo gruppo di icone (Skins, Companions, Powerups) */
+/* Styles for the new icon group (Skins, Companions, Powerups) */
 .new-menu-icons-group {
     display: flex;
-    flex-direction: row; /* Ora le icone sono in riga */
-    gap: 8px; /* Spazio tra le nuove icone */
-    margin-top: 0; /* Rimuovi il margine superiore se non più necessario */
-    align-items: center; /* Allinea al centro verticalmente */
+    flex-direction: row; /* Icons are now in a row */
+    gap: 8px; /* Spacing between new icons */
+    margin-top: 0; /* Remove top margin if no longer needed */
+    align-items: center; /* Vertically center */
 }
 
-/* Stili per la navigazione a schede all'interno delle modali */
+/* Styles for tab navigation within modals */
 .category-nav {
     display: flex;
-    justify-content: center; /* Centra i pulsanti */
+    justify-content: center; /* Center buttons */
     margin-bottom: 25px;
     border-bottom: 1px solid var(--border-color);
-    overflow-x: auto; /* Permette lo scroll orizzontale */
-    white-space: nowrap; /* Impedisce il wrap delle voci */
-    padding-bottom: 10px; /* Spazio per l'indicatore attivo */
-    -webkit-overflow-scrolling: touch; /* Migliora lo scrolling su iOS */
-    scrollbar-width: none; /* Nasconde la scrollbar per Firefox */
-    -ms-overflow-style: none;  /* Nasconde la scrollbar per IE/Edge */
+    overflow-x: auto; /* Allow horizontal scrolling */
+    white-space: nowrap; /* Prevent wrapping of items */
+    padding-bottom: 10px; /* Space for active indicator */
+    -webkit-overflow-scrolling: touch; /* Improve scrolling on iOS */
+    scrollbar-width: none; /* Hide scrollbar for Firefox */
+    -ms-overflow-style: none;  /* Hide scrollbar for IE/Edge */
 }
 
-/* Nasconde la scrollbar per Chrome, Safari e Opera */
+/* Hide scrollbar for Chrome, Safari and Opera */
 .category-nav::-webkit-scrollbar {
     display: none;
 }
 
 .category-btn {
-    flex-shrink: 0; /* Impedisce ai pulsanti di restringersi */
+    flex-shrink: 0; /* Prevent buttons from shrinking */
     padding: 10px 15px;
     background-color: transparent;
     border: none;
@@ -1556,11 +1557,11 @@ body.game-fullscreen-active.game-fullscreen-landscape #mission-display {
     color: var(--accent-cyan);
 }
 
-/* Stile per le griglie degli item all'interno delle modali */
+/* Style for item grids within modals */
 .item-grid-container {
-    max-height: 50vh; /* Altezza massima per lo scroll interno */
-    overflow-y: auto; /* Abilita lo scroll verticale se necessario */
-    padding-right: 10px; /* Spazio per la scrollbar */
+    max-height: 50vh; /* Max height for vertical scrolling */
+    overflow-y: auto; /* Enable vertical scrolling if necessary */
+    padding-right: 10px; /* Space for scrollbar */
 }
 
 .item-grid {
@@ -1602,14 +1603,14 @@ body.game-fullscreen-active.game-fullscreen-landscape #mission-display {
     align-items: center;
     justify-content: center;
     margin-bottom: 10px;
-    overflow: hidden; /* Per le GIF di anteprima */
+    overflow: hidden; /* For preview GIFs */
 }
 
 .item-card .item-preview img {
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
-    image-rendering: pixelated; /* Per mantenere l'aspetto pixel-art */
+    image-rendering: pixelated; /* Maintain pixel-art look */
 }
 
 .item-card .item-preview i {
@@ -1622,7 +1623,7 @@ body.game-fullscreen-active.game-fullscreen-landscape #mission-display {
     font-weight: bold;
     color: var(--primary-text);
     margin-bottom: 10px;
-    white-space: normal; /* Permette al testo di andare a capo */
+    white-space: normal; /* Allow text to wrap */
 }
 
 .item-card .equip-button {
@@ -1653,35 +1654,35 @@ body.game-fullscreen-active.game-fullscreen-landscape #mission-display {
 }
 
 
-/* Media Queries per Responsiveness */
+/* Media Queries for Responsiveness */
 @media (max-width: 768px) {
     #top-bar-left {
-        flex-direction: row; /* Mantiene gli elementi in riga su mobile */
-        align-items: center; /* Allinea al centro */
-        flex-wrap: wrap; /* Permette il wrapping se lo spazio è limitato */
+        flex-direction: row; /* Keep elements in a row on mobile */
+        align-items: center; /* Center align */
+        flex-wrap: wrap; /* Allow wrapping if space is limited */
     }
 
     #top-bar-right {
-        flex-direction: column; /* Mantiene i pulsanti verticali su mobile */
-        align-items: flex-end; /* Allinea a destra */
-        gap: 5px; /* Riduci il gap per schermi più piccoli */
+        flex-direction: column; /* Keep buttons vertical on mobile */
+        align-items: flex-end; /* Align right */
+        gap: 5px; /* Reduce gap for smaller screens */
     }
 
     .new-menu-icons-group {
-        flex-direction: row; /* Le nuove icone rimangono in riga su mobile */
+        flex-direction: row; /* New icons remain in a row on mobile */
         flex-wrap: wrap;
         justify-content: flex-start;
-        width: auto; /* Adatta la larghezza al contenuto */
-        margin-top: 0; /* Rimuovi il margine superiore se non più necessario */
+        width: auto; /* Adapt width to content */
+        margin-top: 0; /* Remove top margin if not needed */
     }
 
     .top-bar-icon-btn {
-        width: 45px; /* Riduci leggermente le dimensioni su mobile */
+        width: 45px; /* Slightly reduce size on mobile */
         height: 45px;
     }
 
     .menu-btn i {
-        font-size: 1.1em; /* Riduci dimensione icone su mobile */
+        font-size: 1.1em; /* Reduce icon size on mobile */
     }
 
 
@@ -1695,12 +1696,12 @@ body.game-fullscreen-active.game-fullscreen-landscape #mission-display {
     
     
     .category-btn {
-        font-size: 0.9em; /* Riduci dimensione font per le schede su mobile */
+        font-size: 0.9em; /* Reduce font size for tabs on mobile */
         padding: 8px 10px;
     }
 
     .item-grid {
-        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* Riduci dimensione minima card */
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* Reduce min card size */
         gap: 15px;
     }
 
