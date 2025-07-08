@@ -19,7 +19,7 @@ import { CompanionManager } from './companionManager.js';
 import { FRONTEND_BADGE_TIERS } from './badgeManager.js'; // <-- AGGIUNGI QUESTA LINEA
 
 // --- GESTIONE AUDIO V1.4 ---
-const BGM_PLAYLIST = Array.from({ length: 20 }, (_, i) => `track_${String(i + 1).padStart(2, '0')}.ogg`);
+const BGM_PLAYLIST = Array.from({ length: 11 }, (_, i) => `track_${String(i + 1).padStart(2, '0')}.ogg`);
 // Rimuovi o commenta la vecchia BOSS_MUSIC_PATH se non più necessaria
 
 const GLITCHZILLA_MUSIC_PATH = 'audio/boss/glitchzilla_music.ogg'; // Nuovo path specifico
@@ -71,25 +71,25 @@ const TRACK_METADATA = {
     'audio/music_menu_3.ogg': { title: 'synchronize', artist: 'U.T.' },
     // Musiche di gioco casuali (BGM_PLAYLIST)
     'audio/bgm/track_01.ogg': { title: 'Code Rangers', artist: 'U.T.' },
-    'audio/bgm/track_02.ogg': { title: 'code_injection', artist: 'U.T.' },
+    'audio/bgm/track_02.ogg': { title: "Summer '97", artist: 'U.T.' },
     'audio/bgm/track_03.ogg': { title: 'combatCode', artist: 'U.T.' },
     'audio/bgm/track_04.ogg': { title: 'Daemon Build', artist: 'U.T.' },
     'audio/bgm/track_05.ogg': { title: 'Debuggator_subroutine', artist: 'U.T.' },
     'audio/bgm/track_06.ogg': { title: 'Deep Space Pursuit', artist: 'U.T.' },
     'audio/bgm/track_07.ogg': { title: 'Enter The Matrix', artist: 'U.T.' },
-    'audio/bgm/track_08.ogg': { title: 'Enter The System (a.n.e.)', artist: 'U.T.' },
+    'audio/bgm/track_08.ogg': { title: 'target_lock', artist: 'U.T.' },
     'audio/bgm/track_09.ogg': { title: 'GalaxyRush!', artist: 'U.T.' },
     'audio/bgm/track_10.ogg': { title: 'Glitch Rangers', artist: 'U.T.' },
-    'audio/bgm/track_11.ogg': { title: 'launch_update', artist: 'U.T.' },
-    'audio/bgm/track_12.ogg': { title: 'Miami Nights', artist: 'U.T.' },
-    'audio/bgm/track_13.ogg': { title: 'Modular Architecture', artist: 'U.T.' },
-    'audio/bgm/track_14.ogg': { title: 'Outdated Compiler', artist: 'U.T.' },
-    'audio/bgm/track_15.ogg': { title: 'Stargazing', artist: 'U.T.' },
-    'audio/bgm/track_16.ogg': { title: 'Starlink', artist: 'U.T.' },
-    'audio/bgm/track_17.ogg': { title: 'Subroutine Throttler', artist: 'U.T.' },
-    'audio/bgm/track_18.ogg': { title: "Summer '97", artist: 'U.T.' },
-    'audio/bgm/track_19.ogg': { title: 'target_lock', artist: 'U.T.' },
-    'audio/bgm/track_20.ogg': { title: "The Donkey's Gallop", artist: 'U.T.' },
+    'audio/bgm/track_11.ogg': { title: "The Donkey's Gallop", artist: 'U.T.' },
+    'audio/bgm/track_12.ogg': { title: '', artist: 'U.T.' },
+    'audio/bgm/track_13.ogg': { title: '', artist: 'U.T.' },
+    'audio/bgm/track_14.ogg': { title: '', artist: 'U.T.' },
+    'audio/bgm/track_15.ogg': { title: '', artist: 'U.T.' },
+    'audio/bgm/track_16.ogg': { title: '', artist: 'U.T.' },
+    'audio/bgm/track_17.ogg': { title: '', artist: 'U.T.' },
+    
+    
+    
     // Musiche Boss
     [GLITCHZILLA_MUSIC_PATH]: { title: 'The Parsing Process', artist: 'U.T.' },
     [TROJAN_BYTE_MUSIC_PATH]: { title: 'Server Hillness', artist: 'U.T.' },
