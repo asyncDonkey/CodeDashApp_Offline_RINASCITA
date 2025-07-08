@@ -1,0 +1,1737 @@
+/* www/css/style.css */
+
+:root {
+    --terminal-error-bright: #f14e52; /* Rosso acceso per il flash */
+    --terminal-error-dark: #9b222b; /* Rosso scuro per il flash */
+    --terminal-comment: #6272a4; /* Dracula comment */
+    --terminal-red: #ff5555; /* Dracula red */
+    --terminal-orange: #ffb86c; /* Dracula orange */
+    --terminal-yellow: #f1fa8c; /* Dracula yellow */
+    --terminal-green: #50fa7b; /* Dracula green */
+    --terminal-cyan: #0ce6f2; /* Dracula cyan */
+    --terminal-purple: #bd93f9; /* Dracula purple */
+    --terminal-pink: #ff79c6; /* Dracula pink */
+    --terminal-blue: rgba(0, 152, 219, 1); 
+    --bright-green-teal: #0098db; /* A bright green-teal for highlights */
+    --medium-teal: #0b8a8f;
+    --bright-teal: #0eaf9b;
+    --dark-teal-blue: #32535f;
+    --medium-purple: #631b34;
+    --terminal-border: var(--terminal-green); /* Use green for border for old-school feel */
+
+    --glow-color: rgba(0, 152, 219, 0.4); /* Colore per l'effetto di brillantezza */
+    --terminal-green-bright: #33ff33;
+    --terminal-green-dark: #1a4d1a;
+    --terminal-bg-speech: rgba(10, 25, 10, 0.85); /* Sfondo semi-trasparente */
+
+    /* Backgrounds - Tonalità di nero e grigio molto scuro per un look "monocromatico" */
+    --primary-bg: #222323; /* Nero profondo per lo sfondo principale */
+    --secondary-bg: #150e10; /* Ancora più scuro, per elementi di profondità o specifici */
+    --tertiary-bg: #333346; /* Grigio-blu scuro per modali, pannelli o sezioni distinte */
+
+    /* Testo e Evidenziazioni - Dal bianco puro ai grigi */
+    --primary-text: #f0f6f0; /* Il tuo bianco sporco / grigio chiarissimo per il testo principale */
+    --secondary-text: #797b7a; /* Grigio medio per testo secondario, come commenti */
+    --highlight-text: #FFFFFF; /* Bianco puro per massima enfasi o elementi attivi */
+
+    /* Colori Glow Generici (per testo/elementi bianchi) */
+    --white-glow: rgba(240, 246, 240, 0.5); /* Glow sottile basato sul primary-text */
+    --bright-glow: rgba(255, 255, 255, 0.8); /* Glow più intenso per highlight bianchi */
+
+    /* Accent Colors (Brillanti) & Loro Varianti Glow - Verde e Blu come primari */
+
+    /* Verde */
+    --accent-green: #30e1b9; /* Il tuo verde acqua brillante */
+    --accent-green-glow: rgba(48, 225, 185, 0.6); /* Glow verde acqua */
+
+    /* Blu */
+    --accent-blue: #0098db; /* Il tuo blu brillante */
+    --accent-blue-glow: rgba(0, 152, 219, 0.6); /* Glow blu */
+
+    /* Ciano (molto simile al verde/blu scelti, ma lo manteniamo come opzione distincta) */
+    --accent-cyan: #0ce6f2; /* Il tuo ciano super brillante */
+    --accent-cyan-glow: rgba(12, 230, 242, 0.6); /* Glow ciano */
+
+    /* Altri Colori Accent (usati con parsimonia per mantenere l'impronta b/n) */
+    --accent-red: #FF5555; /* Rosso per errori/warning */
+    --accent-red-glow: rgba(255, 85, 85, 0.5); /* Glow rosso */
+
+    --accent-yellow: #F1FA8C; /* Giallo per punteggi/input */
+    --accent-yellow-glow: rgba(241, 250, 140, 0.5); /* Glow giallo */
+
+    --accent-orange: #FFB86C; /* Arancione */
+    --accent-orange-glow: rgba(255, 184, 108, 0.5); /* Glow arancione */
+
+    --accent-purple: #BD93F9; /* Viola */
+    --accent-purple-glow: rgba(189, 147, 249, 0.5); /* Glow viola */
+
+    --accent-pink: #FF79C6; /* Rosa */
+    --accent-pink-glow: rgba(255, 121, 198, 0.5); /* Glow rosa */
+
+    /* Border color - Scegliamo un colore brillante per i bordi */
+    --border-color: var(--accent-green); /* Verde brillante per i bordi */
+
+    /* Transizioni per animazioni fluide */
+    --transition-fast: 0.15s ease-out; /* Per reazioni rapide (hover, click) */
+    --transition-normal: 0.3s ease-in-out; /* Standard per animazioni fluide */
+    --transition-slow: 0.5s ease-in-out; /* Per transizioni più lente o fade */
+}
+
+body {
+    margin: 0;
+    overflow: hidden;
+    background-color: black !important; /* Forza lo sfondo nero */
+    color: var(--primary-text, #f0f6f0);
+    
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+}
+
+body, html {
+    font-family: 'Courier Prime', monospace;
+    background-color: var(--primary-bg);
+    color: var(--primary-text);
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+#app-root {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Full viewport height */
+    width: 100vw; /* Full viewport width */
+    position: relative;
+    margin-left: env(safe-area-inset-left);
+    margin-right: env(safe-area-inset-right);
+}
+
+/* Il contenitore principale ora è il nostro "schermo" */
+#terminal-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 20px;
+    box-sizing: border-box;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000;
+    transition: opacity 0.8s ease-out;
+    box-shadow: inset 0 0 25px var(--glow-color);
+    background-color: transparent;
+    opacity: 0; /* AGGIUNGI O MODIFICA QUESTA LINEA */
+}
+
+#terminal-log {
+    /* Rimuovi tutte le proprietà di posizionamento assolute o margini auto precedenti. */
+    width: 100%; /* Prende la larghezza del loader-content-container */
+    max-width: 800px; /* Mantieni il limite di larghezza */
+    pointer-events: auto; /* Abilita gli eventi per il log */
+}
+#multi-progress-container {
+    /* Rimuovi tutte le proprietà di posizionamento assolute o margini auto precedenti. */
+    width: 100%; /* Prende la larghezza del loader-content-container */
+    max-width: 800px; /* Mantieni il limite di larghezza */
+    margin-bottom: 10px; /* Spazio sotto la barra */
+    pointer-events: auto; /* Abilita gli eventi per la barra */
+}
+
+/* Cursore lampeggiante */
+#terminal-log .blinking-cursor {
+    animation: blink-caret 0.75s step-end infinite;
+    background-color: var(--primary-text);
+    box-shadow: 0 0 5px var(--bright-glow);
+    color: var(--primary-bg); /* Il testo del cursore è lo sfondo */
+}
+
+@keyframes blink-caret {
+    from,
+    to {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+.progress-bar-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Allinea etichetta a sinistra */
+}
+
+.progress-label {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.8em;
+    color: var(--primary-text);
+    text-shadow: 0 0 3px var(--white-glow);
+    margin-bottom: 3px;
+    text-transform: uppercase;
+}
+
+.ascii-progress-bar {
+    font-family: 'Courier Prime', monospace;
+    font-size: 1.1em;
+    color: var(--highlight-text);
+    text-shadow: 0 0 5px var(--bright-glow);
+    margin: 0;
+    padding: 0;
+    text-align: left;
+    width: 100%;
+    white-space: pre; /* Mantiene la formattazione della barra */
+}
+
+#game-container-wrapper {
+    display: none; /* AGGIUNGI O MODIFICA QUESTA LINEA: deve essere 'none' all'inizio */
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    z-index: 800;
+}
+
+#gameCanvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: 800px;
+    max-height: 450px;
+    object-fit: contain;
+    margin: auto;
+
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-crisp-edges;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
+canvas#gameCanvas,
+div#game-container-wrapper {
+    touch-action: manipulation; /* O 'none' se il problema persiste e non servono altri gesti */
+}
+
+/* Updated styles for Mobile Controls */
+#mobileControls {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+    box-sizing: border-box;
+    z-index: 810;
+}
+
+/* Nuovo stile per l'icona dell'account - Spostata in alto a destra */
+.menu-icon-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: rgba(40, 42, 54, 0.7); /* Sfondo scuro semi-trasparente */
+    color: var(--primary-text); /* Testo bianco */
+    border: 2px solid var(--accent-blue); /* Bordo blu brillante */
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color var(--transition-normal), border-color var(--transition-normal), color var(--transition-normal);
+    box-shadow: 0 2px 10px var(--white-glow); /* Glow bianco */
+    z-index: 950;
+    overflow: hidden;
+}
+
+.menu-icon-btn:hover {
+    background-color: var(--medium-teal);
+    border-color: var(--bright-green-teal);
+    color: var(--bright-green-teal);
+    box-shadow: 0 2px 15px rgba(255, 255, 255, 0.7);
+}
+
+.menu-icon-btn .material-symbols-rounded {
+    font-size: 30px;
+}
+
+/* Updated styles for Score Input Container (Game Over Screen) */
+#scoreInputContainerDonkey {
+    display: none; /* Controlled by JS */
+    flex-direction: column; /* Stack elements vertically for better layout */
+    align-items: center; /* Center horizontally */
+    gap: 10px; /* Spacing between elements */
+    padding: 25px; /* Increased padding for larger feel */
+    background-color: rgba(0, 0, 0, 0.95); /* Slightly darker background and less transparent */
+    border-radius: 12px; /* More rounded corners */
+    border: 3px solid var(--bright-green-teal); /* Thicker, themed border */
+    box-shadow: 0 0 30px rgba(48, 225, 185, 0.9); /* More prominent glow */
+
+    position: absolute; /* Position relative to #game-container-wrapper */
+    top: 50%; /* Center vertically */
+    left: 50%;
+    transform: translate(-50%, -50%); /* Centering trick */
+    z-index: 850; /* Ensure it's above game elements and controls */
+
+    width: 95%; /* Make it wider */
+    max-width: 500px; /* Max width for larger screens */
+    box-sizing: border-box;
+    text-align: center; /* Center text within the container */
+}
+
+#scoreInputContainerDonkey p,
+#scoreInputContainerDonkey label {
+    font-family: 'Courier Prime', monospace;
+    color: var(--primary-text);
+    font-size: 1.2em; /* Slightly larger font */
+    margin: 0; /* Remove default margins */
+}
+
+#scoreInputContainerDonkey #finalScoreDisplayDonkey {
+    font-family: 'Pixelify Sans', cursive; /* Keep pixel font for score */
+    color: var(--terminal-yellow); /* Highlight score */
+    font-size: 1.8em; /* Larger score font */
+    text-shadow:
+        0 0 10px var(--terminal-yellow),
+        0 0 20px rgba(241, 250, 140, 0.5);
+    margin-top: 5px; /* Space from "Game Over" */
+}
+
+#scoreInputContainerDonkey input[type='text'] {
+    background-color: var(--secondary-bg);
+    border: 2px solid var(--terminal-green);
+    color: var(--primary-text);
+    font-family: 'Courier Prime', monospace;
+    font-size: 1.1em; /* Slightly larger input font */
+    padding: 10px 15px; /* Increased padding */
+    margin-top: 10px; /* More space from label */
+    border-radius: 5px;
+    text-align: center;
+    width: calc(100% - 30px); /* Full width minus padding */
+    box-sizing: border-box;
+    outline: none;
+    transition:
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+#scoreInputContainerDonkey input[type='text']:focus {
+    border-color: var(--bright-green-teal);
+    box-shadow: 0 0 10px rgba(48, 225, 185, 0.7);
+}
+
+#scoreInputContainerDonkey .score-buttons {
+    display: flex;
+    justify-content: center; /* Center buttons horizontally */
+    gap: 15px; /* Space between buttons */
+    margin-top: 20px; /* More space above buttons */
+    width: 100%;
+    flex-wrap: wrap; /* Allow wrapping on small screens */
+}
+
+/* New classes for specific game over buttons */
+.game-over-button {
+    /* Base style for all game over buttons */
+    background-color: var(--medium-teal);
+    color: var(--primary-text);
+    border: 2px solid var(--bright-teal);
+    padding: 12px 25px; /* Larger padding */
+    font-family: 'Courier Prime', monospace;
+    font-size: 1em; /* Consistent font size */
+    cursor: pointer;
+    transition:
+        background-color 0.3s ease,
+        border-color 0.3s ease,
+        color 0.3s ease;
+    box-shadow:
+        0 5px 15px rgba(0, 0, 0, 0.6),
+        0 0 10px var(--bright-teal);
+    text-transform: uppercase;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* More space for icons */
+    flex-grow: 1;
+    min-width: 140px; /* Increased min-width */
+}
+
+.game-over-button:hover {
+    background-color: var(--bright-teal);
+    border-color: var(--bright-green-teal);
+    color: var(--primary-bg);
+    box-shadow:
+        0 5px 20px rgba(0, 255, 0, 0.8),
+        0 0 15px var(--bright-green-teal);
+}
+
+.game-over-button .material-symbols-rounded {
+    font-size: 1.3em; /* Larger icons */
+}
+
+/* Specific button styles */
+.game-over-save-btn {
+    background-color: var(--terminal-green);
+    border-color: var(--terminal-green);
+    color: var(--primary-bg);
+}
+.game-over-save-btn:hover {
+    background-color: var(--bright-green-teal);
+    border-color: var(--bright-green-teal);
+}
+
+.game-over-share-btn {
+    background-color: var(--terminal-blue);
+    border-color: var(--terminal-blue);
+    color: var(--primary-bg);
+}
+.game-over-share-btn:hover {
+    background-color: var(--terminal-cyan);
+    border-color: var(--terminal-cyan);
+}
+
+.game-over-restart-btn {
+    background-color: var(--terminal-orange);
+    border-color: var(--terminal-orange);
+    color: var(--primary-bg);
+}
+.game-over-restart-btn:hover {
+    background-color: var(--terminal-red);
+    border-color: var(--terminal-red);
+}
+
+.game-over-main-menu-btn {
+    /* New button style */
+    background-color: var(--terminal-purple);
+    border-color: var(--terminal-purple);
+    color: var(--primary-bg);
+}
+.game-over-main-menu-btn:hover {
+    background-color: var(--terminal-pink);
+    border-color: var(--terminal-pink);
+}
+
+/* Fullscreen adjustments for score input container */
+body.game-fullscreen-active #scoreInputContainerDonkey[style*='display: flex'] {
+    display: flex !important;
+    position: fixed !important;
+    top: 50%; /* Center vertically in fullscreen */
+    bottom: auto !important; /* Ensure bottom is not set */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: calc(100vw - 40px);
+    width: auto;
+    z-index: 250 !important;
+}
+
+/* Media Query for small screens in landscape */
+@media (max-width: 768px) and (orientation: landscape) {
+    #scoreInputContainerDonkey,
+    body.game-fullscreen-active #scoreInputContainerDonkey[style*='display: flex'] {
+        flex-direction: column; /* Force column layout on small landscape for readability */
+        flex-wrap: nowrap; /* Prevent wrapping if forced column */
+        gap: 6px;
+        padding: 10px;
+        top: 50%; /* Keep centered */
+        bottom: auto !important;
+        max-width: calc(100vw - 20px);
+        min-width: 280px; /* Ensure it's not too small */
+    }
+    #scoreInputContainerDonkey p,
+    #scoreInputContainerDonkey label {
+        font-size: 0.9em;
+    }
+    #scoreInputContainerDonkey #finalScoreDisplayDonkey {
+        font-size: 1.4em;
+    }
+    #scoreInputContainerDonkey input[type='text'] {
+        width: 100%; /* Full width in column layout */
+        font-size: 1em;
+        padding: 8px 10px;
+    }
+    #scoreInputContainerDonkey .score-buttons {
+        gap: 8px;
+        margin-top: 10px;
+        flex-direction: column; /* Stack buttons too */
+    }
+    .game-over-button {
+        font-size: 0.85em;
+        padding: 8px 15px;
+        min-width: 100%; /* Take full width */
+    }
+}
+
+.modal-content {
+    background-color: var(--tertiary-bg); /* Sfondo modale scuro */
+    color: var(--primary-text); /* Testo modale bianco */
+    padding: 25px;
+    border: 1px solid var(--border-color); /* Bordo dal colore brillante */
+    border-radius: 8px;
+    width: 90%;
+    max-width: 700px;
+    text-align: center;
+    font-family: 'Courier Prime', monospace;
+    max-height: 95vh;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+.modal-content h2,
+.modal-content h3 {
+    color: var(--highlight-text); /* Verde brillante per i titoli */
+    text-align: center;
+    font-family: 'Pixelify Sans', cursive;
+    text-shadow: 0 0 10px var(--accent-green-glow); /* Glow verde sui titoli */
+}
+
+.close-button {
+    color: var(--secondary-text); /* Grigio per il pulsante di chiusura */
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 35px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: var(--highlight-text); /* Rosso brillante su hover */
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* CAMBIARE #toast-notifications in #toast-container */
+#toast-container { /* Corretto: ora corrisponde all'ID in index.html */
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 10000;
+}
+
+/* Stili base per i toast, ora applicati a .toast-notification */
+.toast-notification {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: var(--primary-text);
+    padding: 10px 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.9em;
+    
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: auto;
+    
+    /* NUOVO: Aggiungi dimensioni fisse e box-sizing per robustezza */
+    min-width: 250px;
+    max-width: 350px;
+    width: fit-content; /* Si adatta al contenuto ma rispetta min/max */
+    text-align: center; /* Centra il testo */
+    box-sizing: border-box; /* Assicura che padding e bordo siano inclusi nella larghezza */
+}
+.toast-notification.success {
+    background-color: var(--accent-green); /* Verde brillante per successo */
+}
+.toast-notification.error {
+    background-color: var(--accent-red); /* Rosso brillante per errore */
+}
+.toast-notification.info {
+    background-color: var(--accent-blue); /* Blu brillante per info */
+}
+.toast-notification.warning {
+    background-color: var(--accent-orange); /* Arancione brillante per warning */
+}
+
+/* Regole per le animazioni di entrata/uscita */
+.toast-notification.show {
+    opacity: 1 !important; /* FORZIAMO L'OPACITÀ */
+    transform: translateY(0) !important; /* FORZIAMO LA POSIZIONE */
+}
+
+.toast-notification.hide {
+    opacity: 0 !important; /* FORZIAMO L'OPACITÀ */
+    transform: translateY(20px) !important; /* FORZIAMO LA POSIZIONE */
+}
+
+/* NUOVO: Nasconde il pulsante di chiusura 'X' per le toast */
+.toast-close-btn {
+    display: none !important; /* Forza la rimozione visiva */
+}
+
+/* Stili di base per le nuove modali */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content.landscape-modal {
+    background-color: var(--tertiary-bg); /* Sfondo modale scuro */
+    color: var(--primary-text); /* Testo bianco */
+    padding: 25px;
+    border: 1px solid var(--bright-glow); /* Bordo brillante */
+    box-shadow: var(--bright-glow);
+    border-radius: 8px;
+    width: 90%;
+    max-width: 650px;
+    text-align: center;
+    font-family: 'Courier Prime', monospace;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+.modal-content .close-button {
+    color: var(--secondary-text); /* Grigio per il pulsante di chiusura */
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 35px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.close-button:hover,
+.close-button:focus {
+    color: var(--highlight-text); /* Rosso brillante su hover */
+    text-decoration: none;
+    cursor: pointer;
+}
+.google-btn {
+    background-color: var(--accent-blue); /* Blu brillante per Google button */
+    color: var(--highlight-text); /* Testo bianco */
+    border: none;
+    padding: 12px 24px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color var(--transition-normal);
+    margin-top: 20px;
+}
+
+.google-btn:hover {
+    background-color: var(--accent-blue-glow); /* Glow blu su hover */
+}
+
+/* Stili per la modale del profilo */
+.profile-view .profile-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.profile-view #profile-modal-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid var(--accent-green); /* Bordo verde brillante */
+    margin-right: 20px;
+    box-shadow: 0 0 15px var(--accent-green-glow); /* Glow verde all'avatar */
+}
+
+.profile-view .profile-info {
+    text-align: left;
+}
+.profile-view .profile-info h2 {
+    margin: 0;
+    color: var(--highlight-text); /* Testo bianco per il nome utente */
+    text-shadow: 0 0 8px var(--white-glow); /* Glow bianco */
+}
+
+.profile-view .profile-info p {
+    margin: 0;
+    color: var(--secondary-text); /* Grigio per l'email */
+}
+
+.profile-view .profile-footer {
+    margin-top: 25px;
+}
+
+/* Stile e Animazione Arcade per le nuove Icone Phosphor */
+@keyframes arcade-flash {
+    0%,
+    48%,
+    100% {
+        opacity: 1;
+        text-shadow: 0 0 8px var(--highlight-text); /* Glow bianco */
+    }
+    50%,
+    98% {
+        opacity: 0.6;
+        text-shadow: none;
+    }
+}
+
+.game-over-button:hover i,
+.menu-icon-btn:hover i {
+    animation: arcade-flash var(--transition-normal) infinite; /* Uso variabile di transizione */
+}
+
+.game-over-button i {
+    font-size: 1.3em;
+    vertical-align: middle;
+}
+
+.menu-icon-btn i {
+    font-size: 32px;
+}
+
+/* NUOVE REGOLE per l'avatar dell'utente loggato */
+#user-avatar-icon {
+    display: none; /* Nascosto di default, gestito da JS */
+    width: 100%; /* Riempie il contenitore in larghezza */
+    height: 100%; /* Riempie il contenitore in altezza */
+    border-radius: 50%; /* Assicura che l'immagine stessa sia tonda */
+    object-fit: cover; /* Fondamentale: copre l'area senza deformare l'immagine */
+    cursor: pointer;
+}
+
+/* 5. Aggiustiamo lo spazio tra icona e testo nei pulsanti (opzionale) */
+.game-over-button {
+    gap: 12px; /* Aumenta lo spazio se necessario */
+}
+/* Questa classe verrà aggiunta al <body> quando una modale è aperta */
+body.modal-open {
+    overflow: hidden; /* Questo impedirà lo scroll dello sfondo */
+}
+
+/* Per i campi input specifici della modale di login/registrazione */
+#loginModal .auth-form input[type='email'],
+#loginModal .auth-form input[type='password'],
+#loginModal .auth-form input[type='text'],
+#loginModal .auth-form input[type='tel'],
+#loginModal .auth-form select {
+    width: 100%; /* Forza la larghezza al 100% per adattarsi meglio allo scroll */
+    box-sizing: border-box; /* Cruciale: include padding e bordo nella larghezza totale */
+    /* Rimuovi width: calc(100% - 22px); se presente nel login-register.css */
+}
+
+/* Main Menu Container */
+#main-menu {
+    display: none;
+    position: fixed; /* O 'absolute' se app-root è fixed/absolute e copre tutto */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 900;
+    opacity: 0;
+    transition: opacity 0.5s ease-in;
+    background-color: transparent;
+    /* IMPORTANTE: Aggiungi position: relative; se non è già fixed/absolute a livello superiore */
+    /* Se #main-menu è già fixed come nello snippet, non è necessario. */
+    /* Ma se in futuro lo rendi solo "display:flex" con un genitore, questa sarà cruciale */
+    /* per il posizionamento assoluto dei figli. */
+}
+
+#menuCanvas {
+    /* background-color: #111827; */
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-crisp-edges;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
+
+.menu-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 902;
+    pointer-events: none; /* Questo è corretto, permette ai click di passare */
+}
+
+/* --- Keyframes per gli effetti --- */
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+@keyframes text-glitch {
+    0% { text-shadow: 1px 0 0 var(--accent-cyan-glow), -1px 0 0 var(--accent-pink-glow); }
+    25% { text-shadow: -1px 0 0 var(--accent-cyan-glow), 1px 0 0 var(--accent-pink-glow); }
+    50% { text-shadow: 1px -1px 0 var(--accent-cyan-glow), -1px 1px 0 var(--accent-pink-glow); }
+    75% { text-shadow: -1px -1px 0 var(--accent-cyan-glow), 1px 1px 0 var(--accent-pink-glow); }
+    100% { text-shadow: 1px 0 0 var(--accent-cyan-glow), -1px 0 0 var(--accent-pink-glow); }
+}
+
+/* --- Stile Pulsanti Menu --- */
+.menu-btn {
+    background: none;
+    border: none;
+    color: var(--primary-text);
+    font-family: 'Courier Prime', monospace;
+    font-size: 24px; /* Dimensione base, poi modificata per top bar */
+    text-transform: uppercase;
+    cursor: pointer;
+    padding: 10px;
+    position: relative;
+    transition: text-shadow 0.2s ease, transform 0.2s ease;
+}
+
+/* Pulsante Play (solo icona) */
+.menu-btn.icon-btn i {
+    font-size: 100px;
+    line-height: 1;
+    color: var(--accent-blue); /* Blu brillante per le icone principali */
+    text-shadow: 0 0 10px var(--accent-blue-glow); /* Glow blu */
+}
+
+/* Pulsanti con testo */
+.menu-btn span {
+    letter-spacing: 1px;
+}
+
+/* Cursore lampeggiante per i pulsanti con testo */
+.menu-buttons .menu-btn span::before {
+    content: '>$';
+    margin-right: 10px;
+    animation: blink 1.2s infinite step-end;
+    color: var(--accent-green); /* Verde brillante per il cursore */
+    text-shadow: 0 0 5px var(--accent-green-glow); /* Glow verde */
+}
+
+.menu-btn.icon-btn:hover i {
+    animation: none;
+    color: var(--highlight-text); /* Icona bianca pura su hover */
+    text-shadow: 0 0 20px var(--bright-glow), 0 0 30px var(--bright-glow); /* Glow bianco più intenso */
+}
+
+/* Stile per l'icona account separata, in alto a destra */
+/* Regola l'icona del profilo nel menu principale */
+#account-icon-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    /* Aggiungiamo un bordo e un glow bianco al contenitore dell'icona del profilo */
+    border: 2px solid var(--highlight-text); /* Bordo bianco */
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--white-glow); /* Glow bianco */
+    width: 38px; /* Ingrandita poco poco */
+    height: 38px; /* Ingrandita poco poco */
+    transition: all var(--transition-fast);
+}
+#account-icon-container.is-avatar-container {
+    width: 38px; /* Allineato all'ingrandimento */
+    height: 38px;
+    border-width: 3px;
+    border-color: var(--primary-text); /* Bordo blu quando è l'avatar utente */
+    box-shadow: 0 0 15px var(--bright-glow); /* Glow blu per l'avatar */
+}
+
+#account-icon-container.is-avatar-container:hover {
+    border-color: var(--highlight-text); /* Bordo bianco su hover */
+    box-shadow: 0 0 20px var(--bright-glow); /* Glow bianco più intenso su hover */
+}
+
+#account-icon-container #show-login-modal-btn i {
+    font-size: 26px; /* Icona leggermente più grande */
+    color: var(--primary-text); /* Testo bianco */
+    transition: all var(--transition-fast);
+    text-shadow: 0 0 8px var(--white-glow); /* Glow bianco */
+}
+
+#account-icon-container #show-login-modal-btn:hover i {
+    color: var(--highlight-text); /* Bianco puro su hover */
+    transform: scale(1.1);
+    text-shadow: 0 0 20px var(--bright-glow); /* Glow bianco più intenso */
+}
+
+/* 4. Logica di visualizzazione (gestita da JS) */
+#user-avatar-icon { display: none; }
+#show-login-modal-btn { display: none; }
+
+#donkey-speech-bubble {
+    position: absolute;
+    /* display: none; */ /* Lascia questo commentato, la visibilità sarà controllata da .visible */
+    
+    padding: 0; /* Rimuovi il padding per eliminare lo spazio della "bolla" */
+    background-color: transparent; /* Sfondo trasparente */
+    border: none; /* Rimuovi il bordo */
+    border-radius: 0; /* Rimuovi il raggio del bordo */
+
+    color: var(--highlight-text); /* Colore del testo */
+    font-family: 'Courier Prime', Courier, monospace, cursive;
+    font-size: 18px;
+    font-weight: normal;
+    text-shadow: 0 0 8px var(--white-glow); /* Glow bianco */
+    opacity: 0;
+    transition: opacity var(--transition-normal);
+    z-index: 1000;
+    pointer-events: none;
+    white-space: nowrap;
+    text-align: center;
+}
+#donkey-speech-bubble.visible {
+    display: block; /* <-- RI-ABILITA QUESTA RIGA */
+    opacity: 1; /* <-- RI-ABILITA QUESTA RIGA */
+}
+#donkey-speech-bubble::after {
+    content: none; 
+}
+
+/* --- Stile Terminale per il Main Menu --- */
+
+/* Keyframe per l'animazione del cursore lampeggiante */
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* Stile base per i pulsanti del menu */
+.menu-buttons .menu-btn {
+    background: none;
+    border: none;
+    box-shadow: none;
+    padding: 10px 15px;
+    margin: 5px 15px;
+    color: var(--primary-text); /* Testo bianco per i pulsanti */
+    font-family: 'Courier Prime', monospace;
+    font-size: 20px;
+    text-shadow: 0 0 8px var(--white-glow); /* Glow bianco */
+    transition: all var(--transition-normal);
+    position: relative;
+}
+/* Stile per icone e testo dentro ai pulsanti */
+.menu-buttons .menu-btn i,
+.menu-buttons .menu-btn span {
+    vertical-align: middle;
+}
+
+/* Stile per il pulsante "start" che ha solo l'icona */
+.menu-buttons .menu-btn.icon-btn i {
+    font-size: 80px;
+    line-height: 1;
+    color: var(--accent-blue); /* Blu brillante per le icone principali */
+    text-shadow: 0 0 10px var(--accent-blue-glow); /* Glow blu */
+}
+
+.menu-btn:hover {
+    animation: text-glitch var(--transition-fast) linear infinite; /* Glitch per i pulsanti testuali */
+    transform: scale(1.05);
+    color: var(--highlight-text); /* Testo bianco puro su hover */
+    text-shadow: 0 0 15px var(--bright-glow); /* Glow bianco intenso su hover */
+}
+
+/* --- Stile "Now Playing" --- */
+#now-playing-container {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    font-family: 'Courier Prime', Courier, monospace;
+    font-size: 14px;
+    color: var(--primary-text); /* Testo bianco */
+    background-color: var(--secondary-bg); /* Sfondo scuro */
+    padding: 3px 8px;
+    border-radius: 4px;
+    text-shadow: 0 0 5px var(--white-glow); /* Glow bianco */
+    z-index: 10;
+}
+
+#now-playing-container > span {
+    color: var(--secondary-text); /* Testo "NOW PLAYING:" e "by" in grigio */
+}
+
+#now-playing-container .track-title {
+    font-weight: bold;
+    color: var(--primary-text); /* Titolo e artista in bianco */
+}
+
+/* AZIONI 1.3 e 1.4: Stili per i nuovi overlay di guida al tocco */
+.touch-overlay-guide {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Pixelify Sans', cursive;
+    font-size: 2.5em;
+    color: rgba(255, 255, 255, 0.4); /* Bianco semi-trasparente */
+    text-shadow: 0 0 10px var(--accent-cyan-glow); /* Glow ciano/blu */
+    pointer-events: none;
+    user-select: none;
+    opacity: 1;
+    transition: opacity var(--transition-normal);
+    z-index: 805;
+}
+
+#touch-overlay-left {
+    left: 22%;
+    transform: translate(-50%, -50%);
+}
+
+#touch-overlay-right {
+    right: 22%;
+    transform: translate(50%, -50%);
+}
+
+/* --- Stile per i nuovi contenitori in alto --- */
+.top-bar-section {
+    position: fixed;
+    top: 20px; /* Margine dall'alto */
+    display: flex; 
+    align-items: center; /* Allinea verticalmente gli elementi */
+    z-index: 950; /* Assicurati che siano sopra il menu */
+    gap: 15px; /* Spazio tra gli elementi nella barra (generico) */
+    pointer-events: none; /* Rende la barra stessa trasparente ai click */
+}
+#top-bar-left {
+    left: 20px; /* Posiziona a sinistra */
+    flex-direction: row; /* Ora gli elementi sono in riga */
+    align-items: center; /* Allinea al centro verticalmente */
+    gap: 10px; /* Spazio tra i contatori e il nuovo gruppo di icone */
+}
+
+#top-bar-right {
+    right: 20px; /* Posiziona a destra */
+    flex-direction: column; /* Impila i pulsanti verticalmente */
+    justify-content: flex-start; /* Allinea in alto */
+    align-items: flex-end; /* Allinea a destra */
+    gap: 8px; /* Spazio tra i pulsanti verticali */
+}
+
+/* Rendi cliccabili i pulsanti e il contatore all'interno delle top bar */
+.top-bar-section .menu-btn,
+.top-bar-section #bit-counter,
+.top-bar-section #digital-fruit-counter,
+.top-bar-section #account-icon-container {
+    pointer-events: auto; /* Sovrascrive il pointer-events: none del genitore */
+}
+
+/* Stile per i pulsanti che devono avere solo l'icona e stare in alto */
+.top-bar-icon-btn {
+    font-size: 30px;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-text); /* Testo bianco */
+    text-shadow: 0 0 8px var(--white-glow); /* Glow bianco */
+    width: 50px; /* Larghezza fissa per pulsanti icona */
+    height: 50px; /* Altezza fissa per pulsanti icona */
+    border-radius: 50%; /* Rende i pulsanti tondi */
+}
+
+.top-bar-icon-btn i {
+    font-size: 1em; /* Mantenuto a 1em come richiesto */
+}
+/* Stile per i pulsanti che devono avere icona e testo e stare in alto */
+.top-bar-text-btn {
+    font-size: 0.9em;
+    padding: 6px 10px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+    color: var(--primary-text); /* Testo bianco */
+    text-shadow: 0 0 8px var(--white-glow); /* Glow bianco */
+}
+.top-bar-text-btn i {
+    font-size: 1.2em;
+}
+/* Cursore lampeggiante prima dei pulsanti testuali della top bar */
+.top-bar-text-btn span::before {
+    content: '>$';
+    margin-right: 5px;
+    animation: blink 1.2s infinite step-end;
+    color: var(--accent-pink); /* Verde brillante per il cursore */
+    text-shadow: 0 0 5px var(--accent-pink-glow);
+}
+
+/* Effetti Hover specifici per i pulsanti della top bar */
+.top-bar-icon-btn:hover i,
+.top-bar-text-btn:hover i {
+    animation: none;
+    color: var(--highlight-text); /* Bianco puro su hover */
+    text-shadow: 0 0 15px var(--bright-glow), 0 0 25px var(--bright-glow);
+}
+.top-bar-text-btn:hover span {
+    animation: text-glitch var(--transition-fast) linear infinite; /* Usa variabile di transizione */
+}
+#digital-fruit-counter {
+    background-color: var(--secondary-bg); /* Sfondo scuro */
+    color: var(--highlight-text); /* Giallo per il contatore */
+    padding: 8px 15px;
+    border-radius: 20px;
+    border: 2px solid var(--highlight-text); /* Bordo brillante */
+    box-shadow: 0 0 10px var(--bright-glow); /* Glow giallo */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 1.2em;
+    font-weight: 700;
+    pointer-events: auto;
+}
+
+#digital-fruit-counter i {
+    font-size: 1em;
+    color: var(--accent-pink); /* Icona gialla */
+}
+
+/* Stile per il contatore dei Bit - Rimosso il posizionamento fisso */
+#bit-counter {
+    background-color: var(--secondary-bg); /* Sfondo scuro */
+    color: var(--highlight-text); /* Giallo per il contatore */
+    padding: 8px 15px;
+    border-radius: 20px;
+    border: 2px solid var(--highlight-text); /* Bordo brillante */
+    box-shadow: 0 0 10px var(--bright-glow); /* Glow giallo */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 1.2em;
+    font-weight: 700;
+    pointer-events: auto;
+}
+
+#bit-counter i {
+    font-size: 1.4em;
+    color: var(--accent-pink); /* Icona gialla */
+}
+
+/* Stile per il pulsante Negozio (usa lo stile di .menu-btn già esistente) */
+#shop-btn {
+    /* Eredita già gli stili da .menu-btn, perfetto! */
+}
+
+/* Aggiungi questa nuova regola per il loaderCanvas */
+#loaderCanvas {
+    position: absolute; /* Posizionalo assolutamente per fungere da sfondo */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0; /* Mettilo dietro gli altri elementi del loader */
+    
+    
+    
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-crisp-edges;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
+
+#loader-content-container { /* Contenitore per barra e log */
+    position: relative; /* Ora è un elemento relativo all'interno del flex di #terminal-container */
+    width: 100%; /* Occupa la larghezza disponibile del padre con padding */
+    max-width: 800px; /* Limite di larghezza per il contenuto */
+    height: auto; /* L'altezza si adatta al contenuto */
+    display: flex; /* Per impilare barra e log */
+    flex-direction: column;
+    align-items: flex-start; /* Allinea a sinistra */
+    z-index: 1; /* Sopra il canvas */
+    pointer-events: none; /* Permette ai click di passare attraverso, tranne per i figli che hanno auto */
+}
+
+#codedash-title {
+    font-family: 'Pixelify Sans', cursive; /* Usa Pixelify Sans */
+    font-size: 6em; /* Regola la dimensione a tuo piacimento */
+    font-weight: bold;
+    text-align: center;
+    color: #ffffff; /* Colore base del testo */
+    position: absolute; /* Posizionalo in alto */
+    top: 10%; /* Regola questa percentuale per spostarlo più in alto o in basso */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100; /* Assicurati che sia sopra altri elementi */
+    
+    /* Effetto Glow */
+    text-shadow: 
+        0 0 5px #0ce6f2,
+        0 0 10px #0098db,
+        0 0 15px #1e579c,
+        0 0 20px #203562,
+        0 0 25px #252446,
+        0 0 30px #201533;
+    animation: glowAnimation 1.5s infinite alternate; /* Applica l'animazione */
+}
+
+/* Animazione Glow */
+@keyframes glowAnimation {
+    from {
+        text-shadow: 
+            0 0 5px #0ce6f2,
+            0 0 10px #0098db,
+            0 0 15px #1e579c,
+            0 0 20px #203562,
+            0 0 25px #252446,
+            0 0 30px #201533;
+    }
+    to {
+        text-shadow: 
+            0 0 10px #0ce6f2,
+            0 0 20px #0098db,
+            0 0 30px #1e579c,
+            0 0 40px #203562,
+            0 0 50px #252446,
+            0 0 60px #201533,
+            0 0 70px #0ce6f2; /* Aumenta l'intensità del glow */
+    }
+}
+
+/* Assicurati che la schermata di caricamento abbia una posizione relativa o fissa/assoluta */
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--primary-bg); /* Sfondo scuro per far risaltare il glow */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Stili per il display della missione in-game */
+/* Stili per il display della missione in-game */
+#mission-display {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.4);
+    color: var(--primary-text); /* Testo chiaro */
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.9em;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 90%;
+    box-sizing: border-box;
+    z-index: 810;
+    display: none;
+    box-shadow: 0 0 10px var(--white-glow); /* Effetto glow bianco */
+}
+
+#mission-display .mission-title {
+    font-weight: bold;
+    color: var(--highlight-text); /* Ciano brillante per il titolo della missione */
+    margin-right: 5px;
+}
+
+#mission-display .mission-desc {
+    color: var(--primary-text); /* Testo bianco per la descrizione */
+}
+
+#mission-display .mission-progress {
+    font-weight: bold;
+    color: var(--accent-pink); /* Viola brillante per il progresso */
+    margin-left: 5px;
+}
+
+/* Regolazioni responsive per schermi più piccoli */
+@media (max-width: 480px) {
+    #mission-display {
+        font-size: 0.8em;
+        padding: 5px 10px;
+        top: 5px;
+    }
+}
+
+/* Regolazioni per il layout landscape in fullscreen se necessario */
+body.game-fullscreen-active.game-fullscreen-landscape #mission-display {
+    top: 5px; /* Regola la posizione in modalità fullscreen landscape */
+    font-size: 0.8em;
+}
+
+/* Stili per il pulsante di Pausa in-game */
+/* Stili per il pulsante di Pausa in-game */
+#pauseButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: var(--tertiary-bg); /* Sfondo scuro */
+    color: var(--primary-text); /* Icona bianca */
+    border: 2px solid var(--primary-text); /* Bordo brillante */
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color var(--transition-normal), border-color var(--transition-normal), color var(--transition-normal);
+    box-shadow: 0 2px 10px var(--white-glow); /* Glow bianco */
+    z-index: 820;
+}
+
+#pauseButton i {
+    font-size: 1.5em;
+    vertical-align: middle;
+}
+
+#pauseButton:hover {
+    background-color: var(--primary-bg); /* Sfondo più scuro su hover */
+    border-color: var(--highlight-text); /* Ciano brillante su hover */
+    color: var(--highlight-text); /* Icona ciano brillante */
+}
+
+/* Stili per la Modale di Pausa */
+.pause-view .modal-content {
+    max-width: 500px;
+    background-color: rgba(0, 0, 0, 0.95);
+    border: 3px solid var(--accent-red); /* Bordo rosso */
+    box-shadow: 0 0 30px var(--accent-red-glow); /* Glow rosso */
+}
+
+.pause-view h2 {
+    color: var(--accent-pink); /* Rosa brillante per il titolo */
+    font-size: 2.2em;
+    margin-bottom: 30px;
+    text-shadow: 0 0 10px var(--accent-pink-glow); /* Glow rosa */
+}
+
+.pause-view .pause-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Riutilizzo degli stili .game-over-button per i pulsanti di pausa, con override per i colori */
+.pause-resume-btn {
+    background-color: var(--accent-green); /* Verde brillante per Resume */
+    border-color: var(--accent-green);
+    color: var(--primary-bg);
+}
+.pause-resume-btn:hover {
+    background-color: var(--accent-green-glow);
+    border-color: var(--accent-green-glow);
+    box-shadow: 0 5px 20px var(--accent-green-glow), 0 0 15px var(--accent-green-glow);
+}
+
+.pause-restart-btn {
+    background-color: var(--accent-orange); /* Arancione per Restart */
+    border-color: var(--accent-orange);
+    color: var(--primary-bg);
+}
+.pause-restart-btn:hover {
+    background-color: var(--accent-orange-glow);
+    border-color: var(--accent-orange-glow);
+    box-shadow: 0 5px 20px var(--accent-orange-glow), 0 0 15px var(--accent-orange-glow);
+}
+
+.pause-main-menu-btn {
+    background-color: var(--accent-cyan); /* Ciano brillante per Main Menu */
+    border-color: var(--accent-cyan);
+    color: var(--primary-bg);
+}
+.pause-main-menu-btn:hover {
+    background-color: var(--accent-cyan-glow);
+    border-color: var(--accent-cyan-glow);
+    box-shadow: 0 5px 20px var(--accent-cyan-glow), 0 0 15px var(--accent-cyan-glow);
+}
+
+/* Regolazioni Responsive per schermi piccoli (pulsante pausa) */
+@media (max-width: 480px) {
+    #pauseButton {
+        width: 35px;
+        height: 35px;
+        top: 5px;
+        right: 5px;
+    }
+    #pauseButton i {
+        font-size: 1.2em;
+    }
+}
+
+/* ------------------------------------------- */
+/* Media Queries per Tablet (769px - 1024px) */
+/* ------------------------------------------- */
+@media (min-width: 769px) and (max-width: 1024px) {
+    body, html, #app-root, #terminal-container {
+        font-size: 18px;
+    }
+    #gameCanvas {
+        max-width: 950px;
+        max-height: 550px;
+    }
+    #loader-content-container {
+        max-width: 700px;
+        padding: 30px;
+    }
+    #terminal-log .keyword-highlight, #terminal-log .keyword-error {
+        font-size: 1.2em;
+    }
+    .progress-label {
+        font-size: 0.9em;
+    }
+    .ascii-progress-bar {
+        font-size: 1.2em;
+    }
+    #scoreInputContainerDonkey {
+        padding: 40px;
+        max-width: 600px;
+    }
+    #scoreInputContainerDonkey p,
+    #scoreInputContainerDonkey label {
+        font-size: 1.4em;
+    }
+    #scoreInputContainerDonkey #finalScoreDisplayDonkey {
+        font-size: 2.5em;
+    }
+    #scoreInputContainerDonkey input[type='text'] {
+        font-size: 1.2em;
+        padding: 12px 20px;
+    }
+    #scoreInputContainerDonkey .score-buttons {
+        gap: 20px;
+    }
+    .game-over-button {
+        padding: 15px 30px;
+        font-size: 1.1em;
+        gap: 10px;
+        min-width: 160px;
+    }
+    .game-over-button .material-symbols-rounded {
+        font-size: 1.5em;
+    }
+    .mobile-start-button {
+        padding: 25px 50px;
+        font-size: 1.8em;
+    }
+    .touch-overlay-guide {
+        font-size: 3em;
+    }
+}
+
+/* Media Query per schermi più grandi dei tablet, per una maggiore scalabilità del canvas se necessario */
+@media (min-width: 1025px) {
+    #gameCanvas {
+        max-width: 1000px;
+        max-height: 600px;
+    }
+}
+
+/* ------------------------------------------------ */
+/* Media Query per Schermi Molto Piccoli (Max 420px) */
+/* Risolve sovrapposizioni su dispositivi stretti come Galaxy S22 */
+/* ------------------------------------------------ */
+@media (max-width: 420px) {
+    .top-bar-section {
+        gap: 3px;
+    }
+    #top-bar-left {
+        left: 5px;
+    }
+    #top-bar-right {
+        right: 5px;
+    }
+    #bit-counter {
+        padding: 1px 2px;
+        font-size: 0.6em;
+        gap: 2px;
+        border-radius: 10px;
+    }
+    #bit-counter i {
+        font-size: 0.7em;
+    }
+    #account-icon-container #show-login-modal-btn i {
+        font-size: 24px;
+    }
+    .top-bar-icon-btn {
+        width: 18px; /* Riduci la larghezza */
+        height: 18px; /* Riduci l'altezza */
+        font-size: 18px; /* Riduci la dimensione del font */
+        padding: 3px;
+    }
+    .top-bar-icon-btn i {
+        font-size: 1em; /* Mantenuto a 1em */
+    }
+    .top-bar-text-btn {
+        font-size: 0.65em;
+        padding: 2px 5px;
+        gap: 2px;
+    }
+    .top-bar-text-btn span::before {
+        margin-right: 3px;
+    }
+}
+
+#rain-status-indicator {
+    position: fixed; /* O 'absolute' se il padre è app-root e app-root è position: relative */
+    bottom: 20px; /* Mantieni il posizionamento originale */
+    right: 20px; /* O left: 20px se preferisci a sinistra, vicino a "now playing" */
+    font-family: "Courier Prime", monospace; /* Ensures consistent terminal look */
+    font-size: 14px;
+    color: white; /* Default color for the "isRaining = " part */
+    white-space: pre; /* Important for preserving spaces and potential cursor */
+    z-index: 950; /* Un z-index alto per essere sopra il menu principale e il canvas */
+    pointer-events: none; /* Non blocca i click */
+    background-color: rgba(
+        0,
+        0,
+        0,
+        0.5
+    ); /* Aggiungi un leggero sfondo per leggibilità */
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+/* Styles for the dynamic true/false text */
+.rain-status-true {
+    color: #ff252b; /* Bright red for 'true' as requested */
+}
+
+.rain-status-false {
+    color: #a8141d; /* Dull red for 'false' as requested */
+}
+
+/* Stili per il nuovo gruppo di icone (Skins, Companions, Powerups) */
+.new-menu-icons-group {
+    display: flex;
+    flex-direction: row; /* Ora le icone sono in riga */
+    gap: 8px; /* Spazio tra le nuove icone */
+    margin-top: 0; /* Rimuovi il margine superiore se non più necessario */
+    align-items: center; /* Allinea al centro verticalmente */
+}
+
+/* Stili per la navigazione a schede all'interno delle modali */
+.category-nav {
+    display: flex;
+    justify-content: center; /* Centra i pulsanti */
+    margin-bottom: 25px;
+    border-bottom: 1px solid var(--border-color);
+    overflow-x: auto; /* Permette lo scroll orizzontale */
+    white-space: nowrap; /* Impedisce il wrap delle voci */
+    padding-bottom: 10px; /* Spazio per l'indicatore attivo */
+    -webkit-overflow-scrolling: touch; /* Migliora lo scrolling su iOS */
+    scrollbar-width: none; /* Nasconde la scrollbar per Firefox */
+    -ms-overflow-style: none;  /* Nasconde la scrollbar per IE/Edge */
+}
+
+/* Nasconde la scrollbar per Chrome, Safari e Opera */
+.category-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.category-btn {
+    flex-shrink: 0; /* Impedisce ai pulsanti di restringersi */
+    padding: 10px 15px;
+    background-color: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    color: var(--primary-text);
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+}
+
+.category-btn.active {
+    color: var(--accent-white);
+    border-bottom-color: var(--accent-white);
+}
+
+.category-btn:not(.active):hover {
+    color: var(--accent-cyan);
+}
+
+/* Stile per le griglie degli item all'interno delle modali */
+.item-grid-container {
+    max-height: 50vh; /* Altezza massima per lo scroll interno */
+    overflow-y: auto; /* Abilita lo scroll verticale se necessario */
+    padding-right: 10px; /* Spazio per la scrollbar */
+}
+
+.item-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* Responsive grid */
+    gap: 20px;
+    justify-content: center;
+    padding: 10px;
+}
+
+.item-card {
+    background-color: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.item-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px var(--accent-blue-glow);
+    border-color: var(--accent-blue);
+}
+
+.item-card.default-item-card {
+    border-color: var(--accent-green);
+    box-shadow: 0 2px 8px var(--accent-green-glow);
+}
+
+.item-card .item-preview {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    overflow: hidden; /* Per le GIF di anteprima */
+}
+
+.item-card .item-preview img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    image-rendering: pixelated; /* Per mantenere l'aspetto pixel-art */
+}
+
+.item-card .item-preview i {
+    font-size: 3em;
+    color: var(--accent-cyan);
+}
+
+.item-card .item-name {
+    font-size: 0.9em;
+    font-weight: bold;
+    color: var(--primary-text);
+    margin-bottom: 10px;
+    white-space: normal; /* Permette al testo di andare a capo */
+}
+
+.item-card .equip-button {
+    background-color: var(--accent-green);
+    color: var(--primary-bg);
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.85em;
+    transition: background-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.item-card .equip-button:hover:not(:disabled) {
+    background-color: var(--accent-green-glow);
+    box-shadow: 0 0 8px var(--accent-green-glow);
+}
+
+.item-card .equip-button.equipped {
+    background-color: var(--accent-red);
+    cursor: default;
+}
+
+.item-card .equip-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+
+/* Media Queries per Responsiveness */
+@media (max-width: 768px) {
+    #top-bar-left {
+        flex-direction: row; /* Mantiene gli elementi in riga su mobile */
+        align-items: center; /* Allinea al centro */
+        flex-wrap: wrap; /* Permette il wrapping se lo spazio è limitato */
+    }
+
+    #top-bar-right {
+        flex-direction: column; /* Mantiene i pulsanti verticali su mobile */
+        align-items: flex-end; /* Allinea a destra */
+        gap: 5px; /* Riduci il gap per schermi più piccoli */
+    }
+
+    .new-menu-icons-group {
+        flex-direction: row; /* Le nuove icone rimangono in riga su mobile */
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        width: auto; /* Adatta la larghezza al contenuto */
+        margin-top: 0; /* Rimuovi il margine superiore se non più necessario */
+    }
+
+    .top-bar-icon-btn {
+        width: 45px; /* Riduci leggermente le dimensioni su mobile */
+        height: 45px;
+    }
+
+    .menu-btn i {
+        font-size: 1.1em; /* Riduci dimensione icone su mobile */
+    }
+
+
+    
+
+    .bottom-corner-icon-btn {
+        width: 40px;
+        height: 40px;
+    }
+
+    
+    
+    .category-btn {
+        font-size: 0.9em; /* Riduci dimensione font per le schede su mobile */
+        padding: 8px 10px;
+    }
+
+    .item-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* Riduci dimensione minima card */
+        gap: 15px;
+    }
+
+    .item-card .item-preview {
+        width: 60px;
+        height: 60px;
+    }
+    .item-card .item-preview i {
+        font-size: 2.5em;
+    }
+    .item-card .item-name {
+        font-size: 0.8em;
+    }
+    .item-card .equip-button {
+        padding: 6px 10px;
+        font-size: 0.8em;
+    }
+}
+
+@media (max-width: 480px) {
+    #top-bar-left {
+        gap: 5px;
+    }
+    .new-menu-icons-group {
+        gap: 0px;
+    }
+    .top-bar-icon-btn {
+        width: 30px;
+        height: 40px;
+    }
+    .menu-btn i {
+        font-size: 1.1em;
+    }
+}

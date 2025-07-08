@@ -1,0 +1,285 @@
+/* Stili per il contenitore principale del negozio */
+#shop-container {
+    width: 100%;
+    height: calc(100% - 80px); /* Sottrae lo spazio per titolo e padding */
+    overflow-y: auto; /* Abilita lo scrolling verticale se gli oggetti non ci stanno */
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+/* Regolazioni per la griglia per adattarsi alla nuova dimensione delle card */
+.shop-items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Min-width leggermente aumentato */
+    gap: 1.8rem; /* Aumentato lo spazio tra le card */
+    padding: 1rem;
+}
+
+/* Stile per la singola card di un oggetto */
+.shop-item-card {
+    background-color: rgba(0, 0, 0, 0.4); /* Sfondo leggermente più scuro per contrasto */
+    border: 2px solid var(--secondary-text); /* Bordo primario */
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    box-shadow: 0 0 15px var(--bright-glow); /* Ombra più pronunciata */
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    position: relative; /* Necessario per effetti aggiuntivi se voluti */
+    overflow: hidden; /* Assicura che i bordi glow non escano */
+}
+
+.shop-item-card::before {
+    /* Effetto 'glitch' o bordo interno sottile */
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 1px dashed var(--secondary-text); /* Bordo interno tratteggiato */
+    border-radius: 8px;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.shop-item-card:hover {
+    transform: translateY(-7px) scale(1.02); /* Effetto più evidente al passaggio del mouse */
+    box-shadow: 0 0 25px var(--bright-glow); /* Glow più intenso */
+    border-color: var(--primary-text); /* Cambia colore del bordo al hover */
+}
+
+
+/* Anteprima dell'oggetto */
+.item-preview {
+    width: 100%;
+    height: 120px; /* Modificato da 120px a 240px per renderla il doppio */
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 4px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-style: italic;
+    color: #aaa;
+    border: 1px solid var(--secondary-text);
+    overflow: hidden;
+    position: relative;
+}
+.item-preview img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    image-rendering: pixelated;
+    filter: brightness(1.1); /* Leggera luminosità per far risaltare */
+}
+
+/* Nome dell'oggetto */
+.item-name {
+    font-family: 'Pixelify Sans', cursive;
+    font-size: 1.05rem; /* Leggermente più grande */
+    color: var(--accent-pink);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-shadow: 0 0 5px var(--accent-pink-glow); /* Ombra al testo per farlo risaltare */
+}
+
+/* Descrizione */
+.item-description {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.9rem; /* Leggermente più grande */
+    color: var(--highlight-text); /* Colore più chiaro per migliore leggibilità */
+    flex-grow: 1;
+    margin-bottom: 15px;
+    line-height: 1.4; /* Migliora la leggibilità su più righe */
+}
+
+/* Riquadro del prezzo */
+.item-price-tag {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: 'Pixelify Sans', cursive;
+    font-size: 1.2rem; /* Più grande e più leggibile */
+    color: var(--accent-purple);
+    margin-bottom: 15px;
+    text-shadow: 0 0 8px var(--accent-purple-glow); /* Effetto glow sul prezzo */
+}
+/* Pulsante di acquisto */
+.buy-button {
+    background-color: var(--primary-text);
+    color: #282a36;
+    font-family: 'Pixelify Sans', cursive;
+    border: none;
+    padding: 14px; /* Padding leggermente aumentato */
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    box-shadow: 0 0 10px rgba(74, 246, 38, 0.4);
+    text-shadow: 0 0 5px rgba(40, 42, 54, 0.3); /* Ombra interna per testo */
+}
+
+.buy-button:hover {
+    background-color: var(--highlight-text); /* Cambia colore al hover */
+    box-shadow: 0 0 15px var(--bright-glow);
+}
+
+.buy-button.owned {
+    background-color: #555;
+    color: #aaa;
+    cursor: not-allowed;
+    box-shadow: none; /* Rimuovi glow se già posseduto */
+    text-shadow: none;
+}
+
+.shop-item-card .item-preview {
+    /* Assicurati che ci sia spazio e che il contenuto sia centrato */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%; /* O una dimensione fissa */
+    height: 100px; /* Altezza sufficiente per le tue GIF/immagini */
+    overflow: hidden; /* Nasconde ciò che eccede */
+    /* Altri stili di bordo/sfondo se necessari */
+}
+
+.shop-item-card .item-shop-preview-asset {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* Adatta l'immagine/GIF all'area senza tagliarla */
+    image-rendering: -webkit-optimize-contrast; /* Per alcuni browser */
+    image-rendering: crisp-edges; /* Per i browser moderni */
+    image-rendering: pixelated; /* Per mantenere l'effetto pixel */
+}
+
+/* Potresti voler regolare la dimensione dell'icona identificativa */
+.shop-item-card .item-name .ph-bold {
+    font-size: 1.3em; /* Regola la dimensione dell'icona identificativa */
+    margin-right: 5px;
+}
+/* Stili per la nuova navbar delle categorie del negozio */
+#shop-categories-nav {
+    display: flex; /* Rende i pulsanti orizzontali */
+    justify-content: center; /* Centra i pulsanti */
+    flex-wrap: nowrap; /* Impedisce ai pulsanti di andare a capo */
+    gap: 10px; /* Spazio tra i pulsanti */
+    margin-bottom: 20px; /* Spazio sotto la navbar */
+    padding: 10px;
+    
+    -webkit-overflow-scrolling: touch; /* Scrolling fluido su iOS */
+    scrollbar-width: none; /* Nasconde la scrollbar per Firefox */
+    -ms-overflow-style: none; /* Nasconde la scrollbar per IE/Edge */
+}
+
+/* Nasconde la scrollbar per browser basati su WebKit (Chrome, Safari) */
+#shop-categories-nav::-webkit-scrollbar {
+    display: none;
+}
+
+/* Stili per i pulsanti di categoria */
+.shop-category-btn {
+    background-color: rgba(var(--secondary-bg-rgb), 0.4); /* Sfondo scuro semi-trasparente */
+    color: var(--primary-text); /* Testo bianco */
+    border: 1px solid var(--highlight-text); /* Bordo viola brillante */
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Pixelify Sans', cursive;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    transition: background-color var(--transition-normal), border-color var(--transition-normal), box-shadow var(--transition-normal);
+    text-transform: uppercase;
+}
+
+.shop-category-btn:hover {
+    background-color: rgba(var(--secondary-bg-rgb), 0.6); /* Sfondo più scuro su hover */
+    border-color: var(--highlight-text); /* Bordo rosa brillante */
+    box-shadow: 0 0 10px var(--white-glow); /* Glow rosa */
+}
+.shop-category-btn.active {
+    background-color: var(--highlight-text); /* Colore più acceso per la categoria attiva */
+    color: var(--secondary-bg); /* Testo scuro sul pulsante attivo */
+    border-color: var(--highlight-text);
+    box-shadow: 0 0 15px var(--bright-glow); /* Effetto glow */
+}
+
+/* Regolazione per schermi più piccoli */
+@media (max-width: 768px) {
+    .shop-category-btn {
+        font-size: 0.7rem;
+        padding: 6px 12px;
+    }
+    #shop-categories-nav {
+        gap: 8px;
+        padding: 8px;
+    }
+}
+
+/* ------------------------------------------- */
+/* Media Queries per Tablet (769px - 1024px) */
+/* ------------------------------------------- */
+@media (min-width: 769px) and (max-width: 1024px) {
+    /* Regolazioni per il contenitore modale dello shop */
+    .modal-content.landscape-modal {
+        max-width: 85%; /* Occupa più larghezza sui tablet */
+        padding: 40px; /* Aumenta il padding interno */
+    }
+
+    /* Regolazioni per il titolo della modale */
+    #shopModal h2 {
+        font-size: 2em; /* Titolo leggermente più grande */
+        margin-bottom: 30px;
+    }
+
+    /* Regolazioni per la navbar delle categorie */
+    #shop-categories-nav {
+        gap: 15px; /* Spazio maggiore tra i pulsanti di categoria */
+        padding: 15px 0; /* Padding verticale leggermente aumentato */
+    }
+
+    .shop-category-btn {
+        font-size: 0.9em; /* Font leggermente più grande */
+        padding: 10px 20px;
+    }
+
+    /* Regolazioni per la griglia degli oggetti */
+    .shop-items-grid {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* 3 colonne su tablet */
+        gap: 2rem; /* Aumenta il gap tra le card */
+        padding: 1.5rem;
+    }
+
+    /* Regolazioni per la singola card */
+    .shop-item-card {
+        padding: 20px;
+    }
+
+    .item-preview {
+        height: 260px; /* Anteprima leggermente più grande per tablet */
+        margin-bottom: 20px;
+    }
+
+    .item-name {
+        font-size: 1.15rem; /* Nome oggetto leggermente più grande */
+    }
+
+    .item-description {
+        font-size: 0.95rem; /* Descrizione leggermente più grande */
+    }
+
+    .item-price-tag {
+        font-size: 1.3rem; /* Prezzo leggermente più grande */
+    }
+
+    .buy-button {
+        padding: 16px; /* Pulsante acquista più grande */
+        font-size: 0.95rem;
+    }
+}

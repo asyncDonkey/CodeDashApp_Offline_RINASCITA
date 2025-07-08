@@ -1,0 +1,265 @@
+/* Stili specifici per la modale dei Crediti */
+.modal-content.credits-view {
+    background-color: var(--tertiary-bg); /* Sfondo principale dalla nuova palette */
+    border: 2px solid var(--primary-text); /* Bordo con colore tema dalla nuova palette */
+    box-shadow: 0 0 25px var(--white-glow); /* Effetto glow viola dalla nuova palette */
+    color: var(--primary-text); /* Colore del testo dalla nuova palette */
+    font-family: 'Courier Prime', monospace; /* Font principale */
+    border-radius: 10px;
+    padding: 35px;
+    position: relative;
+    max-width: 700px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+/* Titolo della modale */
+#creditsModal h2 {
+    color: var(--primary-text); /* Colore del titolo dalla nuova palette */
+    text-align: center;
+    margin-bottom: 30px;
+    font-family: 'Pixelify Sans', cursive;
+    font-size: 1.8em;
+    text-shadow: 0 0 12px var(--bright-glow); /* Effetto glow sul titolo dalla nuova palette */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+#creditsModal h2 i {
+    font-size: 1.2em;
+}
+
+/* Pulsante di chiusura (consistente con altre modali) */
+#creditsModal .close-button {
+    color: var(--secondary-text); /* Rosso brillante dalla nuova palette */
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 30px;
+    cursor: pointer;
+    transition: color var(--transition-normal), transform var(--transition-normal); /* Uso variabile di transizione */
+    line-height: 1;
+}
+
+#creditsModal .close-button:hover,
+#creditsModal .close-button:focus {
+    color: var(--highlight-text); /* Manteniamo lo stesso rosso brillante */
+    transform: scale(1.2);
+}
+
+/* Contenitore principale dei crediti */
+.credits-content {
+    line-height: 1.6;
+    font-size: 0.95em;
+    padding: 0 10px;
+}
+
+.credits-content p {
+    margin-bottom: 15px;
+}
+
+/* Sottotitoli principali delle sezioni */
+.credits-content h3 {
+    color: var(--accent-pink); /* Verde brillante dalla nuova palette */
+    font-family: 'Pixelify Sans', cursive;
+    font-size: 1.3em;
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    text-shadow: 0 0 8px var(--accent-pink-glow); /* Glow verde dalla nuova palette */
+}
+
+/* Sezioni specifiche dei crediti (Tecnologie, Asset, ecc.) */
+.credits-section {
+    background-color: rgba(var(--primary-bg-rgb), 0.2); /* Sfondo semi-trasparente dalla nuova palette */
+    border: 1px dashed var(--secondary-text); /* Bordo grigio tratteggiato dalla nuova palette */
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 25px;
+}
+
+.credits-section h4 {
+    color: var(--highlight-text); /* Ciano brillante dalla nuova palette */
+    font-family: 'Pixelify Sans', cursive;
+    font-size: 1.1em;
+    margin-top: 0;
+    margin-bottom: 15px;
+    border-bottom: 1px dotted rgba(var(--secondary-text), 0.4); /* Bordo punteggiato ciano dalla nuova palette */
+    padding-bottom: 8px;
+    text-shadow: 0 0 5px var(--bright-glow); /* Glow ciano dalla nuova palette */
+}
+
+.credits-section ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.credits-section li {
+    margin-bottom: 8px;
+    position: relative;
+    padding-left: 20px;
+}
+
+.credits-section li::before {
+    content: '>>';
+    color: var(--accent-yellow); /* Giallo brillante dalla nuova palette */
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+/* Stile per i link all'interno dei crediti */
+.credits-section a {
+    color: var(--accent-blue); /* Arancione brillante dalla nuova palette */
+    text-decoration: none;
+    transition: color var(--transition-normal), text-shadow var(--transition-normal); /* Uso variabile di transizione */
+}
+
+.credits-section a:hover {
+    color: var(--accent-blue); /* Manteniamo lo stesso arancione brillante */
+    text-decoration: underline;
+    text-shadow: 0 0 8px var(--accent-blue-glow); /* Glow arancione dalla nuova palette */
+}
+
+/* Sezione ringraziamenti speciali */
+.credits-special-thanks {
+    text-align: center;
+    margin-top: 30px;
+    padding: 20px;
+    border-top: 1px dashed var(--secondary-text); /* Bordo grigio tratteggiato dalla nuova palette */
+    font-size: 1em;
+    color: var(--primary-text); /* Colore del testo dalla nuova palette */
+}
+
+.credits-special-thanks h4 {
+    color: var(--accent-purple); /* Viola brillante dalla nuova palette */
+    font-family: 'Pixelify Sans', cursive;
+    font-size: 1.1em;
+    margin-bottom: 15px;
+    text-shadow: 0 0 8px var(--accent-purple-glow); /* Glow viola dalla nuova palette */
+}
+
+/* Stili per le scrollbar (come le altre modali) */
+.modal-content.credits-view::-webkit-scrollbar {
+    width: 10px;
+}
+
+.modal-content.credits-view::-webkit-scrollbar-track {
+    background: var(--tertiary-bg); /* Sfondo scuro dalla nuova palette */
+    border-radius: 10px;
+}
+
+.modal-content.credits-view::-webkit-scrollbar-thumb {
+    background-color: var(--accent-orange); /* Arancione brillante dalla nuova palette */
+    border-radius: 10px;
+    border: 2px solid var(--tertiary-bg); /* Bordo scuro dalla nuova palette */
+}
+
+.modal-content.credits-view::-webkit-scrollbar-thumb:hover {
+    background-color: var(--accent-orange); /* Manteniamo lo stesso arancione brillante */
+}
+
+/* Media Queries per la reattività */
+@media (max-width: 768px) {
+    .modal-content.credits-view {
+        padding: 25px;
+    }
+
+    #creditsModal h2 {
+        font-size: 1.5em;
+        margin-bottom: 25px;
+        gap: 10px;
+    }
+
+    .credits-content {
+        font-size: 0.9em;
+    }
+
+    .credits-content h3 {
+        font-size: 1.1em;
+        margin-top: 25px;
+        margin-bottom: 15px;
+    }
+
+    .credits-section {
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+
+    .credits-section h4 {
+        font-size: 1em;
+        margin-bottom: 10px;
+        padding-bottom: 5px;
+    }
+}
+
+/* ------------------------------------------- */
+/* Media Queries per Tablet (769px - 1024px) */
+/* ------------------------------------------- */
+@media (min-width: 769px) and (max-width: 1024px) {
+    /* Regolazioni per il contenitore modale dei Crediti */
+    .modal-content.credits-view {
+        max-width: 80%;
+        padding: 45px;
+    }
+
+    /* Regolazioni per il titolo principale */
+    #creditsModal h2 {
+        font-size: 2em;
+        margin-bottom: 35px;
+        gap: 20px;
+    }
+
+    #creditsModal h2 i {
+        font-size: 1.3em;
+    }
+
+    /* Contenitore principale dei crediti */
+    .credits-content {
+        font-size: 1em;
+        padding: 0 15px;
+    }
+
+    .credits-content p {
+        margin-bottom: 18px;
+    }
+
+    /* Sottotitoli principali delle sezioni */
+    .credits-content h3 {
+        font-size: 1.4em;
+        margin-top: 35px;
+        margin-bottom: 25px;
+    }
+
+    /* Sezioni specifiche dei crediti */
+    .credits-section {
+        padding: 25px;
+        margin-bottom: 30px;
+    }
+
+    .credits-section h4 {
+        font-size: 1.2em;
+        margin-bottom: 18px;
+        padding-bottom: 10px;
+    }
+
+    .credits-section li {
+        margin-bottom: 10px;
+        font-size: 1.05em;
+    }
+
+    /* Sezione ringraziamenti speciali */
+    .credits-special-thanks {
+        margin-top: 35px;
+        padding: 25px;
+    }
+
+    .credits-special-thanks h4 {
+        font-size: 1.2em;
+        margin-bottom: 18px;
+    }
+}
