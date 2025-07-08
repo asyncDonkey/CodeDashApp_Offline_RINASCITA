@@ -1,7 +1,7 @@
 // www/js/loader.js
 
 import { setupGameEngine, preloadGameAssets } from './donkeyRunner.js';
-import { loadSound, playSound, audioContext } from './audioManager.js';
+import * as AudioManager from './audioManager.js'; // Importa AudioManager come modulo
 import { showToast } from './toastNotifications.js';
 
 // Rimosso l'import di Firebase Firestore, non più necessario per il gioco offline.
@@ -23,13 +23,12 @@ const glitchpediaBtn = document.getElementById('glitchpedia-btn');
 // NUOVO: Riferimento al canvas del loader
 const loaderCanvas = document.getElementById('loaderCanvas'); // Assicurati che l'ID corrisponda a index.html
 let loaderCtx = null;
-let loaderGround = null;
+let loaderGround = null; // This will remain null as LoaderGround class is removed
 
 let loaderAnimationId = null;
 
-// NUOVO: Array per le particelle di sfondo del loader
-let loaderBackgroundParticles = [];
-// NUOVO: Variabile per il calcolo del deltaTime
+// loaderBackgroundParticles and related variables are no longer needed, keeping for clarity of removal
+// let loaderBackgroundParticles = []; 
 let lastLoaderFrameTime = 0;
 
 // NUOVO: Riferimenti DOM per i nuovi contenitori della top bar
@@ -53,6 +52,8 @@ const loadImage = (src) => {
    });
 };
 
+// REMOVED: LoaderGround class is no longer needed
+/*
 // =================================================================================
 // CLASSE LoaderGround (Adattata da MenuGround in menuAnimation.js)
 // Sarà utilizzata anche per il loader, quindi la rendiamo generica
@@ -88,12 +89,13 @@ class LoaderGround {
        this.y = this.canvas.height * this.GROUND_LEVEL_PERCENT;
    }
 }
+*/
 
 async function preloadLoaderSounds() {
    console.log('Pre-caricamento suoni del loader...');
    try {
        // Only preload success_bleep as per new requirements
-       await loadSound('success_bleep', 'audio/success_bleep.ogg');
+       await AudioManager.loadSound('success_bleep', 'audio/success_bleep.ogg');
        console.log('Suono del loader caricato con successo.');
    } catch (error) {
        console.warn('Uno o più suoni del loader non sono stati caricati:', error);
@@ -110,6 +112,8 @@ function setupRenderingContextForLoader(context) {
     console.log('Image smoothing disabled for loader context.');
 }
 
+// REMOVED: initializeLoaderBackgroundParticles function is no longer needed
+/*
 // NUOVO: Funzione per inizializzare le particelle di sfondo del loader (adattata da menuAnimation.js)
 function initializeLoaderBackgroundParticles() {
     loaderBackgroundParticles = [];
@@ -134,7 +138,10 @@ function initializeLoaderBackgroundParticles() {
         }
     });
 }
+*/
 
+// REMOVED: drawLoaderBackgroundEffects function is no longer needed
+/*
 // NUOVO: Funzione per aggiornare e disegnare lo sfondo dinamico del loader
 function drawLoaderBackgroundEffects(deltaTime) {
     // 1. Disegna il colore di sfondo solido del loader
@@ -169,32 +176,38 @@ function drawLoaderBackgroundEffects(deltaTime) {
     }
     loaderCtx.restore();
 }
+*/
 
 // Update runTopLoadingBar to be just runLoadingBar, and track asset loading progress
 function runLoadingBar(barId, assetLoadingPromise) {
-    const progressBarElement = document.getElementById(barId);
-    if (!progressBarElement) return Promise.resolve();
+    const progressBarElement = document.getElementById(barId);
+    if (!progressBarElement) return Promise.resolve();
 
-    let progress = 0;
-    const updateProgress = () => {
-        const barWidth = 40;
+    let progress = 0;
+    const updateProgress = () => {
+        const barWidth = 40;
 
-        // Calcola filledBlocks: arrotonda al numero intero più vicino.
-        // Clampa il risultato per assicurare che sia tra 0 e barWidth.
-        const filledBlocks = Math.max(0, Math.min(barWidth, Math.round((barWidth * progress) / 100)));
+        // Calcola filledBlocks: arrotonda al numero intero più vicino.
+        // Clampa il risultato per assicurare che sia tra 0 e barWidth.
+        const filledBlocks = Math.max(0, Math.min(barWidth, Math.round((barWidth * progress) / 100)));
 
-        // emptyBlocks è semplicemente la differenza. Non può essere negativo se filledBlocks è clampato correttamente.
-        const emptyBlocks = barWidth - filledBlocks;
+        // emptyBlocks è semplicemente la differenza. Non può essere negativo se filledBlocks è clampato correttamente.
+        const emptyBlocks = barWidth - filledBlocks;
 
-        const bar = '█'.repeat(filledBlocks) + '░'.repeat(emptyBlocks);
-        progressBarElement.textContent = `[${bar}] ${Math.round(progress)}%`;
-    };
+        const bar = '█'.repeat(filledBlocks) + '░'.repeat(emptyBlocks);
+        progressBarElement.textContent = `[${bar}] ${Math.round(progress)}%`;
+    };
 
-    updateProgress(); // Initial draw
+    updateProgress(); // Initial draw
 
-    let animationFrame;
-    const startTime = performance.now();
-    const durationEstimate = 3000;
+    let animationFrame;
+    const durationEstimate = 3000; // Keep the same duration estimate for the animation
+    let startTime; // Declare startTime here
+
+    assetLoadingPromise.then(() => {
+        startTime = performance.now(); // Set startTime when the promise resolves to start animation
+        animationFrame = requestAnimationFrame(animateBar); // Start animation when assets are loaded
+    });
 
     const animateBar = (currentTime) => {
         const elapsed = currentTime - startTime;
@@ -204,171 +217,172 @@ function runLoadingBar(barId, assetLoadingPromise) {
             animationFrame = requestAnimationFrame(animateBar);
         }
     };
-    animationFrame = requestAnimationFrame(animateBar);
+    
 
-    return new Promise(resolve => {
-        assetLoadingPromise.then(() => {
-            cancelAnimationFrame(animationFrame);
-            progress = 100; // Assicura che la barra sia al 100% alla fine
-            updateProgress();
-            resolve();
-        });
-    });
+    return new Promise(resolve => {
+        assetLoadingPromise.then(() => {
+            cancelAnimationFrame(animationFrame);
+            progress = 100; // Assicura che la barra sia al 100% alla fine
+            updateProgress();
+            resolve();
+        });
+    });
 }
 
 // NUOVO: Loop di rendering per il loader canvas
 function loaderLoop() {
-    if (!loaderCtx) return;
+    if (!loaderCtx) return;
 
-    const currentTime = performance.now();
-    const deltaTime = (currentTime - lastLoaderFrameTime) / 1000; // Calcola deltaTime
-    lastLoaderFrameTime = currentTime; // Aggiorna il tempo dell'ultimo frame
+    const currentTime = performance.now();
+    const deltaTime = (currentTime - lastLoaderFrameTime) / 1000; // Calcola deltaTime
+    lastLoaderFrameTime = currentTime; // Aggiorna il tempo dell'ultimo frame
 
-    loaderCtx.clearRect(0, 0, loaderCanvas.width, loaderCanvas.height); // Pulisce il canvas
+    loaderCtx.clearRect(0, 0, loaderCanvas.width, loaderCanvas.height); // Pulisce il canvas
 
-    // NUOVO: Disegna gli effetti di sfondo del loader PRIMA di tutto il resto
-    drawLoaderBackgroundEffects(deltaTime);
+    // REMOVED: drawLoaderBackgroundEffects(deltaTime);
+    // REMOVED: loaderGround.draw();
 
-    loaderGround.draw(); // Disegna il terreno sopra il background animato
+    // Draw the static loading image
+    if (staticLoadingImage) {
+        const targetWidth = 400; // Desired display width
+        const targetHeight = 400; // Desired display height
+        const x = (loaderCanvas.width / 2) - (targetWidth / 2);
+        const y = (loaderCanvas.height / 2) - (targetHeight / 2); // Center perfectly vertically
+        loaderCtx.drawImage(staticLoadingImage, x, y, targetWidth, targetHeight);
+    }
 
-    // Draw the static loading image
-    if (staticLoadingImage) {
-        const imgWidth = staticLoadingImage.width;
-        const imgHeight = staticLoadingImage.height;
-        const x = (loaderCanvas.width / 2) - (imgWidth / 2);
-        const y = (loaderCanvas.height / 2) - (imgHeight / 2) + 30; // Adjust Y to be a bit higher than center
-        loaderCtx.drawImage(staticLoadingImage, x, y, imgWidth, imgHeight);
-    }
-
-    loaderAnimationId = requestAnimationFrame(loaderLoop);
+    loaderAnimationId = requestAnimationFrame(loaderLoop);
 }
 
 // Applica la stessa correzione a updateIndividualAsciiBar
 function updateIndividualAsciiBar(barId, percentage) {
-    const progressBarElement = document.getElementById(barId);
-    if (!progressBarElement) return;
-    const barWidth = 40;
+    const progressBarElement = document.getElementById(barId);
+    if (!progressBarElement) return;
+    const barWidth = 40;
 
-    const filledBlocks = Math.max(0, Math.min(barWidth, Math.round((barWidth * percentage) / 100)));
-    const emptyBlocks = barWidth - filledBlocks;
+    const filledBlocks = Math.max(0, Math.min(barWidth, Math.round((barWidth * percentage) / 100)));
+    const emptyBlocks = barWidth - filledBlocks;
 
-    const bar = '█'.repeat(filledBlocks) + '░'.repeat(emptyBlocks);
-    progressBarElement.textContent = `[${bar}] ${percentage}%`;
+    const bar = '█'.repeat(filledBlocks) + '░'.repeat(emptyBlocks);
+    progressBarElement.textContent = `[${bar}] ${percentage}%`;
 }
 
 export async function startLoadingSequence(initialUser = null) {
-    try {
-        document.body.addEventListener('click', () => {
-            if (audioContext && audioContext.state === 'suspended') {
-                audioContext.resume();
-            }
-        }, { once: true });
+    try {
+        document.body.addEventListener('click', () => {
+            if (AudioManager.audioContext && AudioManager.audioContext.state === 'suspended') {
+                AudioManager.audioContext.resume();
+            }
+        }, { once: true });
 
-        terminalContainer.style.opacity = 1; // Questo dovrebbe essere già impostato a 1 all'inizio
+        terminalContainer.style.opacity = 1; // Questo dovrebbe essere già impostato a 1 all'inizio
 
-        await preloadLoaderSounds();
+        await preloadLoaderSounds();
 
-        try {
-            staticLoadingImage = await loadImage('images/loadingScreen.png');
-            console.log('Static loading image loaded successfully.');
-        } catch (e) {
-            console.error('Failed to load static loading image:', e);
-        }
+        try {
+            staticLoadingImage = await loadImage('images/loadingScreen.png');
+            console.log('Static loading image loaded successfully.');
+        } catch (e) {
+            console.error('Failed to load static loading image:', e);
+        }
 
-        if (!loaderCanvas) {
-            console.error("loaderCanvas non trovato! Assicurati che sia in index.html con id='loaderCanvas'");
-            return;
-        }
-        loaderCtx = loaderCanvas.getContext('2d');
+        if (!loaderCanvas) {
+            console.error("loaderCanvas non trovato! Assicurati che sia in index.html con id='loaderCanvas'");
+            return;
+        }
+        loaderCtx = loaderCanvas.getContext('2d');
 
-        setupRenderingContextForLoader(loaderCtx);
-        console.log('Loader Context Image Smoothing Enabled:', loaderCtx.imageSmoothingEnabled);
+        setupRenderingContextForLoader(loaderCtx);
+        console.log('Loader Context Image Smoothing Enabled:', loaderCtx.imageSmoothingEnabled);
 
-        initializeLoaderBackgroundParticles();
+        // REMOVED: initializeLoaderBackgroundParticles();
+        // loaderBackgroundParticles is no longer used, so this call can be removed
+        // but the function definition for initializeLoaderBackgroundParticles() itself
+        // is kept in the provided code, so I will comment out the call here.
 
-        const resizeLoaderCanvas = () => {
-            loaderCanvas.width = window.innerWidth;
-            loaderCanvas.height = window.innerHeight;
-            if (loaderGround) loaderGround.resize();
-            initializeLoaderBackgroundParticles();
-        };
-        window.addEventListener('resize', resizeLoaderCanvas);
-        resizeLoaderCanvas();
+        const resizeLoaderCanvas = () => {
+            loaderCanvas.width = window.innerWidth;
+            loaderCanvas.height = window.innerHeight;
+            // REMOVED: if (loaderGround) loaderGround.resize();
+            // REMOVED: initializeLoaderBackgroundParticles();
+        };
+        window.addEventListener('resize', resizeLoaderCanvas);
+        resizeLoaderCanvas();
 
-        loaderGround = new LoaderGround(loaderCanvas);
+        loaderGround = null; // Ensure loaderGround is explicitly null
 
-        if (accountBtn) accountBtn.style.display = 'none';
-        if (topBarLeft) topBarLeft.style.display = 'none';
-        if (topBarRight) topBarRight.style.display = 'none';
-        terminalContainer.style.display = 'flex';
-        terminalLog.style.display = 'none';
+        if (accountBtn) accountBtn.style.display = 'none';
+        if (topBarLeft) topBarLeft.style.display = 'none';
+        if (topBarRight) topBarRight.style.display = 'none';
+        terminalContainer.style.display = 'flex';
+        terminalLog.style.display = 'none';
 
-        const multiProgressContainer = document.getElementById('multi-progress-container');
-        if (multiProgressContainer) {
-            multiProgressContainer.style.display = 'flex';
-            multiProgressContainer.style.position = 'absolute';
-            multiProgressContainer.style.bottom = '50px';
-            multiProgressContainer.style.left = '50%';
-            multiProgressContainer.style.transform = 'translateX(-50%)';
-            multiProgressContainer.style.width = 'fit-content';
-            multiProgressContainer.style.flexDirection = 'column';
-            multiProgressContainer.style.alignItems = 'center';
-        }
+        const multiProgressContainer = document.getElementById('multi-progress-container');
+        if (multiProgressContainer) {
+            multiProgressContainer.style.display = 'flex';
+            multiProgressContainer.style.position = 'absolute';
+            multiProgressContainer.style.bottom = '50px';
+            multiProgressContainer.style.left = '50%';
+            multiProgressContainer.style.transform = 'translateX(-50%)';
+            multiProgressContainer.style.width = 'fit-content';
+            multiProgressContainer.style.flexDirection = 'column';
+            multiProgressContainer.style.alignItems = 'center';
+        }
 
-        mainMenu.style.display = 'none';
-        gameContainerWrapper.style.display = 'none';
+        mainMenu.style.display = 'none';
+        gameContainerWrapper.style.display = 'none';
 
-        updateIndividualAsciiBar('progress-bar-1', 0);
+        updateIndividualAsciiBar('progress-bar-1', 0);
 
-        document.querySelector('.progress-bar-wrapper .progress-label').textContent = 'LOADING...';
+        document.querySelector('.progress-bar-wrapper .progress-label').textContent = 'LOADING...';
 
-        lastLoaderFrameTime = performance.now();
-        loaderLoop();
+        lastLoaderFrameTime = performance.now();
+        loaderLoop();
 
 
-        setupGameEngine();
-        const preloadGameAssetsPromise = preloadGameAssets();
+        setupGameEngine();
+        const preloadGameAssetsPromise = preloadGameAssets();
 
-        await runLoadingBar('progress-bar-1', preloadGameAssetsPromise);
+        await runLoadingBar('progress-bar-1', preloadGameAssetsPromise);
 
-        playSound('success_bleep');
+        AudioManager.playSound('success_bleep');
 
-        // *** INSERISCI QUI I NUOVI LOG E TIMEOUT DI TEST ***
-        console.log("SUONO DI SUCCESSO ESEGUITO. A breve tentiamo di dissolvere."); // Questo DEVE apparire
-        setTimeout(() => {
-            console.log("TIMEOUT DI DISSOLVENZA INIZIATO!"); // Questo DEVE apparire
-            terminalContainer.style.opacity = 0; // Tentiamo di dissolvere
-            console.log("Opacità impostata a 0, valore corrente:", terminalContainer.style.opacity); // Verifica il valore dopo l'impostazione
-            // ... (il resto del codice del tuo timeout, senza altri log per ora) ...
-            loaderCanvas.style.display = 'none'; // Nascondi il canvas del loader
+        // *** INSERISCI QUI I NUOVI LOG E TIMEOUT DI TEST ***
+        console.log("SUONO DI SUCCESSO ESEGUITO. A breve tentiamo di dissolvere."); // Questo DEVE apparire
+        setTimeout(() => {
+            console.log("TIMEOUT DI DISSOLVENZA INIZIATO!"); // Questo DEVE apparire
+            terminalContainer.style.opacity = 0; // Tentiamo di dissolvere
+            console.log("Opacità impostata a 0, valore corrente:", terminalContainer.style.opacity); // Verifica il valore dopo l'impostazione
+            // ... (il resto del codice del tuo timeout, senza altri log per ora) ...
+            loaderCanvas.style.display = 'none'; // Nascondi il canvas del loader
 
-            setTimeout(() => { // Il secondo setTimeout
-                terminalContainer.style.display = 'none';
-                initializeMenu();
-                if (accountBtn) accountBtn.style.display = 'flex';
-                if (topBarLeft) topBarLeft.style.display = 'flex';
-                if (topBarRight) topBarRight.style.display = 'flex';
-            }, 100);
-        }, 300);
-        // *** FINE BLOCCO DI TEST ***
+            setTimeout(() => { // Il secondo setTimeout
+                terminalContainer.style.display = 'none';
+                initializeMenu();
+                if (accountBtn) accountBtn.style.display = 'flex';
+                if (topBarLeft) topBarLeft.style.display = 'flex';
+                if (topBarRight) topBarRight.style.display = 'flex';
+            }, 100);
+        }, 300);
+        // *** FINE BLOCCO DI TEST ***
 
-    } catch (error) {
-        console.error("ERRORE CRITICO durante la sequenza di caricamento:", error);
-        terminalLog.innerHTML += `\n<span class="keyword-error">FATAL ERROR: ${error.message}</span>`;
-    }
+    } catch (error) {
+        console.error("ERRORE CRITICO durante la sequenza di caricamento:", error);
+        terminalLog.innerHTML += `\n<span class="keyword-error">FATAL ERROR: ${error.message}</span>`;
+    }
 }
 
 if (glitchpediaBtn) {
-   glitchpediaBtn.addEventListener('click', () => {
-       showToast('Apertura Glitchpedia...', 'info');
-       const glitchpediaModal = document.getElementById('glitchpediaModal');
-       if (glitchpediaModal) glitchpediaModal.style.display = 'block';
-   });
+   glitchpediaBtn.addEventListener('click', () => {
+       showToast('Apertura Glitchpedia...', 'info');
+       const glitchpediaModal = document.getElementById('glitchpediaModal');
+       if (glitchpediaModal) glitchpediaModal.style.display = 'block';
+   });
 }
 
 // Listener per l'icona account/profilo.
 // La logica di cosa fare (aprire modale login o profilo) è in auth.js e profile.js
 // Qui ci assicuriamo solo che il contenitore esista.
 if (accountBtn) {
-   console.log('Account icon container is ready.');
+   console.log('Account icon container is ready.');
 }

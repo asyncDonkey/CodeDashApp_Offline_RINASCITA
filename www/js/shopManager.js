@@ -12,8 +12,8 @@ import { currentUserData, getCurrentUserId } from './main.js'; // Importa curren
 // In un'applicazione offline, è comune avere il catalogo hardcoded o caricato da un file JSON locale.
 // Catalogo degli oggetti cosmetici (duplicato da profile.js, assicurati che siano sempre sincronizzati)
 const cosmeticCatalog = {
-    'skin_donkey_default_info': { price: 2000, name: 'Donkey Basic', type: 'donkeySkin', icon: 'monitor-play', preview_asset: 'images/shop_previews/skin_info_preview.gif' },
-    'skin_bullet_log': { price: 1500, name: 'Log Bullets', type: 'bulletSkin', icon: 'files', preview_asset: 'images/shop_previews/bullet_log_style.gif' },
+    //'skin_donkey_default_info': { price: 2000, name: 'Donkey Basic', type: 'donkeySkin', icon: 'monitor-play', preview_asset: 'images/shop_previews/skin_info_preview.gif' },
+    //'skin_bullet_log': { price: 1500, name: 'Log Bullets', type: 'bulletSkin', icon: 'files', preview_asset: 'images/shop_previews/bullet_log_style.gif' },
     'skin_donkey_golden_walk': { price: 7500, name: 'Golden Donkey', type: 'donkeySkin', icon: 'sparkle', preview_asset: 'images/shop_previews/donkey_golden_walk_preview.gif' },
     'skin_bullet_firewall': { price: 4000, name: 'Firewall Packets', type: 'bulletSkin', icon: 'shield', preview_asset: 'images/shop_previews/bullet_firewall_style.gif' },
     // --- INIZIO NUOVE SKIN ACQUISTABILI ---
@@ -56,7 +56,7 @@ const cosmeticCatalog = {
 
     // Aggiungi i power-up permanenti al catalogo cosmetico
     'powerup_extra_life': { price: 10000, name: 'Extra Life Module', type: 'permanentPowerup', icon: 'heart', preview_asset: 'images/shop_previews/powerup_extra_life_preview.gif' },
-    'permanent_powerup_bit_magnet': { price: 7500, name: 'Bit Magnet', type: 'permanentPowerup', icon: 'magnet', preview_asset: 'images/shop_previews/powerup_bit_magnet_preview.gif' },
+    //'permanent_powerup_bit_magnet': { price: 7500, name: 'Bit Magnet', type: 'permanentPowerup', icon: 'magnet', preview_asset: 'images/shop_previews/powerup_bit_magnet_preview.gif' },
 };
 
 const shopContentDiv = document.getElementById('shop-content');
