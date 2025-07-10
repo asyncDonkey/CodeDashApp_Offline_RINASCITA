@@ -68,6 +68,10 @@ export const MENU_SKIN_ASSET_MAP = {
         walk: 'images/skins/skin_donkey_javascript_walk.png',
         digest: 'images/skins/skin_donkey_javascript_digest.png'
     },
+    'skin_donkey_dev':{ 
+        walk: 'images/skins/skin_donkey_dev_walk.png',
+        digest: 'images/skin_donkey_dev_digest.png',
+    },
     // Non includiamo le skin dei proiettili qui perché il menu non le visualizza
     // --- INIZIO SKIN SBLOCCABILI TRAMITE BADGE ---
     'skin_donkey_score_legend': {

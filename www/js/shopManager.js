@@ -24,6 +24,7 @@ const cosmeticCatalog = {
     'skin_donkey_antivirus': { price: 12000, name: 'Donkey Antivirus', type: 'donkeySkin', icon: 'shield-check', preview_asset: 'images/shop_previews/donkey_antivirus_preview.gif' },
     'skin_donkey_async': { price: 9500, name: 'Donkey Async', type: 'donkeySkin', icon: 'infinity', preview_asset: 'images/shop_previews/donkey_async_preview.gif' },
     'skin_donkey_javascript': { price: 11000, name: 'Donkey JavaScript', type: 'donkeySkin', icon: 'code', preview_asset: 'images/shop_previews/donkey_javascript_preview.gif' },
+    'skin_donkey_dev':{price: 10000,name: 'Donkey Dev', type: 'donkeySkin', icon: 'code', preview_asset: 'images/shop_previews/skin_donkey_dev_preview.gif' },
     'skin_bullet_binary': { price: 3000, name: 'Binary Bombs', type: 'bulletSkin', icon: 'binary', preview_asset: 'images/shop_previews/bullet_binary_style.gif' },
     'skin_bullet_error': { price: 2500, name: 'Error Packets', type: 'bulletSkin', icon: 'bug-beetle', preview_asset: 'images/shop_previews/bullet_error_skin.gif' },
     'skin_bullet_cyberwrath': { price: 5500, name: 'CyberWrath Bullets', type: 'bulletSkin', icon: 'flame', preview_asset: 'images/shop_previews/bullet_cyberwrath_style.gif' },

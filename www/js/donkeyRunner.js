@@ -81,12 +81,7 @@ const TRACK_METADATA = {
     'audio/bgm/track_09.ogg': { title: 'GalaxyRush!', artist: 'U.T.' },
     'audio/bgm/track_10.ogg': { title: 'Glitch Rangers', artist: 'U.T.' },
     'audio/bgm/track_11.ogg': { title: "The Donkey's Gallop", artist: 'U.T.' },
-    'audio/bgm/track_12.ogg': { title: '', artist: 'U.T.' },
-    'audio/bgm/track_13.ogg': { title: '', artist: 'U.T.' },
-    'audio/bgm/track_14.ogg': { title: '', artist: 'U.T.' },
-    'audio/bgm/track_15.ogg': { title: '', artist: 'U.T.' },
-    'audio/bgm/track_16.ogg': { title: '', artist: 'U.T.' },
-    'audio/bgm/track_17.ogg': { title: '', artist: 'U.T.' },
+
     
     
     
@@ -145,6 +140,10 @@ export const SKIN_ASSET_MAP = {
     'skin_donkey_javascript': {
         walk: 'images/skins/skin_donkey_javascript_walk.png',
         digest: 'images/skins/skin_donkey_javascript_digest.png'
+    },
+    'skin_donkey_dev':{ 
+        walk: 'images/skins/skin_donkey_dev_walk.png',
+        digest: 'images/skin_donkey_dev_digest.png',
     },
     // --- FINE NUOVE SKIN ACQUISTABILI ---
     // --- INIZIO NUOVE SKIN PROIETTILI ACQUISTABILI ---
