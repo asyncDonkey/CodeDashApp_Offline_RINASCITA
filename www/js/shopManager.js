@@ -58,6 +58,14 @@ const cosmeticCatalog = {
     // Aggiungi i power-up permanenti al catalogo cosmetico
     'powerup_extra_life': { price: 10000, name: 'Extra Life Module', type: 'permanentPowerup', icon: 'heart', preview_asset: 'images/shop_previews/powerup_extra_life_preview.gif' },
     //'permanent_powerup_bit_magnet': { price: 7500, name: 'Bit Magnet', type: 'permanentPowerup', icon: 'magnet', preview_asset: 'images/shop_previews/powerup_bit_magnet_preview.gif' },
+    'permanent_powerup_double_shot': { 
+    price: 300, 
+    name: 'Double Shot', 
+    type: 'permanentPowerup', 
+    icon: 'crosshair', 
+    preview_asset: 'images/shop_previews/powerup_double_shot_preview.gif', // Nota: questo file immagine va creato
+    currency: 'digital_fruits' 
+},
 };
 
 const shopContentDiv = document.getElementById('shop-content');

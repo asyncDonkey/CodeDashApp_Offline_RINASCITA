@@ -143,7 +143,7 @@ export const SKIN_ASSET_MAP = {
     },
     'skin_donkey_dev':{ 
         walk: 'images/skins/skin_donkey_dev_walk.png',
-        digest: 'images/skin_donkey_dev_digest.png',
+        digest: 'images/skins/skin_donkey_dev_digest.png',
     },
     // --- FINE NUOVE SKIN ACQUISTABILI ---
     // --- INIZIO NUOVE SKIN PROIETTILI ACQUISTABILI ---
@@ -1752,12 +1752,19 @@ class Player {
         const currentInventory = inventory || {};
         const unlockedItems = currentInventory.unlockedItems || [];
         const equippedItems = currentInventory.equipped || {};
+        const permanentPowerups = equippedItems.permanentPowerups || [];
 
-        // La logica per powerup_extra_life è già corretta, usa unlockedItems
+        // Logica per Extra Life
         if (unlockedItems.includes('powerup_extra_life')) {
             console.log('✅ Potenziamento permanente ATTIVO: Vita extra!');
             this.health = 2;
             this.maxHealth = 2;
+        }
+
+        // NUOVO: Logica per Double Shot
+        this.hasDoubleShotEquipped = permanentPowerups.includes('permanent_powerup_double_shot');
+        if (this.hasDoubleShotEquipped) {
+            console.log('✅ Potenziamento permanente ATTIVO: Double Shot!');
         }
 
         // --- SKIN LOGIC FOR PLAYER (DONKEY) START ---
@@ -1825,10 +1832,7 @@ class Player {
         this.canEatEnemy = false;
 
         this.equippedBulletSkinId = equippedItems.bulletSkin || null;
-        this.showGlowEffect = false; // NUOVO: Flag per il glow effect
-
-        // MODIFICA QUI: Rimuovi la logica di equipaggiamento del compagno da qui.
-        // Verrà gestita direttamente in launchGame() dopo il reset.
+        this.showGlowEffect = false;
     }
 
     // NUOVO: Metodo per subire un colpo
@@ -1992,59 +1996,53 @@ drawFallback() {
     }
 
     shoot() {
-        // If Machine Language is active, shoot ignoring standard cooldown.
-        // Rate is managed by machineGunTimer in the game loop.
         if (this.isMachineLanguageActive) {
-            // Not checking canShoot, just firing.
-        }
-        // Otherwise, use standard cooldown logic
-        else if (!canShoot) {
-            return; // Exit if on cooldown
+            // Non controlla canShoot, la logica è gestita dal timer in updatePlaying
+        } else if (!canShoot) {
+            return; // Esci se in cooldown standard
         }
 
         const projectileYBase = this.y + this.displayHeight / 2 - PLAYER_PROJECTILE_TARGET_HEIGHT / 2;
         
-        // >>> INIZIO MODIFICA: Riordina la logica di determinazione del tipo di proiettile
-
         let projectileType;
         let bulletSkinId;
 
-        // Step 1: Determina il tipo di proiettile basico (normale o machine_language)
+        // Logica di priorità per il tipo di proiettile
         if (this.isMachineLanguageActive) {
             projectileType = 'machine_language';
-            bulletSkinId = null; // Il proiettile machine_language ha la sua grafica
-        } else {
-            projectileType = 'normal';
-            bulletSkinId = this.equippedBulletSkinId; // Inizializza con la skin equipaggiata
-        }
-
-        // Step 2: Applica le sovrascritture dei power-up permanenti (QUESTI ORA HANNO LA PRIORITÀ)
-        if (this.hasSlayerSubroutine) {
+            bulletSkinId = null;
+        } else if (this.hasSlayerSubroutine) {
             projectileType = 'slayer';
-            bulletSkinId = null; // Slayer ha il suo look
+            bulletSkinId = null;
         } else if (this.hasCodeInjector) {
             projectileType = 'injector';
-            bulletSkinId = null; // Injector ha il suo look
+            bulletSkinId = null;
         } else if (this.hasDebugMode) {
             projectileType = 'debug';
-            bulletSkinId = null; // Debug ha il suo look
-        }
-
-        // Step 3: Applica la sovrascrittura della Rain Run solo se NESSUN power-up funzionale è attivo
-        if (isRainRunActive && projectileType === 'normal') { // Modifica la condizione qui
+            bulletSkinId = null;
+        } else if (isRainRunActive) {
             projectileType = 'rain_projectile';
-            bulletSkinId = null; // Assicurati che nessuna altra skin cosmetica interferisca
+            bulletSkinId = null;
+        } else {
+            projectileType = 'normal';
+            bulletSkinId = this.equippedBulletSkinId;
         }
 
-        // <<< FINE MODIFICA
-        
-        if (this.activePowerUp === POWERUP_TYPE.TRIPLE_SHOT) {
-            // Pass the determined projectileType and bulletSkinId to the Projectile constructor
+        // Logica di sparo basata sulla priorità dei power-up
+        if (this.isMachineLanguageActive) {
+            projectiles.push(new Projectile(this.x + this.displayWidth, projectileYBase, projectileType, bulletSkinId));
+        } else if (this.activePowerUp === POWERUP_TYPE.TRIPLE_SHOT) {
             projectiles.push(new Projectile(this.x + this.displayWidth, projectileYBase - PROJECTILE_VERTICAL_OFFSET, projectileType, bulletSkinId));
             projectiles.push(new Projectile(this.x + this.displayWidth, projectileYBase, projectileType, bulletSkinId));
             projectiles.push(new Projectile(this.x + this.displayWidth, projectileYBase + PROJECTILE_VERTICAL_OFFSET, projectileType, bulletSkinId));
+        } else if (this.hasDoubleShotEquipped) {
+            projectiles.push(new Projectile(this.x + this.displayWidth, projectileYBase, projectileType, bulletSkinId));
+            setTimeout(() => {
+                if (currentGameState === GAME_STATE.PLAYING) {
+                    projectiles.push(new Projectile(this.x + this.displayWidth, projectileYBase, projectileType, bulletSkinId));
+                }
+            }, 80);
         } else {
-            // Pass the determined projectileType and bulletSkinId to the Projectile constructor
             projectiles.push(new Projectile(this.x + this.displayWidth, projectileYBase, projectileType, bulletSkinId));
         }
 

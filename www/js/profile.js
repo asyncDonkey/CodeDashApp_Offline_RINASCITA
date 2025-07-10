@@ -76,6 +76,14 @@ const cosmeticCatalog = {
     // Aggiungi i power-up permanenti al catalogo cosmetico
     'powerup_extra_life': { price: 10000, name: 'Extra Life Module', type: 'permanentPowerup', icon: 'heart', preview_asset: 'images/shop_previews/powerup_extra_life_preview.gif' },
     'permanent_powerup_bit_magnet': { price: 7500, name: 'Bit Magnet', type: 'permanentPowerup', icon: 'magnet', preview_asset: 'images/shop_previews/powerup_bit_magnet_preview.gif' },
+'permanent_powerup_double_shot': { 
+    price: 300, 
+    name: 'Double Shot', 
+    type: 'permanentPowerup', 
+    icon: 'crosshair', 
+    preview_asset: 'images/shop_previews/powerup_double_shot_preview.gif', // Nota: questo file immagine va creato
+    currency: 'digital_fruits' 
+},
 };
 
 // Variabile globale per tenere traccia della tab attiva nella modale
@@ -175,37 +183,23 @@ function createItemCard(itemId, equippedItems, itemType) {
     let buttonText = 'Equip';
     let buttonDisabled = '';
 
+    // Logica specifica per i potenziamenti permanenti
     if (itemType === 'permanentPowerup') {
         isEquipped = Array.isArray(equippedItems.permanentPowerups) && equippedItems.permanentPowerups.includes(itemId);
         if (isEquipped) {
-            buttonText = 'Deactivate';
-            // QUI 'buttonDisabled' RESTA VUOTO (''), QUINDI NON DOVREBBE ESSERE DISABILITATO
+            buttonText = 'Deactivate'; // Se equipaggiato, mostra "Deactivate"
         }
-    } else { // Logica per altri tipi (skin, compagni)
+    } else { // Logica per skin e compagni
         isEquipped = (itemId === equippedItems[itemType]) || (item.isDefault && (!equippedItems[itemType] && itemId.startsWith('default_')));
         if (isEquipped) {
-            buttonText = 'On'; // Testo per equipaggiamenti esclusivi
-            buttonDisabled = 'disabled'; // DISABILITATO per equipaggiamenti esclusivi (perché già "On")
-        }
-     }
-
-    // DEBUG: Controlla questi valori per ogni card che viene creata
-    console.log(`DEBUG: createItemCard - Item: ${item.name} (${itemId}), Type: ${itemType}, isEquipped: ${isEquipped}, equippedItems:`, equippedItems);
-
-    if (isEquipped) {
-        buttonText = 'On';
-        buttonDisabled = 'disabled';
-    } else if (item.isDefault) {
-        buttonText = 'Reset';
-        if ((!equippedItems.donkeySkin && itemId === 'default_donkey') || (!equippedItems.bulletSkin && itemId === 'default_bullet')) {
-            buttonDisabled = 'disabled';
+            buttonText = 'On';
+            buttonDisabled = 'disabled'; // Il pulsante 'On' è disabilitato
         }
     }
 
-
     const previewContent = item.preview_asset
         ? `<img src="${item.preview_asset}" alt="${item.name} Preview" class="item-shop-preview-asset">`
-        : `<i class="ph-bold ph-${item.icon || 'question'}" style="font-size: 48px; color: #666;"></i>`; // Fallback icon
+        : `<i class="ph-bold ph-${item.icon || 'question'}" style="font-size: 48px; color: #666;"></i>`;
 
     return `
         <div class="item-card ${item.isDefault ? 'default-item-card' : ''}" data-item-id="${itemId}" data-item-type="${itemType}">
@@ -508,117 +502,82 @@ export async function handleEquipItem(itemId, itemType) {
     buttons.forEach(b => b.disabled = true);
 
     try {
-        // --- INIZIO MODIFICHE ---
-
-        // 1. Assicurati che currentUserData.inventory esista
-        if (!currentUserData.inventory) {
-            currentUserData.inventory = {};
-        }
-        // 2. Assicurati che currentUserData.inventory.equipped esista
-        if (!currentUserData.inventory.equipped) {
-            currentUserData.inventory.equipped = {}; // Inizializza come oggetto vuoto se non esiste
-        }
-        // 3. Assicurati che permanentPowerups sia un array se il tipo è 'permanentPowerup'
-        if (itemType === 'permanentPowerup' && !Array.isArray(currentUserData.inventory.equipped.permanentPowerups)) {
-            currentUserData.inventory.equipped.permanentPowerups = [];
-        }
-
-        const itemDetails = cosmeticCatalog[itemId];
-        // Assicurati che unlockedItems sia sempre un array, anche se vuoto
+        if (!currentUserData.inventory) currentUserData.inventory = {};
+        if (!currentUserData.inventory.equipped) currentUserData.inventory.equipped = {};
+        
         const unlockedItems = currentUserData.inventory.unlockedItems || [];
 
         if (itemType === 'permanentPowerup') {
-            // Usa una copia del set per le modifiche temporanee
+            if (!currentUserData.inventory.equipped.permanentPowerups) {
+                currentUserData.inventory.equipped.permanentPowerups = [];
+            }
             let currentPermanentPowerups = new Set(currentUserData.inventory.equipped.permanentPowerups);
 
-            if (itemId === null) {
-                console.warn("handleEquipItem: Tentativo di disattivare un power-up permanente con itemId null.");
-                showToast("Errore: ID power-up mancante.", "error");
-                buttons.forEach(b => b.disabled = false);
-                return;
-            }
-
-            if (!unlockedItems.includes(itemId)) {
-                showToast("Non possiedi questo power-up permanente.", "error");
-                buttons.forEach(b => b.disabled = false);
-                return;
-            }
-
             if (currentPermanentPowerups.has(itemId)) {
+                // L'oggetto è equipaggiato -> lo disattivo
                 currentPermanentPowerups.delete(itemId);
-                console.log(`Power-up permanente ${itemId} disattivato localmente.`);
                 showToast(`${cosmeticCatalog[itemId].name} disattivato!`, 'success');
             } else {
+                // L'oggetto non è equipaggiato -> provo ad attivarlo
                 if (currentPermanentPowerups.size >= 2) {
-                    showToast("Non puoi equipaggiare più di 2 power-up permanenti alla volta.", "warning");
+                    showToast("Puoi equipaggiare solo 2 potenziamenti permanenti.", "warning");
                     buttons.forEach(b => b.disabled = false);
-                    return;
+                    return; // Interrompo perché il limite è stato raggiunto
+                }
+                if (!unlockedItems.includes(itemId)) {
+                    showToast("Non possiedi questo potenziamento.", "error");
+                    buttons.forEach(b => b.disabled = false);
+                    return; // Interrompo perché l'utente non possiede l'oggetto
                 }
                 currentPermanentPowerups.add(itemId);
-                console.log(`Power-up permanente ${itemId} attivato localmente.`);
                 showToast(`${cosmeticCatalog[itemId].name} attivato!`, 'success');
             }
-            // Aggiorna direttamente l'array in currentUserData
+            // Aggiorno l'inventario con il nuovo set di potenziamenti
             currentUserData.inventory.equipped.permanentPowerups = Array.from(currentPermanentPowerups);
-
-        } else { // Logica per 'donkeySkin', 'bulletSkin', 'companion'
-            if (itemId === null) {
-                // Aggiorna direttamente la proprietà in currentUserData
+        } else {
+            // Logica esistente per skin e compagni
+            const itemDetails = cosmeticCatalog[itemId];
+            if (itemId === null || (itemDetails && itemDetails.isDefault)) {
                 currentUserData.inventory.equipped[itemType] = null;
-                console.log(`Oggetto di default/disequipaggiato per ${itemType} localmente.`);
                 showToast(`Default ${itemType} equipaggiato!`, 'success');
             } else {
-                // Bypassa il controllo di possesso per gli item di default (fix precedente)
-                if (!itemDetails?.isDefault && !unlockedItems.includes(itemId)) {
+                if (!unlockedItems.includes(itemId)) {
                     showToast("Non possiedi questo oggetto.", "error");
                     buttons.forEach(b => b.disabled = false);
                     return;
                 }
-                // Aggiorna direttamente la proprietà in currentUserData
                 currentUserData.inventory.equipped[itemType] = itemId;
-                console.log(`Oggetto ${itemId} equipaggiato localmente.`);
                 showToast(`${itemDetails.name} equipaggiato!`, 'success');
             }
         }
 
-        // --- FINE MODIFICHE ---
-
         currentUserData.updatedAt = Date.now();
+        await saveUser(currentUserData);
+        initializeMenu();
 
-        // DEBUG: Ora questo log dovrebbe mostrare lo stato CORRETTO
-        console.log("DEBUG: handleEquipItem - currentUserData.inventory.equipped PRIMA DI SAVE E RENDERING:", currentUserData.inventory.equipped);
+        // Logica per ri-renderizzare le modali se aperte
+        const openModals = {
+            skinsModal: window.renderSkinsModal, // Assumi che queste funzioni siano globali o importate
+            companionsModal: window.renderCompanionsModal,
+            powerupsModal: window.renderPowerupsModal
+        };
 
-        await saveUser(currentUserData); // Salva il profilo utente aggiornato in IndexedDB
-        initializeMenu(); // Aggiorna il menu principale (es. icona compagno)
-
-        // Logica per ri-rendere la modale attiva (passa currentUserData aggiornato)
-        const skinsModalElement = document.getElementById('skinsModal');
-        const companionsModalElement = document.getElementById('companionsModal');
-        const powerupsModalElement = document.getElementById('powerupsModal');
-
-        if (skinsModalElement && skinsModalElement.style.display === 'flex') {
-            await renderSkinsModal(currentUserData);
-        } else if (companionsModalElement && companionsModalElement.style.display === 'flex') {
-            await renderCompanionsModal(currentUserData);
-        } else if (powerupsModalElement && powerupsModalElement.style.display === 'flex') {
-            await renderPowerupsModal(currentUserData);
+        for (const modalId in openModals) {
+            const modalElement = document.getElementById(modalId);
+            if (modalElement && modalElement.style.display === 'flex' && typeof openModals[modalId] === 'function') {
+                await openModals[modalId](currentUserData);
+            }
         }
 
-        // Dispatch a custom event per notificare altre parti dell'app
         window.dispatchEvent(new CustomEvent('equippedItemChanged', {
-            detail: {
-                itemId: itemId,
-                itemType: itemType,
-                equippedItems: currentUserData.inventory.equipped
-            }
+            detail: { itemId, itemType, equippedItems: currentUserData.inventory.equipped }
         }));
 
     } catch (error) {
         console.error("Errore nell'equipaggiare l'oggetto localmente:", error);
         showToast(`Errore: ${error.message}`, 'error');
     } finally {
-        // I pulsanti verranno riabilitati dalle funzioni di rendering delle modali (render*Modal)
-        // quindi non è necessario riabilitarli qui.
+        buttons.forEach(b => b.disabled = false); // Riabilita sempre i pulsanti alla fine
     }
 }
 
