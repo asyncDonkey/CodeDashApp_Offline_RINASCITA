@@ -426,7 +426,15 @@ for (const key in FRONTEND_BADGE_TIERS) {
                     case 'totalDigitalFruits': // NEW
                     actualCurrentValue = userBadgesStatus.gameStats?.totalDigitalFruits || 0;
                     break;
-            }
+            // --- INIZIO CODICE DA AGGIUNGERE ---
+    case 'rainRunEnemiesDefeated':
+        actualCurrentValue = userBadgesStatus.gameStats?.highestRainRunEnemiesDefeated || 0;
+        break;
+    case 'rainRunHighScore':
+        actualCurrentValue = userBadgesStatus.gameStats?.highestRainRunHighScore || 0;
+        break;
+    // --- FINE CODICE DA AGGIUNGERE ---
+}
                     const progressPercentage = Math.min(100, (actualCurrentValue / nextTierThreshold) * 100).toFixed(0);
 
                     progressHTML = `
@@ -474,7 +482,15 @@ for (const key in FRONTEND_BADGE_TIERS) {
                     case 'dataPacketsCollected':
                         actualCurrentValue = userBadgesStatus.gameStats?.highestDataPacketsCollectedRun || 0;
                         break;
-                }
+                // --- INIZIO MODIFICA 2 (DA AGGIUNGERE QUI) ---
+            case 'rainRunEnemiesDefeated':
+                actualCurrentValue = userBadgesStatus.gameStats?.highestRainRunEnemiesDefeated || 0;
+                break;
+            case 'rainRunHighScore':
+                actualCurrentValue = userBadgesStatus.gameStats?.highestRainRunHighScore || 0;
+                break;
+            // --- FINE MODIFICA 2 ---
+        }
                 const progressPercentage = Math.min(100, (actualCurrentValue / firstTierThreshold) * 100).toFixed(0);
 
                 progressHTML = `

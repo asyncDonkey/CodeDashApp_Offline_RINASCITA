@@ -2018,7 +2018,7 @@ drawFallback() {
             bulletSkinId = this.equippedBulletSkinId; // Inizializza con la skin equipaggiata
         }
 
-        // Step 2: Applica le sovrascritture dei power-up permanenti (hanno priorità sul base/cosmetico)
+        // Step 2: Applica le sovrascritture dei power-up permanenti (QUESTI ORA HANNO LA PRIORITÀ)
         if (this.hasSlayerSubroutine) {
             projectileType = 'slayer';
             bulletSkinId = null; // Slayer ha il suo look
@@ -2030,16 +2030,13 @@ drawFallback() {
             bulletSkinId = null; // Debug ha il suo look
         }
 
-        // Step 3: Applica la sovrascrittura della Rain Run (QUESTA È LA PRIORITÀ PIÙ ALTA)
-        // Se è una Rain Run, forza il tipo di proiettile della pioggia e il suo sprite,
-        // sovrascrivendo qualsiasi visuale dei power-up permanenti, ma mantenendo i loro danni.
-        // La classe Projectile gestirà il danno in base al 'projectileType'.
-        if (isRainRunActive) {
+        // Step 3: Applica la sovrascrittura della Rain Run solo se NESSUN power-up funzionale è attivo
+        if (isRainRunActive && projectileType === 'normal') { // Modifica la condizione qui
             projectileType = 'rain_projectile';
             bulletSkinId = null; // Assicurati che nessuna altra skin cosmetica interferisca
         }
 
-        // <<< FINE MODIFICA: Riordina la logica di determinazione del tipo di proiettile
+        // <<< FINE MODIFICA
         
         if (this.activePowerUp === POWERUP_TYPE.TRIPLE_SHOT) {
             // Pass the determined projectileType and bulletSkinId to the Projectile constructor
