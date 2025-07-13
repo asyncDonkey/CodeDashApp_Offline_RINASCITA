@@ -4,7 +4,7 @@
 import { openOfflineDB, getUser, saveUser } from './offlineDb.js';
 
 import { showToast } from './toastNotifications.js';
-import { generateBlockieAvatar } from './main.js'; // generateBlockieAvatar è ora in main.js
+import { generateBlockieAvatar, updateMenuVisuals } from './main.js'; // generateBlockieAvatar è ora in main.js
 import * as BadgeManager from './badgeManager.js'; // BadgeManager verrà adattato in seguito
 
 // currentUserData è ora una variabile globale gestita in main.js
@@ -504,7 +504,7 @@ export async function handleEquipItem(itemId, itemType) {
     try {
         if (!currentUserData.inventory) currentUserData.inventory = {};
         if (!currentUserData.inventory.equipped) currentUserData.inventory.equipped = {};
-        
+
         const unlockedItems = currentUserData.inventory.unlockedItems || [];
 
         if (itemType === 'permanentPowerup') {
@@ -514,28 +514,24 @@ export async function handleEquipItem(itemId, itemType) {
             let currentPermanentPowerups = new Set(currentUserData.inventory.equipped.permanentPowerups);
 
             if (currentPermanentPowerups.has(itemId)) {
-                // L'oggetto è equipaggiato -> lo disattivo
                 currentPermanentPowerups.delete(itemId);
                 showToast(`${cosmeticCatalog[itemId].name} disattivato!`, 'success');
             } else {
-                // L'oggetto non è equipaggiato -> provo ad attivarlo
                 if (currentPermanentPowerups.size >= 2) {
                     showToast("Puoi equipaggiare solo 2 potenziamenti permanenti.", "warning");
                     buttons.forEach(b => b.disabled = false);
-                    return; // Interrompo perché il limite è stato raggiunto
+                    return;
                 }
                 if (!unlockedItems.includes(itemId)) {
                     showToast("Non possiedi questo potenziamento.", "error");
                     buttons.forEach(b => b.disabled = false);
-                    return; // Interrompo perché l'utente non possiede l'oggetto
+                    return;
                 }
                 currentPermanentPowerups.add(itemId);
                 showToast(`${cosmeticCatalog[itemId].name} attivato!`, 'success');
             }
-            // Aggiorno l'inventario con il nuovo set di potenziamenti
             currentUserData.inventory.equipped.permanentPowerups = Array.from(currentPermanentPowerups);
         } else {
-            // Logica esistente per skin e compagni
             const itemDetails = cosmeticCatalog[itemId];
             if (itemId === null || (itemDetails && itemDetails.isDefault)) {
                 currentUserData.inventory.equipped[itemType] = null;
@@ -553,11 +549,15 @@ export async function handleEquipItem(itemId, itemType) {
 
         currentUserData.updatedAt = Date.now();
         await saveUser(currentUserData);
-        initializeMenu();
+
+        // --- INIZIO MODIFICA CHIAVE ---
+        // Sostituiamo la chiamata a initializeMenu() con la nuova funzione più leggera.
+        await updateMenuVisuals();
+        // --- FINE MODIFICA CHIAVE ---
 
         // Logica per ri-renderizzare le modali se aperte
         const openModals = {
-            skinsModal: window.renderSkinsModal, // Assumi che queste funzioni siano globali o importate
+            skinsModal: window.renderSkinsModal,
             companionsModal: window.renderCompanionsModal,
             powerupsModal: window.renderPowerupsModal
         };
@@ -569,15 +569,11 @@ export async function handleEquipItem(itemId, itemType) {
             }
         }
 
-        window.dispatchEvent(new CustomEvent('equippedItemChanged', {
-            detail: { itemId, itemType, equippedItems: currentUserData.inventory.equipped }
-        }));
-
     } catch (error) {
         console.error("Errore nell'equipaggiare l'oggetto localmente:", error);
         showToast(`Errore: ${error.message}`, 'error');
     } finally {
-        buttons.forEach(b => b.disabled = false); // Riabilita sempre i pulsanti alla fine
+        buttons.forEach(b => b.disabled = false);
     }
 }
 

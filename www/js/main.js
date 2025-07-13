@@ -68,7 +68,7 @@ export const MENU_SKIN_ASSET_MAP = {
         walk: 'images/skins/skin_donkey_javascript_walk.png',
         digest: 'images/skins/skin_donkey_javascript_digest.png'
     },
-    'skin_donkey_dev':{ 
+    'skin_donkey_dev':{
         walk: 'images/skins/skin_donkey_dev_walk.png',
         digest: 'images/skins/skin_donkey_dev_digest.png',
     },
@@ -186,7 +186,7 @@ export function initializeMenu(initialDonkeyPos = null) {
     if (menuCanvasElement && !menuAnimation.canvas) { // Check if not already initialized
         menuAnimation.init('menuCanvas'); // Call init for canvas setup and initial loop
     }
-    
+
     // Pass currentUserData to update the player and companion display in the menu
     // This call is critical for reflecting changes in equipment/purchase.
     // Ensure currentUserData is loaded before calling this.
@@ -286,20 +286,20 @@ const startGameSequence = async () => {
         let toastMessageParts = [];
         if (totalBitsForToast > 0) toastMessageParts.push(`${totalBitsForToast} bit`);
         if (totalFruitsForToast > 0) toastMessageParts.push(`${totalFruitsForToast} Digital Fruits`);
-        
+
         if (toastMessageParts.length > 0) {
             console.log(`[Main.js] Sincronizzazione di ${toastMessageParts.join(' e ')}...`);
             showToast(`Sincronizzazione di ${toastMessageParts.join(' e ')}...`, 'info');
         } else {
             console.log(`[Main.js] Nessun bit o Digital Fruit valido da sincronizzare.`);
         }
-        
+
         try {
             currentUserData.gameStats.totalBits = (currentUserData.gameStats.totalBits || 0) + totalBitsForToast;
             currentUserData.gameStats.totalDigitalFruits = (currentUserData.gameStats.totalDigitalFruits || 0) + totalFruitsForToast;
             currentUserData.updatedAt = Date.now();
             await saveUser(currentUserData);
-            
+
             console.log('[Main.js] Sincronizzazione riuscita. Pulisco i conteggi locali.');
             localStorage.setItem('menuCollectedItemCounts', JSON.stringify({}));
             if (menuAnimation) {
@@ -315,8 +315,8 @@ const startGameSequence = async () => {
         menuAnimation.donkey.stopProcessing();
     }
 
-    const wasRainingInMenu = menuAnimation.isDigitalRainActive; 
-    
+    const wasRainingInMenu = menuAnimation.isDigitalRainActive;
+
     AudioManager.playSound('gameStart');
     AudioManager.stopMusic();
 
@@ -380,8 +380,13 @@ document.addEventListener('DOMContentLoaded', function () {
         initializeMenu();
         showToast('Modifica applicata nel menu!', 'info');
 
-        const openModals = ['skinsModal', 'companionsModal', 'powerupsModal'];
-        for (const modalId of openModals) {
+        const openModals = {
+            skinsModal: window.renderSkinsModal, // Assumi che queste funzioni siano globali o importate
+            companionsModal: window.renderCompanionsModal,
+            powerupsModal: window.renderPowerupsModal
+        };
+
+        for (const modalId in openModals) {
             const modalElement = document.getElementById(modalId);
             if (modalElement && modalElement.style.display === 'flex') {
                 const activeTabButton = modalElement.querySelector('.category-btn.active');
@@ -458,8 +463,8 @@ document.addEventListener('DOMContentLoaded', function () {
     if (showLoginModalBtn) {
         showLoginModalBtn.style.display = 'none';
     }
-    
-    const userAvatarIcon = document.getElementById('user-avatar-icon'); 
+
+    const userAvatarIcon = document.getElementById('user-avatar-icon');
     if (userAvatarIcon) {
         userAvatarIcon.addEventListener('click', () => openProfileModal(currentUserData));
         // TO FIX: Add a direct touchend listener for reliable mobile interaction
@@ -507,7 +512,7 @@ document.addEventListener('DOMContentLoaded', function () {
         { id: 'shopModal', closeBtnId: 'closeShopModal' },
         { id: 'leaderboardModal', closeBtnId: 'closeLeaderboardModal' },
         { id: 'creditsModal', closeBtnId: 'closeCreditsModalBtn' },
-        { id: 'profileModal', closeBtnId: 'closeProfileModal' }, 
+        { id: 'profileModal', closeBtnId: 'closeProfileModal' },
         { id: 'skinsModal', closeBtnId: 'closeSkinsModal' },
         { id: 'companionsModal', closeBtnId: 'closeCompanionsModal' },
         { id: 'powerupsModal', closeBtnId: 'closePowerupsModal' }
@@ -743,3 +748,36 @@ document.addEventListener('DOMContentLoaded', function () {
         window.dispatchEvent(new CustomEvent('rainStatusChanged', { detail: { isRaining: false } }));
     };
 });
+
+/**
+ * NUOVA FUNZIONE ESPORTATA: Aggiorna l'animazione del menu dopo un cambiamento.
+ * Questa è la funzione chiave per risolvere la race condition.
+ */
+export async function updateMenuVisuals() {
+    console.log("[main.js] Chiamata a updateMenuVisuals() per aggiornare l'animazione del menu.");
+
+    // 1. Ricarica i dati utente più recenti per assicurarti di avere l'inventario aggiornato.
+    const localUserId = getCurrentUserId();
+    if (!localUserId) {
+        console.error("updateMenuVisuals: User ID non disponibile.");
+        return;
+    }
+
+    try {
+        const freshUserData = await getUser(localUserId);
+        if (freshUserData) {
+            // Aggiorna l'oggetto globale currentUserData
+            Object.assign(currentUserData, freshUserData);
+            console.log("[main.js] Dati utente ricaricati per l'aggiornamento visivo.");
+
+            // 2. Chiama la funzione specifica di menuAnimation per aggiornare solo la grafica.
+            if (menuAnimation) {
+                menuAnimation.updateMenuPlayerDisplay(currentUserData);
+                showToast('Aspetto aggiornato!', 'success');
+            }
+        }
+    } catch (error) {
+        console.error("Errore durante l'aggiornamento dei dati utente per il menu:", error);
+        showToast('Errore nell\'aggiornare la visualizzazione.', 'error');
+    }
+}
