@@ -7,6 +7,7 @@ import { showToast } from './toastNotifications.js';
 import { initializeMenu } from './main.js'; // Per aggiornare il menu dopo un acquisto
 import { openOfflineDB, getUser, saveUser } from './offlineDb.js'; // Importa le funzioni di IndexedDB
 import { currentUserData, getCurrentUserId } from './main.js'; // Importa currentUserData e getCurrentUserId
+import { notifyPlayerTookDamage } from './missionManager.js';
 
 // Catalogo degli oggetti cosmetici (duplicato da profile.js, assicurati che siano sempre sincronizzati)
 // In un'applicazione offline, è comune avere il catalogo hardcoded o caricato da un file JSON locale.
@@ -51,15 +52,19 @@ const cosmeticCatalog = {
     'skin_donkey_dunno_slayer': { price: 0, name: 'DUNNO.EXE Slayer Donkey', type: 'donkeySkin', icon: 'file-x', badgeUnlock: true, preview_asset: 'images/shop_previews/skin_donkey_dunno_slayer_preview.gif' },
     // --- FINE SKIN SBLOCCABILI TRAMITE BADGE ---
     // AGGIUNGI I COMPAGNI AL CATALOGO COSMETICO
-    'companion_cloud_assistant': { price: 5000, name: 'Cloud Assistant', type: 'companion', icon: 'cloud', preview_asset: 'images/shop_previews/companion_cloud_assistant_preview.gif', currency: 'digital_fruits' }, // <-- AGGIUNTA currency
-    'companion_debuggator_ia': { price: 8000, name: 'Debuggator IA', type: 'companion', icon: 'bug-droid', preview_asset: 'images/shop_previews/companion_debuggator_ia_preview.gif', currency: 'digital_fruits' }, // <-- AGGIUNTA currency
-    'companion_kernel_4_2': { price: 12000, name: 'Kernel 4.2', type: 'companion', icon: 'brain', preview_asset: 'images/shop_previews/companion_kernel_4_2_preview.gif', currency: 'digital_fruits' }, // <-- AGGIUNTA currency
-
+    'companion_cloud_assistant': { price: 500, name: 'Cloud Assistant', type: 'companion', icon: 'cloud', preview_asset: 'images/shop_previews/companion_cloud_assistant_preview.gif', currency: 'digital_fruits' }, // <-- AGGIUNTA currency
+    'companion_debuggator_ia': { price: 800, name: 'Debuggator IA', type: 'companion', icon: 'bug-droid', preview_asset: 'images/shop_previews/companion_debuggator_ia_preview.gif', currency: 'digital_fruits' }, // <-- AGGIUNTA currency
+    'companion_kernel_4_2': { price: 1200, name: 'Kernel 4.2', type: 'companion', icon: 'brain', preview_asset: 'images/shop_previews/companion_kernel_4_2_preview.gif', currency: 'digital_fruits' }, // <-- AGGIUNTA currency
+    
+    /**
+ * @todo change for production:
+ * @todo Price set low for tests.
+ */
     // Aggiungi i power-up permanenti al catalogo cosmetico
-    'powerup_extra_life': { price: 10000, name: 'Extra Life Module', type: 'permanentPowerup', icon: 'heart', preview_asset: 'images/shop_previews/powerup_extra_life_preview.gif' },
+    'powerup_extra_life': { price: 10, name: 'Extra Life Module', type: 'permanentPowerup', icon: 'heart', preview_asset: 'images/shop_previews/powerup_extra_life_preview.gif' },
     //'permanent_powerup_bit_magnet': { price: 7500, name: 'Bit Magnet', type: 'permanentPowerup', icon: 'magnet', preview_asset: 'images/shop_previews/powerup_bit_magnet_preview.gif' },
     'permanent_powerup_double_shot': { 
-    price: 300, 
+    price: 5, 
     name: 'Double Shot', 
     type: 'permanentPowerup', 
     icon: 'crosshair', 

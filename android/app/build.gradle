@@ -7,7 +7,7 @@ android {
         applicationId "asynced.codedash"
         minSdk 22
         targetSdk 35
-        versionCode 43 // i++ on new release 
+        versionCode 44 // i++ on new release 
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
