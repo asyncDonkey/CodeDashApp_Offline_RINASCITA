@@ -73,318 +73,175 @@ const cosmeticCatalog = {
 },
 };
 
-const shopContentDiv = document.getElementById('shop-content');
-const shopModal = document.getElementById('shopModal');
-const shopCategoriesNav = document.getElementById('shop-categories-nav');
-const shopItemGridContainer = document.getElementById('shop-item-grid-container');
-
-// Variabile per tenere traccia dell'ID della skin attualmente visualizzata nella preview
-let currentPreviewItemId = null;
+// --- Stato a livello di modulo per tenere traccia della scheda attiva ---
+let activeShopTab = 'donkeySkin'; // Scheda di default
 
 /**
- * Funzione generica per creare una card di un oggetto nel negozio.
- * @param {object} itemObject - L'oggetto completo dal cosmeticCatalog (es. { id: 'skin_id', price: 100, name: 'Skin Name', ... }).
- * @param {number} userTotalBits - I bit attuali dell'utente.
- * @param {number} userTotalDigitalFruits - Le digital fruits attuali dell'utente.
- * @param {string[]} userUnlockedItems - Gli ID degli oggetti già sbloccati dall'utente.
- * @returns {string} La stringa HTML della card.
+ * Inizializza lo shop. Aggiunge i listener per la navigazione e renderizza la scheda di default.
+ * Questa è la funzione di ingresso principale per lo shop.
  */
-function createItemCard(itemObject, userTotalBits, userTotalDigitalFruits, userUnlockedItems) {
-    // Directly use itemObject since it's now passed correctly from renderShopCategory
-    if (!itemObject) {
-        console.warn("Item object is undefined in createItemCard.");
-        return '';
+export async function initShop() {
+    console.log("Inizializzazione negozio...");
+    const shopNav = document.getElementById('shop-categories-nav');
+
+    // Aggiunge i listener solo una volta, usando un flag
+    if (shopNav && !shopNav.dataset.initialized) {
+        shopNav.addEventListener('click', (event) => {
+            const button = event.target.closest('.shop-category-btn');
+            if (button) {
+                const categoryType = button.dataset.category;
+                if (categoryType) {
+                    activeShopTab = categoryType; // Aggiorna lo stato della scheda attiva
+                    renderShopItems(activeShopTab); // Renderizza il contenuto per la nuova scheda
+                }
+            }
+        });
+        shopNav.dataset.initialized = 'true';
     }
 
-    let buttonText = 'Buy';
-    let buttonDisabled = '';
-    let priceText = '';
-    let currencyIconHtml = '';
+    // Renderizza il contenuto per la scheda attiva all'apertura
+    await renderShopItems(activeShopTab);
+}
 
-    const isOwned = userUnlockedItems.includes(itemObject.id);
-    const currencyType = itemObject.currency || 'bits'; // Default to 'bits' if not specified
-    const itemPrice = itemObject.price || 0; // Ensure price exists and defaults to 0
-
-    let hasEnoughCurrency = false;
-
-    // Determine currency icon and check if user has enough
-    if (currencyType === 'digital_fruits') {
-        currencyIconHtml = '<i class="ph-bold ph-orange"></i>'; // Digital Fruit icon
-        priceText = itemPrice.toLocaleString(); // Format price
-        hasEnoughCurrency = userTotalDigitalFruits >= itemPrice;
-    } else { // Default to bits
-        currencyIconHtml = '<i class="ph-bold ph-currency-btc"></i>'; // Bit icon
-        priceText = itemPrice.toLocaleString();
-        hasEnoughCurrency = userTotalBits >= itemPrice;
+/**
+ * Renderizza tutti gli oggetti per una data categoria dello shop.
+ * @param {string} category - La categoria da mostrare (es. 'donkeySkin').
+ */
+async function renderShopItems(category) {
+    const shopContainer = document.getElementById('shop-item-grid-container');
+    if (!shopContainer) {
+        console.error("Contenitore degli oggetti dello shop non trovato!");
+        return;
     }
 
-    // Set button text and disable state based on ownership and currency
-    if (isOwned) {
-        buttonText = 'Owned';
-        buttonDisabled = 'disabled';
-        priceText = 'Unlocked'; // No price displayed if owned
-        currencyIconHtml = ''; // No currency icon if owned
-    } else if (!hasEnoughCurrency) {
-        buttonText = 'Not Enough';
-        buttonDisabled = 'disabled';
-    }
+    shopContainer.innerHTML = '<p>Caricamento...</p>';
 
-    // Determine the preview content (image or fallback icon)
-    const previewContent = itemObject.preview_asset
-        ? `<img src="${itemObject.preview_asset}" alt="${itemObject.name} Preview" class="item-shop-preview-asset">`
-        : `<i class="ph-bold ph-${itemObject.icon || 'question'}" style="font-size: 48px; color: #666;"></i>`; // Fallback icon
+    try {
+        const user = await getUser(getCurrentUserId());
+        if (!user) throw new Error("Dati utente non trovati.");
+
+        // Aggiorna lo stato attivo sui bottoni di navigazione
+        document.querySelectorAll('#shop-categories-nav .shop-category-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.category === category);
+        });
+
+        const userUnlockedItems = new Set(user.inventory?.unlockedItems || []);
+        const itemsToDisplay = Object.entries(cosmeticCatalog)
+            .map(([id, item]) => ({ id, ...item }))
+            .filter(item =>
+                item.type === category &&
+                item.price > 0 &&
+                !userUnlockedItems.has(item.id)
+            )
+            .sort((a, b) => a.price - b.price);
+
+        if (itemsToDisplay.length === 0) {
+            shopContainer.innerHTML = '<p>Nessun nuovo oggetto disponibile in questa categoria.</p>';
+        } else {
+            const cardsHTML = itemsToDisplay.map(item => createShopItemCard(item, user)).join('');
+            shopContainer.innerHTML = `<div class="shop-items-grid">${cardsHTML}</div>`;
+        }
+
+        // Ri-attacca i listener ai nuovi bottoni di acquisto
+        addPurchaseListeners(shopContainer);
+
+    } catch (error) {
+        console.error("Errore nel renderizzare gli oggetti dello shop:", error);
+        shopContainer.innerHTML = `<p>Errore nel caricare lo shop. Riprova.</p>`;
+    }
+}
+
+/**
+ * Crea la card HTML per un singolo oggetto dello shop.
+ */
+function createShopItemCard(item, user) {
+    const currencyType = item.currency || 'bits';
+    const userCurrency = currencyType === 'digital_fruits'
+        ? (user.gameStats?.totalDigitalFruits || 0)
+        : (user.gameStats?.totalBits || 0);
+
+    const canAfford = userCurrency >= item.price;
+    const currencyIconClass = currencyType === 'digital_fruits' ? 'ph-orange' : 'ph-currency-btc';
+
+    const previewContent = item.preview_asset
+        ? `<img src="${item.preview_asset}" alt="${item.name}" class="item-shop-preview-asset">`
+        : `<i class="ph-bold ph-${item.icon || 'question'}" style="font-size: 48px;"></i>`;
 
     return `
-        <div class="shop-item-card" data-item-id="${itemObject.id}" data-item-type="${itemObject.type}">
-            <div class="item-preview">
-                ${previewContent}
-            </div>
-            <div class="item-name">
-                <span>${itemObject.name}</span>
-            </div>
+        <div class="shop-item-card" data-item-id="${item.id}">
+            <div class="item-preview">${previewContent}</div>
+            <div class="item-name"><span>${item.name}</span></div>
             <div class="item-price">
-                ${priceText} ${currencyIconHtml}
+                <span>${item.price.toLocaleString()}</span>
+                <i class="ph-bold ${currencyIconClass}"></i>
             </div>
-            <button class="buy-button" ${buttonDisabled}>${buttonText}</button>
+            <button class="buy-button" ${!canAfford ? 'disabled' : ''}>
+                ${canAfford ? 'Acquista' : 'Fondi insuff.'}
+            </button>
         </div>
     `;
 }
-export async function initShop() {
-    console.log("Inizializzazione negozio..."); //
-    const localUserId = getCurrentUserId(); //
-    if (!currentUserData || currentUserData.userId !== localUserId) {
-        console.error("currentUserData non disponibile o non corrisponde. Impossibile inizializzare il negozio."); //
-        showToast('Error: Unable to load store.', 'error'); //
-        return;
-    }
-
-    const userUnlockedItems = currentUserData.inventory?.unlockedItems || []; //
-
-    // Aggiorna il contatore dei bit nel negozio
-    const shopBitsCounter = document.getElementById('shop-bits-counter'); //
-    if (shopBitsCounter) {
-        shopBitsCounter.textContent = currentUserData.gameStats?.totalBits || 0; //
-    }
-
-    // Aggiungi listener ai bottoni di categoria (se non già fatto)
-    if (!shopCategoriesNav.dataset.listenersInitialized) { //
-        shopCategoriesNav.querySelectorAll('.shop-category-btn').forEach(button => { //
-            button.addEventListener('click', () => {
-                const categoryType = button.dataset.category; //
-                // MODIFICATO: Passa l'intero oggetto currentUserData
-                renderShopCategory(categoryType, currentUserData); 
-                // Rimuovi la classe 'active' da tutti i bottoni e aggiungila a quello cliccato
-                shopCategoriesNav.querySelectorAll('.shop-category-btn').forEach(btn => btn.classList.remove('active')); //
-                button.classList.add('active');
-            });
-        });
-        shopCategoriesNav.dataset.listenersInitialized = 'true'; //
-    }
-
-    const defaultButton = shopCategoriesNav.querySelector('.shop-category-btn[data-category="donkeySkin"]'); //
-    if (defaultButton) {
-        defaultButton.click(); // Simula un click per renderizzare la categoria di default
-    } else {
-        // MODIFICATO: Passa l'intero oggetto currentUserData
-        renderShopCategory('donkeySkin', currentUserData); 
-    }
-
-    // addBuyButtonListeners continua a ricevere userBits e userUnlockedItems come prima,
-    // ma la logica di createItemCard è stata modificata per usare tutti e tre i valori di valuta.
-    addBuyButtonListeners(currentUserData.gameStats.totalBits || 0, currentUserData.inventory?.unlockedItems || []); //
-}
-/**
- * Renderizza una specifica categoria di oggetti nel negozio.
- * @param {string} category - Il tipo di oggetto da filtrare ('donkeySkin', 'bulletSkin', 'companion', 'permanentPowerup').
- * @param {object} userData - L'oggetto utente locale (currentUserData).
- */
-function renderShopCategory(category, userData) {
-    const shopContainer = document.getElementById('shop-container');
-
-    if (!shopContainer) {
-        console.error("Errore: Elemento #shop-container non trovato nel DOM.");
-        return;
-    }
-
-    shopItemGridContainer.innerHTML = '';
-
-    // itemsToDisplay will correctly contain objects like { id: '...', name: '...', price: ..., type: '...', ... }
-    let itemsToDisplay = Object.entries(cosmeticCatalog)
-        .map(([id, item]) => ({ id, ...item }))
-        .filter(item =>
-            item.type === category && !item.isDefault && !item.badgeUnlock
-        )
-        .sort((a, b) => a.price - b.price);
-
-    if (itemsToDisplay.length === 0) {
-        shopItemGridContainer.innerHTML = '<p>Nessun oggetto disponibile in questa categoria.</p>';
-        return;
-    }
-
-    let gridHtml = '<div class="shop-items-grid">';
-    itemsToDisplay.forEach(item => {
-        // MODIFIED: Pass the entire 'item' object (which now has name, price, currency, etc.)
-        gridHtml += createItemCard(
-            item, // <-- MODIFICATION HERE: Pass the full 'item' object
-            userData.gameStats.totalBits || 0,
-            userData.gameStats.totalDigitalFruits || 0,
-            userData.inventory.unlockedItems || []
-        );
-    });
-    gridHtml += '</div>';
-    shopItemGridContainer.innerHTML = gridHtml;
-
-    addBuyButtonListeners(userData.gameStats.totalBits || 0, userData.inventory.unlockedItems || []);
-}
 
 /**
- * Aggiunge i listener ai bottoni "Buy" dopo che la griglia è stata renderizzata.
- * @param {number} userBits - I bit attuali dell'utente.
- * @param {string[]} userUnlockedItems - Gli ID degli oggetti già sbloccati dall'utente.
+ * Aggiunge i listener per i click sui bottoni di acquisto.
  */
-function addBuyButtonListeners(userBits, userUnlockedItems) {
-    shopItemGridContainer.querySelectorAll('.buy-button').forEach(button => {
-        // --- RIMUOVI LE SEGUENTI 2 RIGHE ---
-        // Rimuovi i listener esistenti per evitare duplicati
-        // const newButton = button.cloneNode(true);
-        // button.parentNode.replaceChild(newButton, button);
-        // --- FINE RIMOZIONE ---
-
-        // Attacca il listener direttamente al 'button' corrente nel forEach.
-        // Questo 'button' è un elemento nuovo ogni volta che la griglia viene renderizzata.
-        if (!button.disabled) { // Usa 'button.disabled' direttamente
-            button.addEventListener('click', async (event) => {
-                const itemCard = event.target.closest('.shop-item-card'); // Cerca la card genitore
-                const itemId = itemCard.dataset.itemId; // Ottieni l'ID dall'attributo data-*
-                // const itemType = itemCard.dataset.itemType; // Non più necessario qui
-
-                // Ottieni i dettagli completi dell'oggetto dal catalogo usando l'itemId
-                const item = cosmeticCatalog[itemId]; 
-
-                if (!item) {
-                    showToast('Error: Item not found in catalog.', 'error');
-                    return;
-                }
-                
-                // Chiama handlePurchase con l'ID dell'oggetto e il suo prezzo
-                await handlePurchase(itemId, item.price); 
-            });
-
-            // Listener per la preview (se vuoi una preview al click sull'oggetto)
-            const itemCard = button.closest('.shop-item-card'); // Usa 'button.closest' direttamente
-            itemCard.addEventListener('click', () => {
-                const itemId = itemCard.dataset.itemId;
-                const item = cosmeticCatalog[itemId];
-                if (item && item.preview_asset) {
-                    const previewImage = document.getElementById('shop-preview-image');
-                    const previewName = document.getElementById('shop-preview-name');
-                    if (previewImage) previewImage.src = item.preview_asset;
-                    if (previewName) previewName.textContent = item.name;
-                    currentPreviewItemId = itemId; // Aggiorna l'ID della preview
-                }
-            });
-        }
+function addPurchaseListeners(container) {
+    container.querySelectorAll('.buy-button').forEach(button => {
+        if (button.disabled) return;
+        const card = button.closest('.shop-item-card');
+        const itemId = card.dataset.itemId;
+        button.addEventListener('click', () => handlePurchase(itemId));
     });
 }
 
-
 /**
- * Gestisce la logica di acquisto di un oggetto localmente.
- * Sostituisce la Cloud Function `purchaseItem`.
- * @param {string} itemId - L'ID dell'oggetto da acquistare.
- * @param {number} itemPrice - Il costo dell'oggetto.
+ * Gestisce la logica di acquisto di un oggetto.
  */
-async function handlePurchase(itemId, itemPrice) {
-    showToast('Purchase processing...', 'info');
-    const localUserId = getCurrentUserId();
-
-    if (!currentUserData || currentUserData.userId !== localUserId) {
-        console.error("currentUserData non disponibile o non corrisponde. Impossibile completare l'acquisto.");
-        showToast('Error: Unable to access local user data.', 'error');
+async function handlePurchase(itemId) {
+    const item = cosmeticCatalog[itemId];
+    if (!item) {
+        showToast("Oggetto non trovato!", "error");
         return;
     }
 
-    const userProfileToUpdate = { ...currentUserData };
-    userProfileToUpdate.gameStats = { ...userProfileToUpdate.gameStats };
-    userProfileToUpdate.inventory = { ...userProfileToUpdate.inventory };
-    userProfileToUpdate.inventory.unlockedItems = [...(userProfileToUpdate.inventory.unlockedItems || [])];
+    showToast("Processo l'acquisto...", "info");
 
-    console.log("DEBUG handlePurchase: Inizio del processo di acquisto.");
-    console.log("DEBUG handlePurchase: itemId ricevuto:", itemId);
-    console.log("DEBUG handlePurchase: Contenuto di cosmeticCatalog:", cosmeticCatalog);
-
-    const itemDetails = cosmeticCatalog[itemId];
-
-    if (!itemDetails) { // Aggiunto controllo per itemDetails undefined
-        console.error("Errore: Dettagli oggetto non trovati nel catalogo per ID:", itemId);
-        showToast('Error: Item not valid for purchase.', 'error');
-        return;
-    }
-
-    const currencyType = itemDetails.currency || 'bits';
-
-    let currentCurrency;
-    let currencyFieldName;
-    let currencyDisplayName;
-
-    if (currencyType === 'digital_fruits') {
-        currentCurrency = userProfileToUpdate.gameStats.totalDigitalFruits || 0;
-        currencyFieldName = 'totalDigitalFruits';
-        currencyDisplayName = 'Digital Fruits';
-    } else {
-        currentCurrency = userProfileToUpdate.gameStats.totalBits || 0;
-        currencyFieldName = 'totalBits';
-        currencyDisplayName = 'Bits';
-    }
-
-    const userUnlockedItems = userProfileToUpdate.inventory.unlockedItems;
-
-    if (userUnlockedItems.includes(itemId)) {
-        showToast('You have already unlocked this item!', 'warning');
-        return;
-    }
-    if (currentCurrency < itemPrice) {
-        showToast(`You do not have enough ${currencyDisplayName} for this purchase.`, 'error');
-        return;
-    }
-
-    console.log("DEBUG: Entrato nel blocco try di handlePurchase.");
     try {
-        userProfileToUpdate.gameStats[currencyFieldName] = currentCurrency - itemPrice;
-        userProfileToUpdate.inventory.unlockedItems.push(itemId);
-        userProfileToUpdate.updatedAt = Date.now();
+        const user = await getUser(getCurrentUserId());
+        if (!user) throw new Error("Utente non trovato.");
 
-        console.log("DEBUG: Tenterò di salvare l'utente in IndexedDB.", userProfileToUpdate);
-
-        await saveUser(userProfileToUpdate);
-
-        console.log("DEBUG: Salvataggio utente completato con successo in IndexedDB.");
-
-        Object.assign(currentUserData, userProfileToUpdate);
-
-        showToast('Purchase completed successfully!', 'success');
-
-        // Ricarica il negozio per riflettere lo stato aggiornato (bit, oggetti sbloccati)
-        await initShop(); // Re-inizializza il negozio con i nuovi dati
-        initializeMenu(); // Aggiorna il menu principale (es. contatori bit e snapshot)
-
-        // NUOVO: Aggiorna le modali dell'inventario se sono aperte o necessitano di refresh
-        // Assumi che queste funzioni esistano in main.js o profile.js e siano esportate
-        // Se non esistono, dovrai crearle.
-        if (typeof updateSkinsModalDisplay === 'function') {
-            updateSkinsModalDisplay();
-        }
-        if (typeof updateCompanionsModalDisplay === 'function') {
-            updateCompanionsModalDisplay();
-        }
-        if (typeof updatePowerUpsModalDisplay === 'function') {
-            updatePowerUpsModalDisplay();
+        // Controlla la valuta e scala il prezzo
+        const currencyType = item.currency || 'bits';
+        if (currencyType === 'digital_fruits') {
+            if ((user.gameStats.totalDigitalFruits || 0) < item.price) throw new Error("Frutti digitali insufficienti.");
+            user.gameStats.totalDigitalFruits -= item.price;
+        } else {
+            if ((user.gameStats.totalBits || 0) < item.price) throw new Error("Bit insufficienti.");
+            user.gameStats.totalBits -= item.price;
         }
 
+        // Aggiunge l'oggetto all'inventario
+        if (!user.inventory.unlockedItems) user.inventory.unlockedItems = [];
+        user.inventory.unlockedItems.push(itemId);
+        user.updatedAt = Date.now();
+
+        // Salva le modifiche nel DB
+        await saveUser(user);
+
+        // Sincronizza lo stato globale e la UI
+        Object.assign(currentUserData, user);
+        window.dispatchEvent(new CustomEvent('menubitscollected'));
+
+        showToast(`${item.name} acquistato con successo!`, "success");
+
+        // --- IL FIX FONDAMENTALE ---
+        // Dopo l'acquisto, renderizza di nuovo solo la scheda dello shop che era attiva.
+        await renderShopItems(activeShopTab);
 
     } catch (error) {
-        console.error("Errore durante l'acquisto locale:", error);
-        showToast(`Purchase error: ${error.message}`, 'error');
-        debugger;
+        console.error("Errore durante l'acquisto:", error);
+        showToast(`Acquisto fallito: ${error.message}`, "error");
+        // Renderizza di nuovo la scheda per riattivare i bottoni in caso di errore
+        await renderShopItems(activeShopTab);
     }
 }
