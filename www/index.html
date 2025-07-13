@@ -1,455 +1,521 @@
 <!doctype html>
 <html lang="it">
-      <head>
-     <meta charset="UTF-8" />
-     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
-     <title>codeDash! Mobile</title>
-     <link rel="stylesheet" href="leaderboard.css" />
-     <link rel="stylesheet" href="credits.css" />
-     <link rel="stylesheet" href="loader.css" />
-     <link rel="stylesheet" href="terminal-profile.css" />
-     
-     <link rel="stylesheet" href="login-register.css" />
-     <link rel="stylesheet" href="shop.css" />
-     
-     
-     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Pixelify+Sans:wght@400..700&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
-     <link
-    rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
-     />
-     <link
-    rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap"
-     />
-     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" />
-     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-     <script src="https://cdn.jsdelivr.net/npm/@capacitor/core@6.0.0/dist/capacitor.js"></script>
-     <style>
-    
-    body {
-          margin: 0;
-          overflow: hidden; /* Impedisce lo scrolling */
-          background-color: var(--terminal-bg, #282a36); /* Sfondo Dracula come fallback */
-          color: var(--terminal-text, #f8f8f2); /* Colore testo Dracula come fallback */
-    }
-    #app-root {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          min-height: 100vh; /* Altezza piena del viewport */
-          width: 100vw; /* Larghezza piena del viewport */
-          position: relative;
-    }
-    
-     </style>
-      </head>
-      <body>
-     <div id="app-root">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0"
+    />
+    <title>codeDash! Mobile</title>
+    <link rel="stylesheet" href="leaderboard.css" />
+    <link rel="stylesheet" href="credits.css" />
+    <link rel="stylesheet" href="loader.css" />
+    <link rel="stylesheet" href="terminal-profile.css" />
+
+    <link rel="stylesheet" href="login-register.css" />
+    <link rel="stylesheet" href="shop.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Pixelify+Sans:wght@400..700&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+    />
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@capacitor/core@6.0.0/dist/capacitor.js"></script>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden; /* Impedisce lo scrolling */
+        background-color: var(--terminal-bg, #282a36); /* Sfondo Dracula come fallback */
+        color: var(--terminal-text, #f8f8f2); /* Colore testo Dracula come fallback */
+      }
+      #app-root {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh; /* Altezza piena del viewport */
+        width: 100vw; /* Larghezza piena del viewport */
+        position: relative;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app-root">
       <div id="terminal-container">
-     <canvas id="loaderCanvas"></canvas> 
-     
-     <div id="codedash-title">CodeDash!</div> 
-     
-     <div id="multi-progress-container">
-    <div class="progress-bar-wrapper">
-          <span class="progress-label">LOADING CORE... </span>
-          <pre class="ascii-progress-bar" id="progress-bar-1"></pre>
+        <canvas id="loaderCanvas"></canvas>
+
+        <div id="codedash-title">CodeDash!</div>
+
+        <div id="multi-progress-container">
+          <div class="progress-bar-wrapper">
+            <span class="progress-label">LOADING CORE... </span>
+            <pre class="ascii-progress-bar" id="progress-bar-1"></pre>
+          </div>
+        </div>
+
+        <pre id="terminal-log"></pre>
+      </div>
     </div>
-     </div>
-     
-     <pre id="terminal-log"></pre> 
-      </div>
-
-      </div>
-
-
 
     <div id="main-menu">
-  <canvas id="menuCanvas"></canvas>
-  <div id="rain-status-indicator" class="terminal-text"></div>
-  <div class="menu-overlay">
-    <div id="donkey-speech-bubble"></div>
-    <div id="now-playing-container"></div>
-  </div>
-</div>
+      <canvas id="menuCanvas"></canvas>
+      <div id="rain-status-indicator" class="terminal-text"></div>
+      <div class="menu-overlay">
+        <div id="donkey-speech-bubble"></div>
+        <div id="now-playing-container"></div>
+      </div>
+    </div>
 
     <div id="top-bar-left" class="top-bar-section">
-      <div id="bit-counter" style="display: none;">
-     <span id="bit-count-value">0</span>
-     <i class="ph-bold ph-currency-btc"></i>
+      <div id="bit-counter" style="display: none">
+        <span id="bit-count-value">0</span>
+        <i class="ph-bold ph-currency-btc"></i>
       </div>
-      <div id="digital-fruit-counter" class="top-bar-element" style="display: none;">
-     <span id="digital-fruit-count-value">0</span>
-     <i class="ph-bold ph-orange"></i>
+      <div id="digital-fruit-counter" class="top-bar-element" style="display: none">
+        <span id="digital-fruit-count-value">0</span>
+        <i class="ph-bold ph-orange"></i>
       </div>
       <div class="new-menu-icons-group">
-            <button id="skins-btn" class="menu-btn top-bar-icon-btn" aria-label="Skins">
-                <i class="ph-bold ph-t-shirt"></i>
-            </button>
-            <button id="companions-btn" class="menu-btn top-bar-icon-btn" aria-label="Companions">
-                <i class="ph-bold ph-robot"></i>
-            </button>
-            <button id="powerups-btn" class="menu-btn top-bar-icon-btn" aria-label="Powerups">
-                <i class="ph-bold ph-lightning"></i>
-            </button>
+        <button id="skins-btn" class="menu-btn top-bar-icon-btn" aria-label="Skins">
+          <i class="ph-bold ph-t-shirt"></i>
+        </button>
+        <button id="companions-btn" class="menu-btn top-bar-icon-btn" aria-label="Companions">
+          <i class="ph-bold ph-robot"></i>
+        </button>
+        <button id="powerups-btn" class="menu-btn top-bar-icon-btn" aria-label="Powerups">
+          <i class="ph-bold ph-lightning"></i>
+        </button>
       </div>
-</div>
+    </div>
 
     <div id="top-bar-right" class="top-bar-section">
-          <button id="start-game-btn" class="menu-btn top-bar-icon-btn" aria-label="Start Game">
-         <i class="ph-bold ph-play"></i>
-          </button>
-          <!-- Pulsante Crediti/Info spostato qui, sotto il tasto Play -->
-          <button id="credits-btn" class="menu-btn top-bar-icon-btn" aria-label="Crediti">
-            <i class="ph-bold ph-question"></i>
-          </button>
-          <!-- Pulsanti Shop e Leaderboard senza testo -->
-          <button id="shop-btn" class="menu-btn top-bar-icon-btn" style="display: none;">
-         <i class="ph-bold ph-storefront"></i>
-          </button>
-          <button id="leaderboard-btn" class="menu-btn top-bar-icon-btn">
-         <i class="ph-bold ph-trophy"></i>
-          </button>
-          
-          <!-- Icona account/profilo -->
-          <div id="account-icon-container">
-         <a href="#" id="show-login-modal-btn" title="Accedi o Registrati">
-        <i class="ph-bold ph-identification-card"></i>
-         </a>
-         <img id="user-avatar-icon" src="" alt="User Avatar" title="Vai al profilo" />
-          </div>
+      <button id="start-game-btn" class="menu-btn top-bar-icon-btn" aria-label="Start Game">
+        <i class="ph-bold ph-play"></i>
+      </button>
+      <!-- Pulsante Crediti/Info spostato qui, sotto il tasto Play -->
+      <button id="credits-btn" class="menu-btn top-bar-icon-btn" aria-label="Crediti">
+        <i class="ph-bold ph-question"></i>
+      </button>
+      <!-- Pulsanti Shop e Leaderboard senza testo -->
+      <button id="shop-btn" class="menu-btn top-bar-icon-btn" style="display: none">
+        <i class="ph-bold ph-storefront"></i>
+      </button>
+      <button id="leaderboard-btn" class="menu-btn top-bar-icon-btn">
+        <i class="ph-bold ph-trophy"></i>
+      </button>
+
+      <!-- Icona account/profilo -->
+      <div id="account-icon-container">
+        <a href="#" id="show-login-modal-btn" title="Accedi o Registrati">
+          <i class="ph-bold ph-identification-card"></i>
+        </a>
+        <img id="user-avatar-icon" src="" alt="User Avatar" title="Vai al profilo" />
+      </div>
     </div>
 
     <div id="shopModal" class="modal">
-    <div class="modal-content landscape-modal">
+      <div class="modal-content landscape-modal">
         <span class="close-button" id="closeShopModal">×</span>
         <h2><i class="ph-bold ph-storefront"></i> ROM</h2>
 
         <div id="shop-categories-nav">
-            
-            <button class="shop-category-btn" data-category="donkeySkin">Skins</button>           <button class="shop-category-btn" data-category="bulletSkin">Code Skins</button>         <button class="shop-category-btn" data-category="permanentPowerup">PowerUps</button>    <button class="shop-category-btn" data-category="companion">Companions</button>
-            
+          <button class="shop-category-btn" data-category="donkeySkin">Skins</button>
+          <button class="shop-category-btn" data-category="bulletSkin">Code Skins</button>
+          <button class="shop-category-btn" data-category="permanentPowerup">PowerUps</button>
+          <button class="shop-category-btn" data-category="companion">Companions</button>
         </div>
         <div id="shop-container">
-            <div id="shop-item-grid-container">
-                </div>
+          <div id="shop-item-grid-container"></div>
         </div>
+      </div>
     </div>
-</div>
     <div id="skinsModal" class="modal">
-        <div class="modal-content landscape-modal">
-            <span class="close-button" id="closeSkinsModal">&times;</span>
-            <h2><i class="ph-bold ph-t-shirt"></i> Skins</h2>
-            <div id="skins-categories-nav" class="category-nav">
-                <button class="category-btn active" data-type-filter="donkeySkin">Donkey</button>
-                <button class="category-btn" data-type-filter="bulletSkin">Bullets</button>
-                
-            </div>
-            <div id="skins-container" class="item-grid-container">
-                </div>
+      <div class="modal-content landscape-modal">
+        <span class="close-button" id="closeSkinsModal">&times;</span>
+        <h2><i class="ph-bold ph-t-shirt"></i> Skins</h2>
+        <div id="skins-categories-nav" class="category-nav">
+          <button class="category-btn active" data-type-filter="donkeySkin">Donkey</button>
+          <button class="category-btn" data-type-filter="bulletSkin">Bullets</button>
         </div>
+        <div id="skins-container" class="item-grid-container"></div>
+      </div>
     </div>
 
     <div id="companionsModal" class="modal">
-        <div class="modal-content landscape-modal">
-            <span class="close-button" id="closeCompanionsModal">&times;</span>
-            <h2><i class="ph-bold ph-robot"></i> Companions</h2>
-            <div id="companions-categories-nav" class="category-nav">
-                <button class="category-btn active" data-type-filter="companion">Available</button>
-                <button class="category-btn" data-type-filter="equipped">Equipped</button>
-            </div>
-            <div id="companions-container" class="item-grid-container">
-                </div>
+      <div class="modal-content landscape-modal">
+        <span class="close-button" id="closeCompanionsModal">&times;</span>
+        <h2><i class="ph-bold ph-robot"></i> Companions</h2>
+        <div id="companions-categories-nav" class="category-nav">
+          <button class="category-btn active" data-type-filter="companion">Available</button>
+          <button class="category-btn" data-type-filter="equipped">Equipped</button>
         </div>
+        <div id="companions-container" class="item-grid-container"></div>
+      </div>
     </div>
 
     <div id="powerupsModal" class="modal">
-        <div class="modal-content landscape-modal">
-            <span class="close-button" id="closePowerupsModal">&times;</span>
-            <h2><i class="ph-bold ph-lightning"></i> Permanent PowerUps </h2>
-            <div id="powerups-categories-nav" class="category-nav">
-                <button class="category-btn active" data-type-filter="permanentPowerup">Available</button>
-                <button class="category-btn" data-type-filter="active">Active</button>
-            </div>
-            <div id="powerups-container" class="item-grid-container">
-                </div>
+      <div class="modal-content landscape-modal">
+        <span class="close-button" id="closePowerupsModal">&times;</span>
+        <h2><i class="ph-bold ph-lightning"></i> Permanent PowerUps</h2>
+        <div id="powerups-categories-nav" class="category-nav">
+          <button class="category-btn active" data-type-filter="permanentPowerup">Available</button>
+          <button class="category-btn" data-type-filter="active">Active</button>
         </div>
+        <div id="powerups-container" class="item-grid-container"></div>
+      </div>
     </div>
 
     <div id="game-container-wrapper">
-          <canvas id="gameCanvas"></canvas>
-          <div id="touch-overlay-left" class="touch-overlay-guide">JUMP</div>
-          <div id="touch-overlay-right" class="touch-overlay-guide">SHOOT</div>
+      <canvas id="gameCanvas"></canvas>
+      <div id="touch-overlay-left" class="touch-overlay-guide">JUMP</div>
+      <div id="touch-overlay-right" class="touch-overlay-guide">SHOOT</div>
 
-          <button id="pauseButton" class="game-control-button" title="Pausa">
-         <i class="ph-bold ph-pause"></i>
-          </button>
+      <button id="pauseButton" class="game-control-button" title="Pausa">
+        <i class="ph-bold ph-pause"></i>
+      </button>
 
-          <div id="pauseModal" class="modal">
-         <div class="modal-content landscape-modal pause-view">
-        <h2><i class="ph-bold ph-pause-circle"></i> PAUSE</h2>
-        <div class="pause-buttons">
-              <button id="resumeGameBtn" class="game-over-button pause-resume-btn">
-             <i class="ph-bold ph-play-circle"></i> <span>Resume</span>
-              </button>
-              <button id="restartGameFromPauseBtn" class="game-over-button pause-restart-btn">
-             <i class="ph-bold ph-arrow-counter-clockwise"></i> <span>Restart</span>
-              </button>
-              <button id="mainMenuFromPauseBtn" class="game-over-button pause-main-menu-btn">
-             <i class="ph-bold ph-squares-four"></i> <span>Main Menu</span>
-              </button>
-        </div>
-         </div>
-          </div>
-
-          <div id="mission-display"></div> 
-          
-          <div id="scoreInputContainerDonkey" class="score-input-container">
-         <p>GAME OVER! Final Score: <span id="finalScoreDisplayDonkey">0</span></p>
-
-         <div class="score-buttons">
-        <button id="restartGameBtnDonkey" class="game-over-button game-over-restart-btn">
+      <div id="pauseModal" class="modal">
+        <div class="modal-content landscape-modal pause-view">
+          <h2><i class="ph-bold ph-pause-circle"></i> PAUSE</h2>
+          <div class="pause-buttons">
+            <button id="resumeGameBtn" class="game-over-button pause-resume-btn">
+              <i class="ph-bold ph-play-circle"></i> <span>Resume</span>
+            </button>
+            <button id="restartGameFromPauseBtn" class="game-over-button pause-restart-btn">
               <i class="ph-bold ph-arrow-counter-clockwise"></i> <span>Restart</span>
-        </button>
-        <button id="mainMenuBtn" class="game-over-button game-over-main-menu-btn">
-              <i class="ph-bold ph-squares-four"></i> <span>Menu</span>
-        </button>
-        <button id="shareScoreBtnDonkey" class="game-over-button game-over-share-btn">
-              <i class="ph-bold ph-share-network"></i> <span>Share</span>
-        </button>
-         </div>
+            </button>
+            <button id="mainMenuFromPauseBtn" class="game-over-button pause-main-menu-btn">
+              <i class="ph-bold ph-squares-four"></i> <span>Main Menu</span>
+            </button>
           </div>
+        </div>
+      </div>
 
-          <div id="mobileStartButton" class="mobile-start-button">
-         <span class="material-symbols-rounded">play_arrow</span>
-         <span class="visually-hidden">Start Game</span>
-          </div>
-          
+      <div id="mission-display"></div>
 
-          
+      <div id="scoreInputContainerDonkey" class="score-input-container">
+        <p>GAME OVER! Final Score: <span id="finalScoreDisplayDonkey">0</span></p>
+
+        <div class="score-buttons">
+          <button id="restartGameBtnDonkey" class="game-over-button game-over-restart-btn">
+            <i class="ph-bold ph-arrow-counter-clockwise"></i> <span>Restart</span>
+          </button>
+          <button id="mainMenuBtn" class="game-over-button game-over-main-menu-btn">
+            <i class="ph-bold ph-squares-four"></i> <span>Menu</span>
+          </button>
+          <button id="shareScoreBtnDonkey" class="game-over-button game-over-share-btn">
+            <i class="ph-bold ph-share-network"></i> <span>Share</span>
+          </button>
+        </div>
+      </div>
+
+      <div id="mobileStartButton" class="mobile-start-button">
+        <span class="material-symbols-rounded">play_arrow</span>
+        <span class="visually-hidden">Start Game</span>
+      </div>
     </div>
-     </div>
-     <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
 
-     <div id="loginModal" class="modal">
-    <div class="modal-content landscape-modal login-register-view">
-          <span class="close-button" id="closeLoginModal">&times;</span>
-          <h2><i class="ph ph-terminal"></i> LogIn or Register</h2>
+    <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
 
-          <div class="auth-section">
-         <div class="auth-toggle">
-        <button id="showLoginTab" class="active">LogIn</button>
-        <button id="showRegisterTab">Register</button>
-         </div>
+    <div id="loginModal" class="modal">
+      <div class="modal-content landscape-modal login-register-view">
+        <span class="close-button" id="closeLoginModal">&times;</span>
+        <h2><i class="ph ph-terminal"></i> LogIn or Register</h2>
 
-         <div id="loginForm" class="auth-form active">
-        <h3>Access the system</h3>
-        <input type="email" id="loginEmail" placeholder="Email" required />
-        <input type="password" id="loginPassword" placeholder="Password" required />
-        <button id="loginBtn">Enter</button>
-        <a href="#" class="forgot-password-link">Forgot Password?</a>
-         </div>
+        <div class="auth-section">
+          <div class="auth-toggle">
+            <button id="showLoginTab" class="active">LogIn</button>
+            <button id="showRegisterTab">Register</button>
+          </div>
 
-         <div id="registerForm" class="auth-form">
-        <h3>Create a new Account</h3>
-        <input type="text" id="registerDisplayName" placeholder="Nickname" required />
-        <p class="input-hint">Min. 3 characters, max. 15. Only letters, numbers and underscore (_).</p>
-        <input type="email" id="registerEmail" placeholder="Email" required />
-        <input type="password" id="registerPassword" placeholder="Password" required />
-        <p class="input-hint">Min. 6 characters. We recommend that you also use numbers and symbols..</p>
-        <input type="password" id="registerConfirmPassword" placeholder="Conferma Password" required />
+          <div id="loginForm" class="auth-form active">
+            <h3>Access the system</h3>
+            <input type="email" id="loginEmail" placeholder="Email" required />
+            <input type="password" id="loginPassword" placeholder="Password" required />
+            <button id="loginBtn">Enter</button>
+            <a href="#" class="forgot-password-link">Forgot Password?</a>
+          </div>
 
-        <div class="privacy-consent">
+          <div id="registerForm" class="auth-form">
+            <h3>Create a new Account</h3>
+            <input type="text" id="registerDisplayName" placeholder="Nickname" required />
+            <p class="input-hint">
+              Min. 3 characters, max. 15. Only letters, numbers and underscore (_).
+            </p>
+            <input type="email" id="registerEmail" placeholder="Email" required />
+            <input type="password" id="registerPassword" placeholder="Password" required />
+            <p class="input-hint">
+              Min. 6 characters. We recommend that you also use numbers and symbols..
+            </p>
+            <input
+              type="password"
+              id="registerConfirmPassword"
+              placeholder="Conferma Password"
+              required
+            />
+
+            <div class="privacy-consent">
               <input type="checkbox" id="privacyConsent" required />
               <label for="privacyConsent"
-             >I accept the <a href="privacy.html" target="_blank">Privacy Policy</a> and
-             <a href="terms.html" target="_blank">Terms and Conditions</a>.</label
+                >I accept the <a href="privacy.html" target="_blank">Privacy Policy</a> and
+                <a href="terms.html" target="_blank">Terms and Conditions</a>.</label
               >
-        </div>
+            </div>
 
-        
-
-        <div class="who-am-i-section">
+            <div class="who-am-i-section">
               <h4>Who Am I?</h4>
               <p class="input-hint">Choose your identity in Cyberspace:</p>
               <select id="whoAmISelect">
-             <option value="human">Human</option>
-             <option value="robot">Robot</option>
-             <option value="alien">Alien</option>
-             <option value="engineer">Engineer</option>
-             <option value="developer">Developer</option>
+                <option value="human">Human</option>
+                <option value="robot">Robot</option>
+                <option value="alien">Alien</option>
+                <option value="engineer">Engineer</option>
+                <option value="developer">Developer</option>
               </select>
+            </div>
+            <button id="registerBtn">Register</button>
+          </div>
         </div>
-        <button id="registerBtn">Register</button>
-         </div>
-          </div>
-    </div>
-     </div>
-
-     <div id="profileModal" class="modal">
-      <div class="modal-content landscape-modal profile-view">
-     <span class="close-button" id="closeProfileModal">&times;</span>
-     
-     <div class="profile-header">
-    <div class="profile-avatar-container">
-          <img id="profile-modal-avatar" src="data:," alt="User Avatar" />
-          <div class="profile-avatar-buttons">
-         
-         <button id="generate-avatar-btn" class="icon-button" title="Genera Avatar"><i class="ph-bold ph-magic-wand"></i></button>
-         <button id="save-generated-avatar-btn" class="icon-button" title="Salva Avatar" style="display: none;"><i class="ph-bold ph-floppy-disk"></i></button>
-          </div>
-    </div>
-    <div class="profile-info">
-          <div class="profile-name-container">
-         <h2 id="profile-modal-name"></h2>
-         <button id="edit-nickname-btn" class="icon-button" title="Modifica Nickname"><i class="ph-bold ph-pencil-simple"></i></button>
-          </div>
-          <p id="profile-modal-email"></p>
-    </div>
-     </div>
-
-     <div class="profile-nav">
-    <button id="profile-nav-stats" class="profile-nav-btn active"><i class="ph-bold ph-chart-bar"></i> Stats</button>
-    <button id="profile-nav-badges" class="profile-nav-btn"><i class="ph-bold ph-medal"></i> Badges</button>
-    <button id="profile-nav-options" class="profile-nav-btn"><i class="ph-bold ph-gear"></i> Options</button> </div>
-
-     <div class="profile-body-container">
-    <div id="profile-stats-content" class="profile-content active">
-          <div class="profile-stats">
-         <h3>Le tue Statistiche</h3>
-         <p>Highscore: <strong id="profile-modal-highest-score">0</strong></p>
-         <p>Total Score: <strong id="profile-modal-total-score">0</strong></p>
-         <p>Played Games: <strong id="profile-modal-games-played">0</strong></p>
-         <p>Bosses Defeated: <strong id="profile-modal-bosses-defeated">0</strong></p>
-          </div>
-    </div>
-
-    <div id="profile-badges-content" class="profile-content">
-          <h3>Your Badges</h3>
-          <div id="profile-modal-badges-container" class="badge-grid-container">
-          </div>
-    </div>
-
-    <div id="profile-options-content" class="profile-content">
-          <div class="profile-options-section">
-         <h3><i class="ph-bold ph-key"></i> Change Password</h3>
-         <p class="input-hint">Enter your new password. You will be asked for your current password for security reasons..</p>
-         <input type="password" id="currentPasswordInput" placeholder="Password attuale" required />
-         <input type="password" id="newPasswordInput" placeholder="Nuova password" required />
-         <input type="password" id="confirmNewPasswordInput" placeholder="Conferma nuova password" required />
-         <button id="changePasswordBtn" class="action-button">Change Password</button>
-          </div>
-          </div>
-    </div>
-
-     <div class="profile-footer">
-    <button id="logout-btn" class="game-over-button game-over-main-menu-btn">Logout</button>
-     </div>
       </div>
-</div>
-
-     <div id="editNicknameModal" class="modal">
-    <div class="modal-content landscape-modal">
-          <span class="close-button" id="closeEditNicknameModal">&times;</span>
-          <h2>Change Nickname</h2>
-          <input type="text" id="newNicknameInput" placeholder="Nuovo nickname" required />
-          <p id="nicknameCooldownMessage" style="color: gray; font-size: 0.9em; margin-top: 5px"></p>
-          <button id="saveNewNicknameBtn">Save</button>
     </div>
-     </div>
-     <div id="leaderboardModal" class="modal">
-    <div class="modal-content landscape-modal">
-          <span class="close-button" id="closeLeaderboardModal">&times;</span>
-          <h2><i class="ph-bold ph-trophy"></i> LOG</h2>
 
-          <h3 class="leaderboard-game-title">CodeDash!</h3>
+    <div id="profileModal" class="modal">
+      <div class="modal-content landscape-modal profile-view">
+        <span class="close-button" id="closeProfileModal">&times;</span>
 
-          <div class="leaderboard-list-container">
-         <div class="leaderboard-header">
-        <span>Rank</span>
-        <span>Player</span>
-        <span>Score</span>
-         </div>
-         <ul id="leaderboard-list"></ul>
-         <div id="leaderboard-loader" class="loader-dots" style="display: none">
-        <span></span><span></span><span></span>
-         </div>
+        <div class="profile-header">
+          <div class="profile-avatar-container">
+            <img id="profile-modal-avatar" src="data:," alt="User Avatar" />
+            <div class="profile-avatar-buttons">
+              <button id="generate-avatar-btn" class="icon-button" title="Genera Avatar">
+                <i class="ph-bold ph-magic-wand"></i>
+              </button>
+              <button
+                id="save-generated-avatar-btn"
+                class="icon-button"
+                title="Salva Avatar"
+                style="display: none"
+              >
+                <i class="ph-bold ph-floppy-disk"></i>
+              </button>
+            </div>
           </div>
-    </div>
-     </div>
+          <div class="profile-info">
+            <div class="profile-name-container">
+              <h2 id="profile-modal-name"></h2>
+              <button id="edit-nickname-btn" class="icon-button" title="Modifica Nickname">
+                <i class="ph-bold ph-pencil-simple"></i>
+              </button>
+            </div>
+            <p id="profile-modal-email"></p>
+          </div>
+        </div>
 
-<div id="creditsModal" class="modal">
+        <div class="profile-nav">
+          <button id="profile-nav-stats" class="profile-nav-btn active">
+            <i class="ph-bold ph-chart-bar"></i> Stats
+          </button>
+          <button id="profile-nav-badges" class="profile-nav-btn">
+            <i class="ph-bold ph-medal"></i> Badges
+          </button>
+          <button id="profile-nav-options" class="profile-nav-btn">
+            <i class="ph-bold ph-gear"></i> Options
+          </button>
+        </div>
+
+        <div class="profile-body-container">
+          <div id="profile-stats-content" class="profile-content active">
+            <div class="profile-stats">
+              <h3>Le tue Statistiche</h3>
+              <p>Highscore: <strong id="profile-modal-highest-score">0</strong></p>
+              <p>Total Score: <strong id="profile-modal-total-score">0</strong></p>
+              <p>Played Games: <strong id="profile-modal-games-played">0</strong></p>
+              <p>Bosses Defeated: <strong id="profile-modal-bosses-defeated">0</strong></p>
+            </div>
+          </div>
+
+          <div id="profile-badges-content" class="profile-content">
+            <h3>Your Badges</h3>
+            <div id="profile-modal-badges-container" class="badge-grid-container"></div>
+          </div>
+
+          <div id="profile-options-content" class="profile-content">
+            <div class="profile-options-section">
+              <h3><i class="ph-bold ph-key"></i> Change Password</h3>
+              <p class="input-hint">
+                Enter your new password. You will be asked for your current password for security
+                reasons..
+              </p>
+              <input
+                type="password"
+                id="currentPasswordInput"
+                placeholder="Password attuale"
+                required
+              />
+              <input type="password" id="newPasswordInput" placeholder="Nuova password" required />
+              <input
+                type="password"
+                id="confirmNewPasswordInput"
+                placeholder="Conferma nuova password"
+                required
+              />
+              <button id="changePasswordBtn" class="action-button">Change Password</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="profile-footer">
+          <button id="logout-btn" class="game-over-button game-over-main-menu-btn">Logout</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="editNicknameModal" class="modal">
+      <div class="modal-content landscape-modal">
+        <span class="close-button" id="closeEditNicknameModal">&times;</span>
+        <h2>Change Nickname</h2>
+        <input type="text" id="newNicknameInput" placeholder="Nuovo nickname" required />
+        <p id="nicknameCooldownMessage" style="color: gray; font-size: 0.9em; margin-top: 5px"></p>
+        <button id="saveNewNicknameBtn">Save</button>
+      </div>
+    </div>
+    <div id="leaderboardModal" class="modal">
+      <div class="modal-content landscape-modal">
+        <span class="close-button" id="closeLeaderboardModal">&times;</span>
+        <h2><i class="ph-bold ph-trophy"></i> LOG</h2>
+
+        <h3 class="leaderboard-game-title">CodeDash!</h3>
+
+        <div class="leaderboard-list-container">
+          <div class="leaderboard-header">
+            <span>Rank</span>
+            <span>Player</span>
+            <span>Score</span>
+          </div>
+          <ul id="leaderboard-list"></ul>
+          <div id="leaderboard-loader" class="loader-dots" style="display: none">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="creditsModal" class="modal">
       <div class="modal-content landscape-modal credits-view">
-     <span class="close-button" id="closeCreditsModalBtn">&times;</span>
-     <h2><i class="ph-bold ph-code"></i> Credits</h2>
-     <div class="credits-content">
+        <span class="close-button" id="closeCreditsModalBtn">&times;</span>
+        <h2><i class="ph-bold ph-code"></i> Credits</h2>
+        <div class="credits-content">
           <p><strong>codeDash!</strong> is a 2D pixel-art endless runner with a cyberpunk touch.</p>
-          
+
           <h3>Design, Development & Art:</h3>
           <p>Umberto Trombetta "asyncDonkey"</p>
           <p><small>Programming, Game Design, and all asset drawing with Aseprite.</small></p>
 
           <div class="credits-section">
-         <h4>Developer Information:</h4>
-         <ul>
-        <li>System Engineer</li>
-        <li>Civil Engineering Student</li>
-         </ul>
+            <h4>Developer Information:</h4>
+            <ul>
+              <li>System Engineer</li>
+              <li>Civil Engineering Student</li>
+            </ul>
           </div>
 
-    <div class="credits-section">
-          <h4>Audio:</h4>
-          <ul>
-         <li>**Sound Effects (SFX):** Produced by Umberto Trombetta.</li>
-         
-          </ul>
-    </div>
-
-    <div class="credits-section">
-          <h4>Music:</h4>
-          <ul>
-         <li>**Composition and Production:** Umberto Trombetta "asyncDonkey" &copy; 2025</li>
-         <li>Listen to the official OST on YouTube: <a href="https://youtube.com/playlist?list=PLvWKvaol0yYEwQ3snVulfvaKTyRikYc-V&si=rJkP14hmX-HzTob" target="_blank" rel="noopener noreferrer">Official OST Playlist</a></li>
-          </ul>
-    </div>
-
-    
           <div class="credits-section">
-         <h4>Assets and Visual Contributions:</h4>
-         <ul>
-        
-        <li>**Fonts:** "Pixelify Sans" by <a href="https://fonts.google.com/?query=Stefie%20Justprince" target="_blank" rel="noopener noreferrer">Stefie Justprince</a>, "Courire Prime" by <a href="https://fonts.google.com/?query=Alan%20Dague-Greene" target="_blank" rel="noopener noreferrer">Alan Dague-Greene</a></li>
-        <li>**Icon Library:** <a href="https://phosphoricons.com/" target="_blank" rel="noopener noreferrer">Phosphor Icons</a>.</li>
-        <li>**Avatar Libraries:** <a href="https://github.com/alexvandesande/blockies" target="_blank" rel="noopener noreferrer">Blockies</a>.</li>
-         </ul>
+            <h4>Audio:</h4>
+            <ul>
+              <li>**Sound Effects (SFX):** Produced by Umberto Trombetta.</li>
+            </ul>
+          </div>
+
+          <div class="credits-section">
+            <h4>Music:</h4>
+            <ul>
+              <li>**Composition and Production:** Umberto Trombetta "asyncDonkey" &copy; 2025</li>
+              <li>
+                Listen to the official OST on YouTube:
+                <a
+                  href="https://youtube.com/playlist?list=PLvWKvaol0yYEwQ3snVulfvaKTyRikYc-V&si=rJkP14hmX-HzTob"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Official OST Playlist</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div class="credits-section">
+            <h4>Assets and Visual Contributions:</h4>
+            <ul>
+              <li>
+                **Fonts:** "Pixelify Sans" by
+                <a
+                  href="https://fonts.google.com/?query=Stefie%20Justprince"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Stefie Justprince</a
+                >, "Courire Prime" by
+                <a
+                  href="https://fonts.google.com/?query=Alan%20Dague-Greene"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Alan Dague-Greene</a
+                >
+              </li>
+              <li>
+                **Icon Library:**
+                <a href="https://phosphoricons.com/" target="_blank" rel="noopener noreferrer"
+                  >Phosphor Icons</a
+                >.
+              </li>
+              <li>
+                **Avatar Libraries:**
+                <a
+                  href="https://github.com/alexvandesande/blockies"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Blockies</a
+                >.
+              </li>
+            </ul>
           </div>
           <div class="credits-special-thanks">
-         <h4>Special Thanks:</h4>
-         <p>To all beta testers, early players, and the community who supported the development!</p>
-         
-         <p>And a special thanks to my dog Candy, who lives her life carefree.</p>
+            <h4>Special Thanks:</h4>
+            <p>
+              To all beta testers, early players, and the community who supported the development!
+            </p>
+
+            <p>And a special thanks to my dog Candy, who lives her life carefree.</p>
           </div>
-    </div>
+        </div>
       </div>
-</div>
+    </div>
 
-     <script type="module" src="js/main.js"></script>
-     <script type="module" src="js/leaderboardManager.js"></script>
-     <script type="module" src="js/menuAnimation.js"></script>
-     <script type="module" src="js/auth.js"></script>
-     <script type="module" src="js/profile.js"></script>
-     <script type="module" src="js/shopManager.js"></script>
-     
-     <script type="module" src="js/powerUps.js"></script>
-     <script type="module" src="js/animation.js"></script>
-     <script type="module" src="js/audioManager.js"></script>
-     <script type="module" src="js/toastNotifications.js"></script>
-     <script type="module" src="js/donkeyRunner.js"></script>
-     <script type="module" src="js/loader.js"></script>
+    <script type="module" src="js/main.js"></script>
+    <script type="module" src="js/leaderboardManager.js"></script>
+    <script type="module" src="js/menuAnimation.js"></script>
+    <script type="module" src="js/auth.js"></script>
+    <script type="module" src="js/profile.js"></script>
+    <script type="module" src="js/shopManager.js"></script>
 
-     <script type="module" src="js/blockies.mjs"></script>
-      </body>
+    <script type="module" src="js/powerUps.js"></script>
+    <script type="module" src="js/animation.js"></script>
+    <script type="module" src="js/audioManager.js"></script>
+    <script type="module" src="js/toastNotifications.js"></script>
+    <script type="module" src="js/donkeyRunner.js"></script>
+    <script type="module" src="js/loader.js"></script>
+
+    <script type="module" src="js/blockies.mjs"></script>
+  </body>
 </html>

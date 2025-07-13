@@ -16,16 +16,16 @@ import { showToast } from './toastNotifications.js';
  * Potrebbe essere adattata in futuro per una leaderboard locale, ma per ora è vuota.
  */
 export function initLeaderboard() {
-    console.log("[LeaderboardManager] Leaderboard globale disabilitata in modalità offline.");
-    // Assicurati che l'elemento della leaderboard sia nascosto nel DOM
-    const leaderboardModal = document.getElementById('leaderboardModal');
-    if (leaderboardModal) {
-        leaderboardModal.style.display = 'none';
-    }
-    const leaderboardBtn = document.getElementById('leaderboard-btn');
-    if (leaderboardBtn) {
-        leaderboardBtn.style.display = 'none'; // Nascondi anche il pulsante nel menu
-    }
+  console.log('[LeaderboardManager] Leaderboard globale disabilitata in modalità offline.');
+  // Assicurati che l'elemento della leaderboard sia nascosto nel DOM
+  const leaderboardModal = document.getElementById('leaderboardModal');
+  if (leaderboardModal) {
+    leaderboardModal.style.display = 'none';
+  }
+  const leaderboardBtn = document.getElementById('leaderboard-btn');
+  if (leaderboardBtn) {
+    leaderboardBtn.style.display = 'none'; // Nascondi anche il pulsante nel menu
+  }
 }
 
 /**
@@ -34,10 +34,12 @@ export function initLeaderboard() {
  * @returns {Promise<void>}
  */
 export async function loadLeaderboard() {
-    console.log("[LeaderboardManager] Tentativo di caricare la leaderboard globale (disabilitata in offline).");
-    showToast('Leaderboard not available in offline mode.', 'info');
-    // Non carica alcun dato
-    return Promise.resolve();
+  console.log(
+    '[LeaderboardManager] Tentativo di caricare la leaderboard globale (disabilitata in offline).',
+  );
+  showToast('Leaderboard not available in offline mode.', 'info');
+  // Non carica alcun dato
+  return Promise.resolve();
 }
 
 /**
@@ -48,10 +50,12 @@ export async function loadLeaderboard() {
  * @returns {Promise<void>}
  */
 export async function submitScore(gameData) {
-    console.log("[LeaderboardManager] Tentativo di inviare punteggio alla leaderboard globale (disabilitata in offline).");
-    // Il salvataggio delle statistiche è già gestito in processGameOver di donkeyRunner.js
-    // Non è necessario fare nulla qui.
-    return Promise.resolve();
+  console.log(
+    '[LeaderboardManager] Tentativo di inviare punteggio alla leaderboard globale (disabilitata in offline).',
+  );
+  // Il salvataggio delle statistiche è già gestito in processGameOver di donkeyRunner.js
+  // Non è necessario fare nulla qui.
+  return Promise.resolve();
 }
 
 // Rimosse le funzioni helper per la visualizzazione della leaderboard

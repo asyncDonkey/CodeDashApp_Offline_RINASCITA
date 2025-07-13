@@ -1,0 +1,23 @@
+# Ignora tutte le dipendenze e i file di build
+node_modules/
+functions/node_modules/
+android/app/build/
+build/
+dist/
+
+# Ignora la cartella Android generata da Capacitor
+android/
+
+# Ignora la documentazione e gli asset media
+documentation/
+images/
+audio/
+www/images/
+www/audio/
+
+# Ignora file specifici di configurazione o generati
+*.min.js
+coverage/
+.vscode/
+.github/
+.devcontainer/

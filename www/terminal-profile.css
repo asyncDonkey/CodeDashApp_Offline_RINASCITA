@@ -2,779 +2,806 @@
 
 /* Contenitore per allineare nome e pulsante di modifica */
 .profile-name-container {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 8px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
 }
 
 /* Stile per i pulsanti di modifica (nickname, avatar, genera, salva) */
 .icon-button {
-    background-color: transparent;
-    border: none;
-    color: var(--highlight-text); /* Testo bianco */
-    border-radius: 50%;
-    width: 36px;
-    height: 36px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all var(--transition-normal); /* Uso variabile di transizione */
-    padding: 0;
-    box-shadow: 0 0 8px var(--white-glow); /* Glow bianco */
+  background-color: transparent;
+  border: none;
+  color: var(--highlight-text); /* Testo bianco */
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-normal); /* Uso variabile di transizione */
+  padding: 0;
+  box-shadow: 0 0 8px var(--white-glow); /* Glow bianco */
 }
 
 .icon-button:hover:not(:disabled) {
-    background-color: rgba(var(--accent-green-rgb), 0.2); /* Sfondo verde semi-trasparente */
-    color: var(--accent-green); /* Verde brillante */
-    transform: scale(1.15);
-    box-shadow:
-        0 0 15px var(--accent-green-glow),
-        0 0 30px var(--accent-green-glow); /* Glow verde intenso */
+  background-color: rgba(var(--accent-green-rgb), 0.2); /* Sfondo verde semi-trasparente */
+  color: var(--accent-green); /* Verde brillante */
+  transform: scale(1.15);
+  box-shadow:
+    0 0 15px var(--accent-green-glow),
+    0 0 30px var(--accent-green-glow); /* Glow verde intenso */
 }
 .icon-button:disabled {
-    border-color: var(--secondary-text); /* Grigio per disabilitato */
-    color: var(--secondary-text);
-    cursor: not-allowed;
-    opacity: 0.5;
-    box-shadow: none;
+  border-color: var(--secondary-text); /* Grigio per disabilitato */
+  color: var(--secondary-text);
+  cursor: not-allowed;
+  opacity: 0.5;
+  box-shadow: none;
 }
 
 /* Dimensione dell'icona Phosphor all'interno del pulsante */
 .icon-button i {
-    font-size: 20px;
+  font-size: 20px;
 }
 
 /* Assicuriamoci che il nome del profilo abbia un aspetto coerente */
 #profile-modal-name {
-    color: var(--highlight-text); /* Testo bianco */
-    margin: 0;
-    font-family: 'Pixelify Sans', cursive;
-    font-size: 1.6em;
-    text-shadow: 0 0 8px var(--white-glow); /* Glow bianco sul nome */
-    text-align: left;
+  color: var(--highlight-text); /* Testo bianco */
+  margin: 0;
+  font-family: 'Pixelify Sans', cursive;
+  font-size: 1.6em;
+  text-shadow: 0 0 8px var(--white-glow); /* Glow bianco sul nome */
+  text-align: left;
 }
-
 
 /* Header del profilo (avatar e informazioni) */
 .profile-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 25px;
-    margin-bottom: 30px;
-    padding-bottom: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+  margin-bottom: 30px;
+  padding-bottom: 25px;
 }
 /* Media query per schermi più larghi */
 @media (min-width: 600px) {
-    .profile-header {
-        flex-direction: row;
-        justify-content: flex-start;
-    }
+  .profile-header {
+    flex-direction: row;
+    justify-content: flex-start;
+  }
 }
 
 /* Nuovo contenitore per avatar + pulsanti di modifica */
 .profile-avatar-container {
-    position: relative;
-    width: 120px; /* Aumentate le dimensioni dell'avatar */
-    height: 120px;
-    flex-shrink: 0;
-    margin-bottom: 10px;
+  position: relative;
+  width: 120px; /* Aumentate le dimensioni dell'avatar */
+  height: 120px;
+  flex-shrink: 0;
+  margin-bottom: 10px;
 }
 
 @media (min-width: 600px) {
-    .profile-avatar-container {
-        margin-bottom: 0;
-    }
+  .profile-avatar-container {
+    margin-bottom: 0;
+  }
 }
 
 /* Stile per l'avatar all'interno del nuovo contenitore */
 .profile-avatar-container #profile-modal-avatar {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    border: 4px solid var(--primary-text); /* Bordo più spesso e luminoso */
-    object-fit: cover;
-    box-shadow: 0 0 15px var(--white-glow), 0 0 25px var(--bright-glow); /* Glow più intenso */
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 4px solid var(--primary-text); /* Bordo più spesso e luminoso */
+  object-fit: cover;
+  box-shadow:
+    0 0 15px var(--white-glow),
+    0 0 25px var(--bright-glow); /* Glow più intenso */
 }
 
 /* Posizionamento dei pulsanti di modifica sull'avatar */
 .profile-avatar-buttons {
-    position: absolute;
-    bottom: 0px; /* Regolato per essere più allineato */
-    right: 0px; /* Regolato per essere più allineato */
-    display: flex;
-    gap: 8px; /* Spazio aumentato tra i pulsanti */
-    z-index: 1;
+  position: absolute;
+  bottom: 0px; /* Regolato per essere più allineato */
+  right: 0px; /* Regolato per essere più allineato */
+  display: flex;
+  gap: 8px; /* Spazio aumentato tra i pulsanti */
+  z-index: 1;
 }
-
 
 /* Stile per il pulsante di modifica dell'avatar (riutilizzo icon-button) */
 .profile-avatar-buttons .icon-button {
-    width: 40px;
-    height: 40px;
-    background-color: var(--primary-text); /* Viola brillante */
-    color: var(--primary-bg); /* Testo scuro */
-    border: 2px solid var(--primary-bg); /* Bordo scuro */
-    box-shadow: 0 0 10px var(--highlight-text); /* Glow viola */
+  width: 40px;
+  height: 40px;
+  background-color: var(--primary-text); /* Viola brillante */
+  color: var(--primary-bg); /* Testo scuro */
+  border: 2px solid var(--primary-bg); /* Bordo scuro */
+  box-shadow: 0 0 10px var(--highlight-text); /* Glow viola */
 }
 .profile-avatar-buttons .icon-button:hover:not(:disabled) {
-    background-color: var(--primary-text); /* Rosa brillante su hover */
-    color: var(--primary-bg);
-    box-shadow: 0 0 20px var(--white-glow), 0 0 35px var(--bright-glow); /* Glow rosa intenso */
+  background-color: var(--primary-text); /* Rosa brillante su hover */
+  color: var(--primary-bg);
+  box-shadow:
+    0 0 20px var(--white-glow),
+    0 0 35px var(--bright-glow); /* Glow rosa intenso */
 }
 .profile-avatar-buttons .icon-button i {
-    font-size: 22px;
+  font-size: 22px;
 }
 
 /* Stili per le informazioni del profilo (email, stats) */
 .profile-info {
-    text-align: center;
-    width: 100%;
+  text-align: center;
+  width: 100%;
 }
 @media (min-width: 600px) {
-    .profile-info {
-        text-align: left;
-    }
+  .profile-info {
+    text-align: left;
+  }
 }
 
 .profile-info p {
-    color: var(--secondary-text); /* Grigio per le informazioni */
-    font-size: 1em;
-    margin-top: 8px;
-    margin-bottom: 8px;
+  color: var(--secondary-text); /* Grigio per le informazioni */
+  font-size: 1em;
+  margin-top: 8px;
+  margin-bottom: 8px;
 }
 
 /* Sezione statistiche */
 .profile-stats {
-    background-color: var(--tertiary-bg); /* Sfondo scuro per le statistiche */
-    border: 2px solid var(--secondary-text); /* Bordo verde brillante */
-    border-radius: 8px;
-    padding: 20px;
-    margin-top: 25px;
-    text-align: left;
-    box-shadow: 0 0 10px var(--bright-glow); /* Box-shadow blu */
+  background-color: var(--tertiary-bg); /* Sfondo scuro per le statistiche */
+  border: 2px solid var(--secondary-text); /* Bordo verde brillante */
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 25px;
+  text-align: left;
+  box-shadow: 0 0 10px var(--bright-glow); /* Box-shadow blu */
 }
 
 .profile-stats h3 {
-    color: var(--highlight-text); /* Testo bianco */
-    font-size: 1.2em;
-    margin-top: 0;
-    margin-bottom: 18px;
-    border-bottom: 1px dotted var(--secondary-text); /* Bordo punteggiato grigio */
-    padding-bottom: 10px;
-    text-align: center;
-    text-shadow: 0 0 5px var(--white-glow); /* Glow bianco sul titolo */
+  color: var(--highlight-text); /* Testo bianco */
+  font-size: 1.2em;
+  margin-top: 0;
+  margin-bottom: 18px;
+  border-bottom: 1px dotted var(--secondary-text); /* Bordo punteggiato grigio */
+  padding-bottom: 10px;
+  text-align: center;
+  text-shadow: 0 0 5px var(--white-glow); /* Glow bianco sul titolo */
 }
 
 .profile-stats p {
-    color: var(--primary-text); /* Testo bianco */
-    margin-bottom: 10px;
-    line-height: 1.5;
-    font-size: 1em;
+  color: var(--primary-text); /* Testo bianco */
+  margin-bottom: 10px;
+  line-height: 1.5;
+  font-size: 1em;
 }
 
 .profile-stats strong {
-    color: var(--accent-pink); /* Giallo brillante per i valori */
-    font-weight: bold;
-    text-shadow: 0 0 5px var(--accent-pink-glow); /* Glow giallo */
+  color: var(--accent-pink); /* Giallo brillante per i valori */
+  font-weight: bold;
+  text-shadow: 0 0 5px var(--accent-pink-glow); /* Glow giallo */
 }
 
 /* Animazione cursore lampeggiante */
 @keyframes blink-cursor {
-    0%,
-    100% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0;
-    }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
 }
 
 .blinking-cursor {
-    animation: blink-cursor 1s step-end infinite;
-    font-weight: bold;
-    color: var(--accent-pink);
-    margin-left: 2px;
+  animation: blink-cursor 1s step-end infinite;
+  font-weight: bold;
+  color: var(--accent-pink);
+  margin-left: 2px;
 }
 
 /* Stili per la sezione badge (già esistente) */
 .profile-badges {
-    margin-top: 25px; /* Margine aumentato */
+  margin-top: 25px; /* Margine aumentato */
 }
 
 /* Stili per la sezione badge (già esistente) */
 .profile-badges {
-    margin-top: 25px;
+  margin-top: 25px;
 }
 
 .profile-badges h3 {
-    color: var(--highlight-text); /* Testo bianco */
-    font-size: 1.2em;
-    margin-top: 0;
-    margin-bottom: 18px;
-    border-bottom: 1px dotted var(--secondary-text);
-    padding-bottom: 10px;
-    text-align: center;
-    text-shadow: 0 0 5px var(--white-glow); /* Glow bianco sul titolo */
+  color: var(--highlight-text); /* Testo bianco */
+  font-size: 1.2em;
+  margin-top: 0;
+  margin-bottom: 18px;
+  border-bottom: 1px dotted var(--secondary-text);
+  padding-bottom: 10px;
+  text-align: center;
+  text-shadow: 0 0 5px var(--white-glow); /* Glow bianco sul titolo */
 }
 
-
 .profile-footer {
-    margin-top: 40px;
-    text-align: center;
+  margin-top: 40px;
+  text-align: center;
 }
 
 /* Stili per la Navbar del Profilo */
 .profile-nav {
-    display: flex;
-    justify-content: center;
-    flex-wrap: nowrap;
-    gap: 10px;
-    margin-bottom: 20px;
-    padding: 10px;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+  display: flex;
+  justify-content: center;
+  flex-wrap: nowrap;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding: 10px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .profile-nav-btn {
-    background-color: rgba(var(--secondary-bg-rgb), 0.4); /* Sfondo scuro semi-trasparente */
-    color: var(--primary-text); /* Testo bianco */
-    border: 1px solid var(--highlight-text); /* Bordo viola brillante */
-    padding: 8px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-family: 'Pixelify Sans', cursive;
-    font-size: 0.8rem;
-    white-space: nowrap;
-    transition: background-color var(--transition-normal), border-color var(--transition-normal), box-shadow var(--transition-normal);
-    text-transform: uppercase;
+  background-color: rgba(var(--secondary-bg-rgb), 0.4); /* Sfondo scuro semi-trasparente */
+  color: var(--primary-text); /* Testo bianco */
+  border: 1px solid var(--highlight-text); /* Bordo viola brillante */
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'Pixelify Sans', cursive;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  transition:
+    background-color var(--transition-normal),
+    border-color var(--transition-normal),
+    box-shadow var(--transition-normal);
+  text-transform: uppercase;
 }
 .profile-nav-btn:hover {
-    background-color: rgba(var(--secondary-bg-rgb), 0.6); /* Sfondo più scuro su hover */
-    border-color: var(--highlight-text); /* Bordo rosa brillante */
-    box-shadow: 0 0 10px var(--white-glow); /* Glow rosa */
+  background-color: rgba(var(--secondary-bg-rgb), 0.6); /* Sfondo più scuro su hover */
+  border-color: var(--highlight-text); /* Bordo rosa brillante */
+  box-shadow: 0 0 10px var(--white-glow); /* Glow rosa */
 }
 
 .profile-nav-btn.active {
-    background-color: var(--highlight-text); /* Colore più acceso per la categoria attiva */
-    color: var(--secondary-bg); /* Testo scuro sul pulsante attivo */
-    border-color: var(--highlight-text);
-    box-shadow: 0 0 15px var(--bright-glow); /* Effetto glow */
+  background-color: var(--highlight-text); /* Colore più acceso per la categoria attiva */
+  color: var(--secondary-bg); /* Testo scuro sul pulsante attivo */
+  border-color: var(--highlight-text);
+  box-shadow: 0 0 15px var(--bright-glow); /* Effetto glow */
 }
 
 /* Gestione dei Contenuti delle Sezioni */
 .profile-body-container {
-    padding: 0 15px;
+  padding: 0 15px;
 }
 
 .profile-content {
-    display: none;
+  display: none;
 }
 
 .profile-content.active {
-    display: block;
+  display: block;
 }
 
 /* Stili per la Sezione Locker */
 #profile-locker-content {
-    text-align: center;
+  text-align: center;
 }
 
 .locker-category {
-    margin-bottom: 35px;
+  margin-bottom: 35px;
 }
 
 .locker-category h3 {
-    color: var(--highlight-text); /* Testo bianco */
-    text-align: center;
-    border-bottom: 1px dotted var(--secondary-text); /* Bordo grigio punteggiato */
-    padding-bottom: 8px;
-    margin-bottom: 20px;
-    font-size: 1.15em;
-    text-shadow: 0 0 5px var(--white-glow); /* Glow bianco */
+  color: var(--highlight-text); /* Testo bianco */
+  text-align: center;
+  border-bottom: 1px dotted var(--secondary-text); /* Bordo grigio punteggiato */
+  padding-bottom: 8px;
+  margin-bottom: 20px;
+  font-size: 1.15em;
+  text-shadow: 0 0 5px var(--white-glow); /* Glow bianco */
 }
 
 .locker-items-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 1.5rem;
-    padding: 10px;
-    border: 1px dashed var(--secondary-text); /* Bordo grigio tratteggiato */
-    border-radius: 8px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1.5rem;
+  padding: 10px;
+  border: 1px dashed var(--secondary-text); /* Bordo grigio tratteggiato */
+  border-radius: 8px;
 }
 
 .locker-item-card {
-    background-color: rgba(var(--primary-bg-rgb), 0.3); /* Sfondo scuro semi-trasparente */
-    border: 2px solid var(--secondary-text); /* Bordo grigio */
-    border-radius: 8px;
-    padding: 12px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    transition: border-color var(--transition-normal), box-shadow var(--transition-normal);
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 0 8px var(--white-glow); /* Box-shadow blu */
+  background-color: rgba(var(--primary-bg-rgb), 0.3); /* Sfondo scuro semi-trasparente */
+  border: 2px solid var(--secondary-text); /* Bordo grigio */
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition:
+    border-color var(--transition-normal),
+    box-shadow var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 8px var(--white-glow); /* Box-shadow blu */
 }
 
 .locker-item-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border: 1px dashed rgba(var(--secondary-text-rgb), 0.2); /* Bordo interno più sottile */
-    border-radius: 8px;
-    pointer-events: none;
-    z-index: 1;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 1px dashed rgba(var(--secondary-text-rgb), 0.2); /* Bordo interno più sottile */
+  border-radius: 8px;
+  pointer-events: none;
+  z-index: 1;
 }
 
 .locker-item-card:hover {
-    border-color: var(--primary-text); /* Bordo giallo brillante */
-    box-shadow: 0 0 15px var(--bright-glow); /* Glow giallo intenso */
-    transform: translateY(-5px);
+  border-color: var(--primary-text); /* Bordo giallo brillante */
+  box-shadow: 0 0 15px var(--bright-glow); /* Glow giallo intenso */
+  transform: translateY(-5px);
 }
 
 .locker-item-card .item-preview {
-    height: 120px;
-    width: 100%;
-    background-color: rgba(var(--primary-bg-rgb), 0.5); /* Sfondo anteprima più scuro */
-    margin-bottom: 12px;
-    border: 1px solid rgba(var(--accent-cyan-rgb), 0.2); /* Bordo ciano sottile */
+  height: 120px;
+  width: 100%;
+  background-color: rgba(var(--primary-bg-rgb), 0.5); /* Sfondo anteprima più scuro */
+  margin-bottom: 12px;
+  border: 1px solid rgba(var(--accent-cyan-rgb), 0.2); /* Bordo ciano sottile */
 }
 
 .locker-item-card .item-preview img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    image-rendering: pixelated;
-    filter: brightness(1.1);
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
+  filter: brightness(1.1);
 }
 
 .locker-item-card .item-name {
-    font-size: 1rem;
-    text-align: center;
-    min-height: 45px;
-    margin-bottom: 10px;
-    color: var(--accent-pink); /* Verde brillante per il nome item */
-    text-shadow: 0 0 5px var(--accent-pink-glow); /* Glow verde */
-    font-family: 'Pixelify Sans', cursive;
+  font-size: 1rem;
+  text-align: center;
+  min-height: 45px;
+  margin-bottom: 10px;
+  color: var(--accent-pink); /* Verde brillante per il nome item */
+  text-shadow: 0 0 5px var(--accent-pink-glow); /* Glow verde */
+  font-family: 'Pixelify Sans', cursive;
 }
 
 .equip-button {
-    margin-top: auto;
-    width: 90%;
-    padding: 10px;
-    font-family: 'Pixelify Sans', cursive;
-    font-size: 0.85em;
-    cursor: pointer;
-    border: none;
-    border-radius: 4px;
-    background-color: var(--primary-text); /* Verde brillante */
-    color: var(--secondary-bg); /* Testo scuro */
-    transition: background-color var(--transition-normal), box-shadow var(--transition-normal);
-    text-transform: uppercase;
-    box-shadow: 0 0 8px var(--bright-glow); /* Glow verde */
+  margin-top: auto;
+  width: 90%;
+  padding: 10px;
+  font-family: 'Pixelify Sans', cursive;
+  font-size: 0.85em;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  background-color: var(--primary-text); /* Verde brillante */
+  color: var(--secondary-bg); /* Testo scuro */
+  transition:
+    background-color var(--transition-normal),
+    box-shadow var(--transition-normal);
+  text-transform: uppercase;
+  box-shadow: 0 0 8px var(--bright-glow); /* Glow verde */
 }
 
 .equip-button:hover:not(:disabled) {
-    background-color: var(--secondary-text); /* Ciano brillante su hover */
-    box-shadow: 0 0 12px var(--white-glow); /* Glow ciano */
+  background-color: var(--secondary-text); /* Ciano brillante su hover */
+  box-shadow: 0 0 12px var(--white-glow); /* Glow ciano */
 }
 
 .equip-button.equipped {
-    background-color: var(--accent-purple); /* Viola per equipaggiato */
-    color: var(--highlight-text); /* Testo bianco */
-    cursor: default;
-    box-shadow: none;
-    text-shadow: 0 0 5px var(--accent-purple-glow); /* Glow viola */
+  background-color: var(--accent-purple); /* Viola per equipaggiato */
+  color: var(--highlight-text); /* Testo bianco */
+  cursor: default;
+  box-shadow: none;
+  text-shadow: 0 0 5px var(--accent-purple-glow); /* Glow viola */
 }
 
 .equip-button:disabled:not(.equipped) {
-    background-color: var(--secondary-text); /* Grigio per disabilitato */
-    cursor: not-allowed;
-    opacity: 0.6;
+  background-color: var(--secondary-text); /* Grigio per disabilitato */
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 /* NEW: Style for default skin cards */
 .locker-item-card.default-skin-card {
-    border: 2px solid var(--accent-purple); /* Bordo viola distintivo */
-    box-shadow: 0 0 10px var(--accent-purple-glow); /* Glow viola più sottile */
+  border: 2px solid var(--accent-purple); /* Bordo viola distintivo */
+  box-shadow: 0 0 10px var(--accent-purple-glow); /* Glow viola più sottile */
 }
 
 .locker-item-card.default-skin-card:hover {
-    border-color: var(--accent-pink); /* Bordo rosa su hover */
-    box-shadow: 0 0 18px var(--accent-pink-glow); /* Glow rosa intenso */
+  border-color: var(--accent-pink); /* Bordo rosa su hover */
+  box-shadow: 0 0 18px var(--accent-pink-glow); /* Glow rosa intenso */
 }
 
 /* Stili per la Sezione Badge */
 /* Il container profile-modal-badges-container è ora una tab a sé stante */
 .badge-grid-container {
-    /* MODIFICHE CRUCIALI PER LO SCORRIMENTO ORIZZONTALE */
-    display: flex; /* CAMBIATO: Da 'grid' a 'flex' */
-    flex-wrap: nowrap; /* ESSENZIALE: Impedisce agli elementi di andare a capo */
-    overflow-x: auto; /* ABILITATO: Scorrimento orizzontale */
-    overflow-y: hidden; /* NASCOSTO: Impedisce lo scorrimento verticale indesiderato */
-    -webkit-overflow-scrolling: touch; /* Migliora lo scorrimento su iOS */
-    scrollbar-width: thin; /* Per Firefox */
-    scrollbar-color: var(--secondary-text) var(--tertiary-bg); /* Per Firefox */
-    
-    /* Stili per la scrollbar (Webkit - Chrome, Safari) */
-    &::-webkit-scrollbar {
-        height: 8px; /* Altezza della scrollbar orizzontale */
-    }
-    &::-webkit-scrollbar-track {
-        background: var(--tertiary-bg);
-        border-radius: 10px;
-    }
-    &::-webkit-scrollbar-thumb {
-        background-color: var(--secondary-text);
-        border-radius: 10px;
-        border: 2px solid var(--tertiary-bg);
-    }
-    
-    /* Stili esistenti, con aggiustamenti per il layout orizzontale */
-    padding: 10px; /* Padding interno del contenitore scorrevole */
-    border: 1px dashed var(--secondary-text); /* Bordo grigio tratteggiato */
-    border-radius: 8px;
-    background-color: var(--tertiary-bg); /* Sfondo scuro */
-    min-height: 250px; /* AUMENTATO: Altezza minima per accogliere card orizzontali */
-    align-items: flex-start; /* Allinea gli elementi in alto (inizio della riga) */
-    max-height: 300px; /* Altezza massima (verticale) prima del clipping, se necessario */
+  /* MODIFICHE CRUCIALI PER LO SCORRIMENTO ORIZZONTALE */
+  display: flex; /* CAMBIATO: Da 'grid' a 'flex' */
+  flex-wrap: nowrap; /* ESSENZIALE: Impedisce agli elementi di andare a capo */
+  overflow-x: auto; /* ABILITATO: Scorrimento orizzontale */
+  overflow-y: hidden; /* NASCOSTO: Impedisce lo scorrimento verticale indesiderato */
+  -webkit-overflow-scrolling: touch; /* Migliora lo scorrimento su iOS */
+  scrollbar-width: thin; /* Per Firefox */
+  scrollbar-color: var(--secondary-text) var(--tertiary-bg); /* Per Firefox */
+
+  /* Stili per la scrollbar (Webkit - Chrome, Safari) */
+  &::-webkit-scrollbar {
+    height: 8px; /* Altezza della scrollbar orizzontale */
+  }
+  &::-webkit-scrollbar-track {
+    background: var(--tertiary-bg);
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--secondary-text);
+    border-radius: 10px;
+    border: 2px solid var(--tertiary-bg);
+  }
+
+  /* Stili esistenti, con aggiustamenti per il layout orizzontale */
+  padding: 10px; /* Padding interno del contenitore scorrevole */
+  border: 1px dashed var(--secondary-text); /* Bordo grigio tratteggiato */
+  border-radius: 8px;
+  background-color: var(--tertiary-bg); /* Sfondo scuro */
+  min-height: 250px; /* AUMENTATO: Altezza minima per accogliere card orizzontali */
+  align-items: flex-start; /* Allinea gli elementi in alto (inizio della riga) */
+  max-height: 300px; /* Altezza massima (verticale) prima del clipping, se necessario */
 }
 
 /* Contenitore interno delle card (flex) - gestisce il gap tra le card */
 .badge-grid {
-    display: flex; /* ESSENZIALE: Questo contenitore è il flex parent delle singole card */
-    gap: 1.5rem; /* Spazio tra le card */
-    padding-top: 1rem; /* Padding interno */
-    padding-bottom: 1rem; /* Padding interno per spazio alla scrollbar */
+  display: flex; /* ESSENZIALE: Questo contenitore è il flex parent delle singole card */
+  gap: 1.5rem; /* Spazio tra le card */
+  padding-top: 1rem; /* Padding interno */
+  padding-bottom: 1rem; /* Padding interno per spazio alla scrollbar */
 }
 
 /* Stili per la singola card del badge */
 .badge-card {
-    /* MODIFICHE CRUCIALI PER LO SCORRIMENTO ORIZZONTALE */
-    flex: 0 0 auto; /* ESSENZIALE: Non crescere, non restringersi, dimensione base automatica */
-    width: 220px; /* LARGHEZZA FISSA: Per forzare lo scorrimento orizzontale */
-    height: 260px; /* ALTEZZA FISSA: Per consistenza visiva */
+  /* MODIFICHE CRUCIALI PER LO SCORRIMENTO ORIZZONTALE */
+  flex: 0 0 auto; /* ESSENZIALE: Non crescere, non restringersi, dimensione base automatica */
+  width: 220px; /* LARGHEZZA FISSA: Per forzare lo scorrimento orizzontale */
+  height: 260px; /* ALTEZZA FISSA: Per consistenza visiva */
 
-    background-color: rgba(var(--primary-bg-rgb), 0.3); /* Sfondo scuro semi-trasparente */
-    border: 2px solid var(--secondary-text); /* Bordo verde brillante (dalla palette) */
-    border-radius: 8px;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    transition: all var(--transition-normal); /* Uso variabile di transizione */
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 0 8px var(--white-glow); /* Box-shadow blu (dalla palette) */
-    justify-content: space-between;
+  background-color: rgba(var(--primary-bg-rgb), 0.3); /* Sfondo scuro semi-trasparente */
+  border: 2px solid var(--secondary-text); /* Bordo verde brillante (dalla palette) */
+  border-radius: 8px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: all var(--transition-normal); /* Uso variabile di transizione */
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 8px var(--white-glow); /* Box-shadow blu (dalla palette) */
+  justify-content: space-between;
 }
 
 .badge-card:hover {
-    border-color: var(--primary-text); /* Giallo brillante su hover */
-    box-shadow: 0 0 15px var(--bright-glow); /* Glow giallo intenso */
-    transform: translateY(-3px);
+  border-color: var(--primary-text); /* Giallo brillante su hover */
+  box-shadow: 0 0 15px var(--bright-glow); /* Glow giallo intenso */
+  transform: translateY(-3px);
 }
 
 .badge-icon {
-    max-width: 55%;
-    max-height: 55%;
-    object-fit: contain;
-    margin-bottom: 5px;
-    
-    image-rendering: -webkit-optimize-contrast;
-    
-    image-rendering: pixelated;
-    
-    /* Puoi aggiungere un drop-shadow qui usando i nuovi colori se vuoi un glow diretto sull'icona */
-    filter: drop-shadow(0 0 5px var(--accent-pink-glow)); 
+  max-width: 55%;
+  max-height: 55%;
+  object-fit: contain;
+  margin-bottom: 5px;
+
+  image-rendering: -webkit-optimize-contrast;
+
+  image-rendering: pixelated;
+
+  /* Puoi aggiungere un drop-shadow qui usando i nuovi colori se vuoi un glow diretto sull'icona */
+  filter: drop-shadow(0 0 5px var(--accent-pink-glow));
 }
 
-
-
 h3.badge-name {
-    font-family: 'Pixelify Sans', cursive;
-    font-size: 0.8em;
-    color: var(--accent-pink); /* Verde brillante */
-    text-shadow: 0 0 5px var(--accent-pink-glow); /* Glow verde */
-    margin-top: 0;
-    margin-bottom: 5px;
+  font-family: 'Pixelify Sans', cursive;
+  font-size: 0.8em;
+  color: var(--accent-pink); /* Verde brillante */
+  text-shadow: 0 0 5px var(--accent-pink-glow); /* Glow verde */
+  margin-top: 0;
+  margin-bottom: 5px;
 }
 
 .badge-description {
-    font-size: 0.65em;
-    color: var(--secondary-text); /* Grigio per la descrizione */
-    flex-grow: 1;
+  font-size: 0.65em;
+  color: var(--secondary-text); /* Grigio per la descrizione */
+  flex-grow: 1;
 }
 
 h3.profile-content {
-    color: var(--highlight-text);
-    text-shadow: var(--bright-glow);
+  color: var(--highlight-text);
+  text-shadow: var(--bright-glow);
 }
 
 .badge-status {
-    font-size: 0.7em;
+  font-size: 0.7em;
 }
 .progress-text {
-    font-size: 0.8em;
+  font-size: 0.8em;
 }
 
 .badge-secret {
-    background-color: var(--accent-purple); /* Viola brillante */
-    color: var(--primary-bg); /* Testo scuro */
-    padding: 3px 6px;
-    border-radius: 3px;
-    font-size: 0.6em;
-    font-weight: bold;
-    text-transform: uppercase;
-    margin-top: 5px;
-    box-shadow: 0 0 5px var(--accent-purple-glow); /* Glow viola */
+  background-color: var(--accent-purple); /* Viola brillante */
+  color: var(--primary-bg); /* Testo scuro */
+  padding: 3px 6px;
+  border-radius: 3px;
+  font-size: 0.6em;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-top: 5px;
+  box-shadow: 0 0 5px var(--accent-purple-glow); /* Glow viola */
 }
 
 /* Stili per quando un badge è "sbloccato" o ha un grado specifico */
-.badge-card.badge-tier-bronze { border-color: var(--accent-orange); box-shadow: 0 0 10px var(--accent-orange-glow); }
-.badge-card.badge-tier-silver { border-color: var(--secondary-text); box-shadow: 0 0 10px var(--white-glow); } /* Grigio e glow bianco */
-.badge-card.badge-tier-gold { border-color: var(--accent-yellow); box-shadow: 0 0 10px var(--accent-yellow-glow); }
+.badge-card.badge-tier-bronze {
+  border-color: var(--accent-orange);
+  box-shadow: 0 0 10px var(--accent-orange-glow);
+}
+.badge-card.badge-tier-silver {
+  border-color: var(--secondary-text);
+  box-shadow: 0 0 10px var(--white-glow);
+} /* Grigio e glow bianco */
+.badge-card.badge-tier-gold {
+  border-color: var(--accent-yellow);
+  box-shadow: 0 0 10px var(--accent-yellow-glow);
+}
 
 /* Media Queries per i tablet per la sezione badge */
 @media (min-width: 769px) and (max-width: 1024px) {
-    /* Il contenitore ora è flex, ma le card hanno width fissa */
-    .badge-grid-container {
-        padding: 15px; /* Più padding su tablet */
-        min-height: 280px; /* Altezza adeguata per tablet */
-    }
+  /* Il contenitore ora è flex, ma le card hanno width fissa */
+  .badge-grid-container {
+    padding: 15px; /* Più padding su tablet */
+    min-height: 280px; /* Altezza adeguata per tablet */
+  }
 
-    .badge-grid {
-        gap: 1.5rem; /* Spazio aumentato tra le card su tablet */
-    }
+  .badge-grid {
+    gap: 1.5rem; /* Spazio aumentato tra le card su tablet */
+  }
 
-    .badge-card {
-        width: 250px; /* Larghezza card aumentata su tablet */
-        height: 280px; /* Altezza card aumentata su tablet */
-        padding: 15px;
-    }
+  .badge-card {
+    width: 250px; /* Larghezza card aumentata su tablet */
+    height: 280px; /* Altezza card aumentata su tablet */
+    padding: 15px;
+  }
 
-    .badge-icon {
-        width: 70px;
-        height: 70px;
-    }
+  .badge-icon {
+    width: 70px;
+    height: 70px;
+  }
 
-    .badge-name {
-        font-size: 1em;
-    }
+  .badge-name {
+    font-size: 1em;
+  }
 
-    .badge-description {
-        font-size: 0.8em;
-    }
+  .badge-description {
+    font-size: 0.8em;
+  }
 }
 
 /* Media Query per schermi più grandi (desktop/tablet landscape grandi) */
 @media (min-width: 1025px) {
-    .badge-grid-container {
-        padding: 20px; /* Ancora più padding su schermi grandi */
-        min-height: 320px; /* Altezza adeguata per schermi grandi */
-    }
+  .badge-grid-container {
+    padding: 20px; /* Ancora più padding su schermi grandi */
+    min-height: 320px; /* Altezza adeguata per schermi grandi */
+  }
 
-    .badge-grid {
-        gap: 2rem; /* Spazio ancora maggiore tra le card */
-    }
+  .badge-grid {
+    gap: 2rem; /* Spazio ancora maggiore tra le card */
+  }
 
-    .badge-card {
-        width: 280px; /* Larghezza card massima */
-        height: 300px; /* Altezza card massima */
-        padding: 20px;
-    }
+  .badge-card {
+    width: 280px; /* Larghezza card massima */
+    height: 300px; /* Altezza card massima */
+    padding: 20px;
+  }
 
-    .badge-icon {
-        width: 80px;
-        height: 80px;
-    }
+  .badge-icon {
+    width: 80px;
+    height: 80px;
+  }
 
-    .badge-name {
-        font-size: 1.1em;
-    }
+  .badge-name {
+    font-size: 1.1em;
+  }
 
-    .badge-description {
-        font-size: 0.85em;
-    }
+  .badge-description {
+    font-size: 0.85em;
+  }
 }
 
 /* Stili per la Sezione Opzioni (profile-options-content) */
 #profile-options-content {
-    padding: 20px;
-    background-color: var(--tertiary-bg); /* Sfondo scuro per le sezioni */
-    border: 2px solid var(--secondary-text); /* Bordo verde brillante */
-    border-radius: 8px;
-    margin-top: 25px;
-    box-shadow: 0 0 10px var(--bright-glow);
+  padding: 20px;
+  background-color: var(--tertiary-bg); /* Sfondo scuro per le sezioni */
+  border: 2px solid var(--secondary-text); /* Bordo verde brillante */
+  border-radius: 8px;
+  margin-top: 25px;
+  box-shadow: 0 0 10px var(--bright-glow);
 }
 
 .profile-options-section h3 {
-    color: var(--highlight-text);
-    font-size: 1.2em;
-    margin-top: 0;
-    margin-bottom: 18px;
-    border-bottom: 1px dotted var(--secondary-text);
-    padding-bottom: 10px;
-    text-align: center;
-    text-shadow: 0 0 5px var(--white-glow);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
+  color: var(--highlight-text);
+  font-size: 1.2em;
+  margin-top: 0;
+  margin-bottom: 18px;
+  border-bottom: 1px dotted var(--secondary-text);
+  padding-bottom: 10px;
+  text-align: center;
+  text-shadow: 0 0 5px var(--white-glow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
 
 .profile-options-section input[type='password'] {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    background-color: var(--terminal-input-bg, #282a36);
-    border: 1px solid var(--terminal-border, #6272a4);
-    color: var(--terminal-text, #f8f8f2);
-    border-radius: 5px;
-    font-family: 'Courier Prime', monospace;
-    font-size: 1em;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    box-sizing: border-box;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  background-color: var(--terminal-input-bg, #282a36);
+  border: 1px solid var(--terminal-border, #6272a4);
+  color: var(--terminal-text, #f8f8f2);
+  border-radius: 5px;
+  font-family: 'Courier Prime', monospace;
+  font-size: 1em;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+  box-sizing: border-box;
 }
 
 .profile-options-section input[type='password']:focus {
-    outline: none;
-    border-color: var(--terminal-highlight, #5ab9a8);
-    box-shadow: 0 0 8px rgba(90, 185, 168, 0.4);
+  outline: none;
+  border-color: var(--terminal-highlight, #5ab9a8);
+  box-shadow: 0 0 8px rgba(90, 185, 168, 0.4);
 }
 
 .profile-options-section .input-hint {
-    color: var(--terminal-comment, #6272a4);
-    font-size: 0.85em;
-    margin-top: -10px;
-    margin-bottom: 15px;
-    text-align: left;
-    padding-left: 5px;
+  color: var(--terminal-comment, #6272a4);
+  font-size: 0.85em;
+  margin-top: -10px;
+  margin-bottom: 15px;
+  text-align: left;
+  padding-left: 5px;
 }
 
 .profile-options-section .action-button {
-    width: 100%;
-    padding: 12px;
-    background-color: var(--terminal-green, #50fa7b);
-    color: var(--terminal-bg, #282a36);
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-family: 'Pixelify Sans', cursive;
-    font-size: 1.1em;
-    transition: background-color 0.2s ease, box-shadow 0.2s ease;
-    margin-top: 10px;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  padding: 12px;
+  background-color: var(--terminal-green, #50fa7b);
+  color: var(--terminal-bg, #282a36);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'Pixelify Sans', cursive;
+  font-size: 1.1em;
+  transition:
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+  margin-top: 10px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .profile-options-section .action-button:hover:not(:disabled) {
-    background-color: var(--bright-green-teal, #30e1b9);
-    box-shadow: 0 0 15px var(--bright-green-teal), 0 0 25px rgba(48, 225, 185, 0.5);
+  background-color: var(--bright-green-teal, #30e1b9);
+  box-shadow:
+    0 0 15px var(--bright-green-teal),
+    0 0 25px rgba(48, 225, 185, 0.5);
 }
 
 .profile-options-section .action-button:disabled {
-    background-color: var(--terminal-comment, #6272a4);
-    cursor: not-allowed;
-    opacity: 0.7;
-    box-shadow: none;
+  background-color: var(--terminal-comment, #6272a4);
+  cursor: not-allowed;
+  opacity: 0.7;
+  box-shadow: none;
 }
 
 /* Responsività per la navigazione del profilo */
 @media (max-width: 768px) {
-    .profile-nav {
-        overflow-x: auto; /* Permette lo scorrimento orizzontale */
-        justify-content: flex-start; /* Allinea a sinistra gli elementi scorrevoli */
-    }
+  .profile-nav {
+    overflow-x: auto; /* Permette lo scorrimento orizzontale */
+    justify-content: flex-start; /* Allinea a sinistra gli elementi scorrevoli */
+  }
 }
 
 /* Stili specifici per la modale di modifica nickname */
 
 /* 1. Stile del contenitore del contenuto della modale del nickname */
 #editNicknameModal .modal-content {
-    max-width: 450px; /* Larghezza massima più contenuta per questa modale */
-    padding: 25px; /* Spazio interno */
-    background-color: var(--tertiary-bg); /* Sfondo scuro coerente con il tema */
-    border: 2px solid var(--primary-text); /* Bordo giallo per un look distintivo e "warning" */
-    box-shadow: 0 0 20px var(--white-glow); /* Effetto glow giallo */
-    overflow-y: auto; /* Permette lo scorrimento se il contenuto supera l'altezza */
-    max-height: 90vh; /* Limita l'altezza massima per adattarsi a schermi piccoli */
+  max-width: 450px; /* Larghezza massima più contenuta per questa modale */
+  padding: 25px; /* Spazio interno */
+  background-color: var(--tertiary-bg); /* Sfondo scuro coerente con il tema */
+  border: 2px solid var(--primary-text); /* Bordo giallo per un look distintivo e "warning" */
+  box-shadow: 0 0 20px var(--white-glow); /* Effetto glow giallo */
+  overflow-y: auto; /* Permette lo scorrimento se il contenuto supera l'altezza */
+  max-height: 90vh; /* Limita l'altezza massima per adattarsi a schermi piccoli */
 }
 
 /* 2. Stile per il titolo della modale del nickname */
 #editNicknameModal h2 {
-    color: var(--highlight-text); /* Colore giallo per il titolo */
-    text-shadow: 0 0 8px var(--bright-glow); /* Effetto glow sul titolo */
-    font-size: 1.8em; /* Dimensione del font */
-    margin-bottom: 20px; /* Margine inferiore */
-    text-align: center;
-    display: flex; /* Per allineare l'icona se presente */
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
+  color: var(--highlight-text); /* Colore giallo per il titolo */
+  text-shadow: 0 0 8px var(--bright-glow); /* Effetto glow sul titolo */
+  font-size: 1.8em; /* Dimensione del font */
+  margin-bottom: 20px; /* Margine inferiore */
+  text-align: center;
+  display: flex; /* Per allineare l'icona se presente */
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
 
 /* Stili per l'input del nickname */
-#editNicknameModal input[type="text"] {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    background-color: var(--secondary-bg);
-    border: 1px solid var(--secondary-text);
-    color: var(--terminal-text, #f8f8f2);
-    border-radius: 5px;
-    font-family: 'Courier Prime', monospace;
-    font-size: 1em;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    box-sizing: border-box; /* Importante per includere padding nel width */
+#editNicknameModal input[type='text'] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  background-color: var(--secondary-bg);
+  border: 1px solid var(--secondary-text);
+  color: var(--terminal-text, #f8f8f2);
+  border-radius: 5px;
+  font-family: 'Courier Prime', monospace;
+  font-size: 1em;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+  box-sizing: border-box; /* Importante per includere padding nel width */
 }
 
-#editNicknameModal input[type="text"]:focus {
-    outline: none;
-    border-color: var(--primary-text);
-    box-shadow: 0 0 8px rgba(90, 185, 168, 0.4);
+#editNicknameModal input[type='text']:focus {
+  outline: none;
+  border-color: var(--primary-text);
+  box-shadow: 0 0 8px rgba(90, 185, 168, 0.4);
 }
 
 /* Stili per il messaggio del cooldown (anche se la logica è rimossa, lo stile resta se il p è ancora nell'HTML) */
 #editNicknameModal p#nicknameCooldownMessage {
-    color: var(--primary-text);
-    font-size: 0.9em;
-    margin-top: -10px;
-    margin-bottom: 15px;
+  color: var(--primary-text);
+  font-size: 0.9em;
+  margin-top: -10px;
+  margin-bottom: 15px;
 }
 
 /* Stili per il pulsante Salva */
 #editNicknameModal button#saveNewNicknameBtn {
-    width: 100%;
-    padding: 12px;
-    background-color: var(--accent-pink);
-    color: var(--primary-text);
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-family: 'Pixelify Sans', cursive;
-    font-size: 1.1em;
-    transition: background-color 0.2s ease, box-shadow 0.2s ease;
-    margin-top: 10px;
-    text-shadow: 1px 1px 2px var(--white-glow);
+  width: 100%;
+  padding: 12px;
+  background-color: var(--accent-pink);
+  color: var(--primary-text);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'Pixelify Sans', cursive;
+  font-size: 1.1em;
+  transition:
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+  margin-top: 10px;
+  text-shadow: 1px 1px 2px var(--white-glow);
 }
 
 #editNicknameModal button#saveNewNicknameBtn:hover:not(:disabled) {
-    background-color: var(--accent-pink, #30e1b9);
-    box-shadow: 0 0 15px var(--accent-pink), 0 0 25px rgba(--accent-pink-glow);
+  background-color: var(--accent-pink, #30e1b9);
+  box-shadow:
+    0 0 15px var(--accent-pink),
+    0 0 25px rgba(--accent-pink-glow);
 }
 
 #editNicknameModal button#saveNewNicknameBtn:disabled {
-    background-color: var(--secondary-text);
-    cursor: not-allowed;
-    opacity: 0.7;
-    box-shadow: none;
+  background-color: var(--secondary-text);
+  cursor: not-allowed;
+  opacity: 0.7;
+  box-shadow: none;
 }

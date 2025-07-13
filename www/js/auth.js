@@ -40,22 +40,24 @@ const authModalTitle = document.getElementById('authModalTitle');
  * @param {boolean} forceShow - Se true, forza la visualizzazione (utile per il caricamento iniziale).
  */
 export function showAuthModal(mode, forceShow = false) {
-    if (!authModal) {
-        console.error("Elemento authModal non trovato.");
-        return;
-    }
+  if (!authModal) {
+    console.error('Elemento authModal non trovato.');
+    return;
+  }
 
-    // In modalità offline, non vogliamo mostrare la modale di autenticazione.
-    // L'utente è sempre considerato "offline_player".
-    console.log("[Auth.js] Tentativo di mostrare la modale di autenticazione. Disabilitata in modalità offline.");
-    authModal.style.display = 'none';
-    document.body.classList.remove('modal-open');
-    showToast('Authentication is not required in offline mode.', 'info');
-    return; // Esci immediatamente
+  // In modalità offline, non vogliamo mostrare la modale di autenticazione.
+  // L'utente è sempre considerato "offline_player".
+  console.log(
+    '[Auth.js] Tentativo di mostrare la modale di autenticazione. Disabilitata in modalità offline.',
+  );
+  authModal.style.display = 'none';
+  document.body.classList.remove('modal-open');
+  showToast('Authentication is not required in offline mode.', 'info');
+  return; // Esci immediatamente
 
-    // Il codice seguente non verrà mai eseguito in modalità offline, ma lo lascio commentato
-    // per riferimento se la logica dovesse cambiare in futuro.
-    /*
+  // Il codice seguente non verrà mai eseguito in modalità offline, ma lo lascio commentato
+  // per riferimento se la logica dovesse cambiare in futuro.
+  /*
     authModal.style.display = 'flex';
     document.body.classList.add('modal-open');
 
@@ -76,27 +78,27 @@ export function showAuthModal(mode, forceShow = false) {
 // sono state rimosse in quanto non più necessarie per un gioco completamente offline.
 
 document.addEventListener('DOMContentLoaded', function () {
-    console.log('[Auth.js DOMContentLoaded] Elementi della modale di autenticazione pronti.');
+  console.log('[Auth.js DOMContentLoaded] Elementi della modale di autenticazione pronti.');
 
-    // Listener per chiudere la modale al click sul bottone 'X'
-    if (closeAuthModalBtn) {
-        closeAuthModalBtn.addEventListener('click', () => {
-            if (authModal) authModal.style.display = 'none';
-            document.body.classList.remove('modal-open');
-        });
-    }
-
-    // Listener per chiudere la modale cliccando fuori
-    window.addEventListener('click', (event) => {
-        if (event.target == authModal) {
-            authModal.style.display = 'none';
-            document.body.classList.remove('modal-open');
-        }
+  // Listener per chiudere la modale al click sul bottone 'X'
+  if (closeAuthModalBtn) {
+    closeAuthModalBtn.addEventListener('click', () => {
+      if (authModal) authModal.style.display = 'none';
+      document.body.classList.remove('modal-open');
     });
+  }
 
-    // Rimosse le logiche per i form di login/registrazione e verifica telefono
-    // in quanto non più funzionali in modalità offline.
-    /*
+  // Listener per chiudere la modale cliccando fuori
+  window.addEventListener('click', (event) => {
+    if (event.target == authModal) {
+      authModal.style.display = 'none';
+      document.body.classList.remove('modal-open');
+    }
+  });
+
+  // Rimosse le logiche per i form di login/registrazione e verifica telefono
+  // in quanto non più funzionali in modalità offline.
+  /*
     if (loginForm) { ... }
     if (registerForm) { ... }
     if (loginLink) { ... }
@@ -109,24 +111,24 @@ document.addEventListener('DOMContentLoaded', function () {
     if (document.getElementById('resetPasswordForm')) { ... }
     */
 
-    // Gestione input tastiera in modalità landscape per la modale di autenticazione
-    if (window.Capacitor && Capacitor.isNativePlatform()) {
-        const authInputFields = [
-            document.getElementById('loginEmail'),
-            document.getElementById('loginPassword'),
-            document.getElementById('registerEmail'),
-            document.getElementById('registerPassword'),
-            document.getElementById('registerNickname'),
-            // phoneNumberInput, // Rimosso
-            // verificationCodeInput // Rimosso
-        ].filter(Boolean); // Filtra gli elementi nulli se non trovati
+  // Gestione input tastiera in modalità landscape per la modale di autenticazione
+  if (window.Capacitor && Capacitor.isNativePlatform()) {
+    const authInputFields = [
+      document.getElementById('loginEmail'),
+      document.getElementById('loginPassword'),
+      document.getElementById('registerEmail'),
+      document.getElementById('registerPassword'),
+      document.getElementById('registerNickname'),
+      // phoneNumberInput, // Rimosso
+      // verificationCodeInput // Rimosso
+    ].filter(Boolean); // Filtra gli elementi nulli se non trovati
 
-        authInputFields.forEach(input => {
-            input?.addEventListener('focus', () => {
-                setTimeout(() => {
-                    input.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }, 300);
-            });
-        });
-    }
+    authInputFields.forEach((input) => {
+      input?.addEventListener('focus', () => {
+        setTimeout(() => {
+          input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 300);
+      });
+    });
+  }
 });
