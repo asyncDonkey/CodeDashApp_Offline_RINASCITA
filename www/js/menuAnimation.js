@@ -1,22 +1,23 @@
 // www/js/menuAnimation.js
 
+// www/js/menuAnimation.js
+
 import * as AudioManager from './audioManager.js';
 import { showToast } from './toastNotifications.js';
 import {
     COMPANION_ASSET_MAP,
     GLOBAL_SPRITE_SCALE_FACTOR,
-    SKIN_ASSET_MAP, // <-- AGGIUNTA QUESTA LINEA
+    SKIN_ASSET_MAP,
 } from './donkeyRunner.js';
-import { SpriteAnimation } from './animation.js'; // Assicurati sia importato
+import { SpriteAnimation } from './animation.js';
 
-// Helper function to load images (defined at module scope)
 const loadImageForMenuDisplay = (src) => {
     return new Promise((resolve, reject) => {
         const img = new Image();
         img.onload = () => resolve(img);
         img.onerror = (err) => {
             console.error(`Impossibile caricare lo sprite per il menu: ${src}`, err);
-            resolve(null); // Resolve with null on error to avoid Promise.all failure
+            resolve(null);
         };
         img.src = src;
     });
@@ -803,24 +804,26 @@ export const menuAnimation = {
 
         // Preload all necessary sprites (bits, companions, menu donkey skins)
         // This is important because updateMenuPlayerDisplay needs images to be loaded
+        // MODIFICATO: Semplificato il Promise.all
         Promise.all([
-            this.preloadBitSprites(),
-            // No longer calling preloadCompanionSprites here directly as it will be handled by updateMenuPlayerDisplay dynamically
-            AudioManager.loadSound(THUNDER_CLAP_SOUND_NAME, `audio/sfx/${THUNDER_CLAP_SOUND_NAME}.ogg`),
+            // La riga this.preloadBitSprites() è stata rimossa.
+            AudioManager.loadSound('sfx_thunder_clap', `audio/sfx/sfx_thunder_clap.ogg`),
             AudioManager.loadSound('sfx_hum', 'audio/sfx/sfx_hum.mp3'),
             AudioManager.loadSound('sfx_menu_eat', 'audio/sfx/sfx_menu_eat.ogg'),
             AudioManager.loadSound('sfx_donkey_digest', 'audio/sfx/sfx_donkey_digest.ogg'),
             AudioManager.loadSound('sfx_donkey_comment', 'audio/sfx/sfx_donkey_comment.ogg'),
         ])
         .then(() => {
-            // After initial load, updateMenuPlayerDisplay will be called from main.js initializeMenu
-            this.start(); // Start the menu animation loop
+            // Poiché gli sprite sono già pre-caricati dal loader,
+            // possiamo avviare l'animazione in sicurezza.
+            this.start();
         })
         .catch(error => {
-            console.error("[MenuAnimation] Errore critico nel caricamento degli sprite audio/bit, l'animazione del menu potrebbe non avviarsi completamente:", error);
-            this.start();
+            console.error("[MenuAnimation] Errore nel caricamento degli asset audio, l'animazione potrebbe avere problemi:", error);
+            this.start(); // Avvia comunque
         });
     },
+
 
     // --- NUOVA FUNZIONE: updateMenuPlayerDisplay ---
     // Questa funzione aggiorna visivamente il giocatore e il compagno nel menu.
@@ -1020,16 +1023,13 @@ export const menuAnimation = {
         const bitSprite = this.bitSprites[chosenTypeName];
 
         if (!bitSprite) {
+            // Questo errore non dovrebbe più apparire!
             console.error(`Sprite per il bit "${chosenTypeName}" non trovato!`);
             return;
         }
 
         const newBit = new Bit(this.canvas, chosenType, bitSprite);
         this.bits.push(newBit);
-
-        if (!this.isUserAuthenticated) {
-            this.donkey.setTarget(newBit);
-        }
     },
 
     start() {
