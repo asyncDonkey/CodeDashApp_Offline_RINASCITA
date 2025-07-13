@@ -149,7 +149,7 @@ export async function initShop() {
     const localUserId = getCurrentUserId(); //
     if (!currentUserData || currentUserData.userId !== localUserId) {
         console.error("currentUserData non disponibile o non corrisponde. Impossibile inizializzare il negozio."); //
-        showToast('Errore: impossibile caricare il negozio.', 'error'); //
+        showToast('Error: Unable to load store.', 'error'); //
         return;
     }
 
@@ -257,7 +257,7 @@ function addBuyButtonListeners(userBits, userUnlockedItems) {
                 const item = cosmeticCatalog[itemId]; 
 
                 if (!item) {
-                    showToast('Errore: oggetto non trovato nel catalogo.', 'error');
+                    showToast('Error: Item not found in catalog.', 'error');
                     return;
                 }
                 
@@ -290,12 +290,12 @@ function addBuyButtonListeners(userBits, userUnlockedItems) {
  * @param {number} itemPrice - Il costo dell'oggetto.
  */
 async function handlePurchase(itemId, itemPrice) {
-    showToast('Elaborazione acquisto...', 'info');
+    showToast('Purchase processing...', 'info');
     const localUserId = getCurrentUserId();
 
     if (!currentUserData || currentUserData.userId !== localUserId) {
         console.error("currentUserData non disponibile o non corrisponde. Impossibile completare l'acquisto.");
-        showToast('Errore: impossibile accedere ai dati utente locali.', 'error');
+        showToast('Error: Unable to access local user data.', 'error');
         return;
     }
 
@@ -312,7 +312,7 @@ async function handlePurchase(itemId, itemPrice) {
 
     if (!itemDetails) { // Aggiunto controllo per itemDetails undefined
         console.error("Errore: Dettagli oggetto non trovati nel catalogo per ID:", itemId);
-        showToast('Errore: oggetto non valido per l\'acquisto.', 'error');
+        showToast('Error: Item not valid for purchase.', 'error');
         return;
     }
 
@@ -335,11 +335,11 @@ async function handlePurchase(itemId, itemPrice) {
     const userUnlockedItems = userProfileToUpdate.inventory.unlockedItems;
 
     if (userUnlockedItems.includes(itemId)) {
-        showToast('Hai già sbloccato questo oggetto!', 'warning');
+        showToast('You have already unlocked this item!', 'warning');
         return;
     }
     if (currentCurrency < itemPrice) {
-        showToast(`Non hai abbastanza ${currencyDisplayName} per questo acquisto.`, 'error');
+        showToast(`You do not have enough ${currencyDisplayName} for this purchase.`, 'error');
         return;
     }
 
@@ -357,7 +357,7 @@ async function handlePurchase(itemId, itemPrice) {
 
         Object.assign(currentUserData, userProfileToUpdate);
 
-        showToast('Acquisto completato con successo!', 'success');
+        showToast('Purchase completed successfully!', 'success');
 
         // Ricarica il negozio per riflettere lo stato aggiornato (bit, oggetti sbloccati)
         await initShop(); // Re-inizializza il negozio con i nuovi dati
@@ -379,7 +379,7 @@ async function handlePurchase(itemId, itemPrice) {
 
     } catch (error) {
         console.error("Errore durante l'acquisto locale:", error);
-        showToast(`Errore nell'acquisto: ${error.message}`, 'error');
+        showToast(`Purchase error: ${error.message}`, 'error');
         debugger;
     }
 }

@@ -1,83 +1,49 @@
-
-
-// js/toastNotifications.js
+// www/js/toastNotifications.js
 
 /**
- * Contenitore DOM per le notifiche toast.
- * Viene cercato una sola volta quando il modulo viene caricato.
- * @type {HTMLElement|null}
- */
-const toastContainer = document.getElementById('toast-container');
-
-if (!toastContainer) {
-    console.warn(
-        "Attenzione: L'elemento #toast-container non è stato trovato nel DOM. Le notifiche Toast non funzioneranno correttamente. Assicurati che sia presente nel tuo HTML."
-    );
-}
-
-/**
- * Mostra una notifica toast.
+ * Mostra una notifica toast personalizzata in stile terminale.
  * @param {string} message - Il messaggio da visualizzare.
- * @param {string} [type='info'] - Tipo di notifica ('success', 'error', 'warning', 'info').
- * @param {number} [duration=2500] - Durata in millisecondi prima della scomparsa automatica. (MODIFICATO: 2.5 secondi)
+ * @param {'info'|'success'|'error'|'warning'} type - Il tipo di notifica, per lo stile.
+ * @param {number} duration - La durata in millisecondi prima che la notifica scompaia.
  */
-export function showToast(message, type = 'info', duration = 2500) { // Durata predefinita ridotta
-    if (!toastContainer) {
-        console.error('Fallback ad alert: #toast-container non trovato. Notifica:', message);
-        alert(`[${type.toUpperCase()}] ${message}`);
-        return;
+export function showToast(message, type = 'info', duration = 3000) {
+    // Se esiste già un contenitore, lo rimuove per evitare duplicati
+    const existingContainer = document.getElementById('toast-container');
+    if (existingContainer) {
+        existingContainer.remove();
     }
 
-    // Crea l'elemento toast
+    // 1. Crea il contenitore principale
+    const toastContainer = document.createElement('div');
+    toastContainer.id = 'toast-container';
+    toastContainer.className = 'terminal-toast-container'; // Classe per lo stile generale
+
+    // 2. Crea l'elemento toast
     const toast = document.createElement('div');
-    toast.className = `toast-notification ${type.toLowerCase()}`; // Assicura che type sia lowercase per la classe CSS
+    // Aggiunge la classe base e una classe specifica per il tipo (info, success, etc.)
+    toast.className = `terminal-toast toast-${type}`;
 
-    // Crea lo span per il messaggio
-    const messageSpan = document.createElement('span');
-    messageSpan.className = 'toast-message';
-    messageSpan.textContent = message;
-    toast.appendChild(messageSpan);
+    // 3. Aggiunge il prompt e il messaggio in stile terminale
+    // Usiamo innerHTML per permettere al cursore di essere un elemento span separato
+    toast.innerHTML = `<span>&gt; ${message}</span><span class="toast-cursor">_</span>`;
 
-    // RIMOSSO: Creazione e aggiunta del pulsante di chiusura 'X'
-
-    // Funzione per chiudere e rimuovere il toast
-    const dismissToast = () => {
-        toast.classList.remove('show');
-        toast.classList.add('hide'); // Attiva l'animazione di uscita (definita in CSS)
-
-        const removeFinal = () => {
-            if (toast.parentNode === toastContainer) {
-                toastContainer.removeChild(toast);
-            }
-            toast.removeEventListener('transitionend', removeFinal); // Rimuovi il listener dopo l'esecuzione
-        };
-
-        toast.addEventListener('transitionend', removeFinal, { once: true });
-
-        // Fallback per rimozione, nel caso la transizione non si attivi
-        setTimeout(() => {
-            removeFinal();
-        }, 500); // Piccolo timeout per dare tempo alla transizione, se non ha funzionato transitionend
-    };
-
-    // NUOVO: Chiudi il toast cliccandoci sopra
-    toast.addEventListener('click', dismissToast);
-
-    // Aggiungi il toast al contenitore
+    // 4. Aggiunge il toast al contenitore e il contenitore al body
     toastContainer.appendChild(toast);
+    document.body.appendChild(toastContainer);
 
-    // Mostra il toast con una piccola animazione di entrata
-    requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-            toast.classList.add('show');
-        });
-    });
+    // Mostra il toast con un'animazione
+    setTimeout(() => {
+        toast.classList.add('visible');
+    }, 10); // Un piccolo ritardo per permettere il rendering prima di applicare la transizione
 
-    // Imposta la scomparsa automatica se la durata è positiva
-    if (duration > 0) {
-        setTimeout(() => {
-            // Chiama dismissToast, che si occuperà della rimozione
-            dismissToast();
-        }, duration);
-    }
+    // 5. Imposta un timeout per nascondere e rimuovere il toast
+    setTimeout(() => {
+        toast.classList.remove('visible');
+        // Aspetta la fine della transizione di scomparsa prima di rimuovere l'elemento dal DOM
+        toast.addEventListener('transitionend', () => {
+            if (toastContainer.parentNode) {
+                toastContainer.remove();
+            }
+        }, { once: true });
+    }, duration);
 }

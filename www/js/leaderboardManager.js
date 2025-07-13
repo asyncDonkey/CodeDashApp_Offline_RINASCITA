@@ -35,7 +35,7 @@ export function initLeaderboard() {
  */
 export async function loadLeaderboard() {
     console.log("[LeaderboardManager] Tentativo di caricare la leaderboard globale (disabilitata in offline).");
-    showToast('Classifica non disponibile in modalità offline.', 'info');
+    showToast('Leaderboard not available in offline mode.', 'info');
     // Non carica alcun dato
     return Promise.resolve();
 }

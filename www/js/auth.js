@@ -50,7 +50,7 @@ export function showAuthModal(mode, forceShow = false) {
     console.log("[Auth.js] Tentativo di mostrare la modale di autenticazione. Disabilitata in modalità offline.");
     authModal.style.display = 'none';
     document.body.classList.remove('modal-open');
-    showToast('Autenticazione non necessaria in modalità offline.', 'info');
+    showToast('Authentication is not required in offline mode.', 'info');
     return; // Esci immediatamente
 
     // Il codice seguente non verrà mai eseguito in modalità offline, ma lo lascio commentato

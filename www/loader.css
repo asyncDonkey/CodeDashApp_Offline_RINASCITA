@@ -1740,3 +1740,123 @@ body.game-fullscreen-active.game-fullscreen-landscape #mission-display {
 .close-button {
     display: none !important;
 }
+
+/* Contenitore principale per posizionare i toast */
+.terminal-toast-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px; /* Spazio tra più notifiche, se necessario */
+}
+
+/* Stile base del toast */
+.terminal-toast {
+    background-color: rgba(20, 20, 20, 0.9); /* Sfondo scuro semi-trasparente */
+    font-family: 'Courier Prime', 'Press Start 2P', monospace;
+    font-size: 14px;
+    padding: 12px 18px;
+    border: 1px solid #333;
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.2); /* Leggero bagliore verde */
+    color: #00ff00; /* Colore testo verde brillante */
+    text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+    max-width: 350px;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+    position: relative; /* Necessario per lo pseudo-elemento scanlines */
+    overflow: hidden; /* Nasconde le scanlines che escono */
+}
+
+/* Effetto Scanlines */
+.terminal-toast::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.1),
+        rgba(0, 0, 0, 0.1) 1px,
+        transparent 1px,
+        transparent 2px
+    );
+    pointer-events: none; /* Non intercettare i click */
+    z-index: 1;
+}
+
+
+/* Quando il toast è visibile */
+.terminal-toast.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Cursore lampeggiante */
+.toast-cursor {
+    display: inline-block;
+    background-color: #00ff00;
+    width: 8px; /* Larghezza del cursore */
+    margin-left: 5px;
+    animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+    from, to { background-color: transparent; }
+    50% { background-color: #00ff00; }
+}
+
+
+/* Variazioni di colore per tipo di notifica */
+.terminal-toast.toast-success {
+    border-color: #00ff00;
+}
+
+.terminal-toast.toast-info {
+    color: #31b0b0; /* Ciano/Turchese */
+    border-color: #31b0b0;
+    box-shadow: 0 0 15px rgba(49, 176, 176, 0.2);
+}
+.terminal-toast.toast-info .toast-cursor {
+    background-color: #31b0b0;
+    animation-name: blink-info;
+}
+@keyframes blink-info {
+    from, to { background-color: transparent; }
+    50% { background-color: #31b0b0; }
+}
+
+
+.terminal-toast.toast-warning {
+    color: #f1fa8c; /* Giallo */
+    border-color: #f1fa8c;
+    box-shadow: 0 0 15px rgba(241, 250, 140, 0.2);
+}
+.terminal-toast.toast-warning .toast-cursor {
+    background-color: #f1fa8c;
+    animation-name: blink-warning;
+}
+@keyframes blink-warning {
+    from, to { background-color: transparent; }
+    50% { background-color: #f1fa8c; }
+}
+
+
+.terminal-toast.toast-error {
+    color: #ff5555; /* Rosso */
+    border-color: #ff5555;
+    box-shadow: 0 0 15px rgba(255, 85, 85, 0.3);
+}
+.terminal-toast.toast-error .toast-cursor {
+    background-color: #ff5555;
+    animation-name: blink-error;
+}
+@keyframes blink-error {
+    from, to { background-color: transparent; }
+    50% { background-color: #ff5555; }
+}

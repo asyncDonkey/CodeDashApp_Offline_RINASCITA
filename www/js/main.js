@@ -289,7 +289,7 @@ const startGameSequence = async () => {
 
         if (toastMessageParts.length > 0) {
             console.log(`[Main.js] Sincronizzazione di ${toastMessageParts.join(' e ')}...`);
-            showToast(`Sincronizzazione di ${toastMessageParts.join(' e ')}...`, 'info');
+            showToast(`Syncing ${toastMessageParts.join(' and ')}...`, 'info');
         } else {
             console.log(`[Main.js] Nessun bit o Digital Fruit valido da sincronizzare.`);
         }
@@ -307,7 +307,7 @@ const startGameSequence = async () => {
             }
         } catch (error) {
             console.error('[Main.js] Errore di salvataggio dei bit/frutti:', error);
-            showToast('Errore nel salvataggio delle valute!', 'error');
+            showToast('Error saving currencies!', 'error');
         }
     }
 
@@ -378,7 +378,7 @@ document.addEventListener('DOMContentLoaded', function () {
     window.addEventListener('equippedItemChanged', async (event) => {
         console.log('[Main.js] Evento equippedItemChanged ricevuto.', event.detail);
         initializeMenu();
-        showToast('Modifica applicata nel menu!', 'info');
+        showToast('_Update: complete', 'info');
 
         const openModals = {
             skinsModal: window.renderSkinsModal, // Assumi che queste funzioni siano globali o importate
@@ -474,13 +474,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }, { passive: false });
     }
 
-    const glitchpediaBtn = document.getElementById('glitchpedia-btn');
-    if (glitchpediaBtn) {
-        glitchpediaBtn.addEventListener('click', () => {
-            showToast('Glitchpedia offline non disponibile.', 'info');
-        });
-        // Touchend listener no longer needed here, handled by global listener below.
-    }
+    
 
     // NEW: Global touchend listener to ensure click events are dispatched reliably on touch devices
     document.addEventListener('touchend', function(e) {
@@ -660,7 +654,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         } catch (error) {
             console.error('[Main.js] Errore critico durante il caricamento/inizializzazione utente locale:', error);
-            showToast('Errore critico, impossibile avviare il gioco offline.', 'error');
+            showToast('Critical error, unable to launch offline game.', 'error');
         }
     }
     initializeLocalUser();
@@ -739,7 +733,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             } catch (error) {
                 console.error("Error re-fetching user data for avatar:", error);
-                showToast("Errore nel caricare l'icona del profilo.", "error");
+                showToast("Error loading profile icon.", "error");
             }
         }
 
@@ -773,11 +767,11 @@ export async function updateMenuVisuals() {
             // 2. Chiama la funzione specifica di menuAnimation per aggiornare solo la grafica.
             if (menuAnimation) {
                 menuAnimation.updateMenuPlayerDisplay(currentUserData);
-                showToast('Aspetto aggiornato!', 'success');
+                showToast('_Update: successful', 'success');
             }
         }
     } catch (error) {
         console.error("Errore durante l'aggiornamento dei dati utente per il menu:", error);
-        showToast('Errore nell\'aggiornare la visualizzazione.', 'error');
+        showToast('Error updating view.', 'error');
     }
 }

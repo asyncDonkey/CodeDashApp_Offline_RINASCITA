@@ -327,7 +327,7 @@ const cosmeticCatalog = {
  */
 export async function openProfileModal(user) {
     if (!user) {
-        showToast("Nessun profilo utente locale disponibile.", "error");
+        showToast("No local user profile available.", "error");
         return;
     }
     const profileModal = document.getElementById('profileModal');
@@ -503,7 +503,7 @@ function addEquipListeners(container) {
  * Gestisce l'equipaggiamento di un oggetto e aggiorna la UI correttamente.
  */
 export async function handleEquipItem(itemId, itemType) {
-    showToast('Applying changes...', 'info');
+    showToast('Applying _Update...', 'info');
     const localUserId = getCurrentUserId();
     if (!currentUserData) {
         showToast('Error: User data not available.', 'error');
@@ -576,7 +576,7 @@ export async function handleEquipItem(itemId, itemType) {
 async function handleNicknameEdit() {
     const user = currentUserData;
     if (!user) {
-        showToast('Nessun utente locale disponibile per la modifica del nickname.', 'error');
+        showToast('No local user available to change nickname.', 'error');
         return;
     }
 
@@ -595,7 +595,7 @@ async function handleNicknameEdit() {
         !profileModalName
     ) {
         console.error('Elementi della modale di modifica nickname non trovati.');
-        showToast('UI Error: Impossibile aprire la modale di modifica nickname.', 'error');
+        showToast('UI Error: Unable to open nickname edit modal.', 'error');
         return;
     }
 
@@ -626,13 +626,13 @@ async function handleNicknameEdit() {
             return;
         }
         if (newNickname === currentNicknameOnModal) {
-            showToast('Il nuovo nickname è uguale al precedente.', 'info');
+            showToast('The new nickname is the same as the previous one.', 'info');
             editNicknameModal.style.display = 'none';
             return;
         }
 
         saveNewNicknameBtn.disabled = true;
-        saveNewNicknameBtn.textContent = 'Salvataggio...';
+        saveNewNicknameBtn.textContent = 'Saving...';
 
         try {
             currentUserData.nickname = newNickname;
@@ -642,16 +642,16 @@ async function handleNicknameEdit() {
             await saveUser(currentUserData);
 
             profileModalName.textContent = newNickname;
-            showToast('Nickname aggiornato con successo!', 'success');
+            showToast('Nickname successfully updated!', 'success');
             document.getElementById('edit-nickname-btn').disabled = false;
-            document.getElementById('edit-nickname-btn').title = 'Modifica Nickname';
+            document.getElementById('edit-nickname-btn').title = 'Change Nickname';
             editNicknameModal.style.display = 'none';
 
             initializeMenu();
 
         } catch (error) {
-            console.error("Errore durante l'aggiornamento del nickname locale:", error);
-            showToast(`Errore: ${error.message}`, 'error');
+            console.error("Error updating local nickname:", error);
+            showToast(`Error: ${error.message}`, 'error');
             saveNewNicknameBtn.disabled = false;
             saveNewNicknameBtn.textContent = 'Salva';
         }
@@ -701,7 +701,7 @@ export function initProfileControls() {
 async function handleGenerateRandomAvatar() {
     const user = currentUserData;
     if (!user) {
-        showToast('Nessun profilo locale disponibile per generare un avatar.', 'error');
+        showToast('No local profiles available to generate an avatar.', 'error');
         return;
     }
 
@@ -723,7 +723,7 @@ async function handleGenerateRandomAvatar() {
     if (saveGeneratedAvatarBtn) {
         saveGeneratedAvatarBtn.style.display = 'inline-flex';
         saveGeneratedAvatarBtn.disabled = false;
-        showToast('Nuovo avatar generato. Clicca "Salva" per confermare.', 'info');
+        showToast('New avatar generated. Click "Save" to confirm..', 'info');
     }
 }
 
@@ -734,7 +734,7 @@ async function handleGenerateRandomAvatar() {
 async function handleSaveGeneratedAvatar() {
     const user = currentUserData;
     if (!user) {
-        showToast("Nessun profilo locale disponibile per salvare l'avatar.", 'error');
+        showToast("No local profile available to save avatar.", 'error');
         return;
     }
 
@@ -745,7 +745,7 @@ async function handleSaveGeneratedAvatar() {
     const pendingAvatarSeed = profileModalAvatar.dataset.pendingAvatarSeed;
 
     if (!pendingBlockieUrl || !pendingAvatarSeed) {
-        showToast('Nessun avatar generato in attesa di salvataggio.', 'warning');
+        showToast('No avatar generated waiting to be saved.', 'warning');
         return;
     }
 
@@ -763,7 +763,7 @@ async function handleSaveGeneratedAvatar() {
 
         document.getElementById('profile-modal-avatar').src = pendingBlockieUrl;
 
-        showToast('Avatar Blockie salvato con successo!', 'success');
+        showToast('Avatar Blockie successfully saved!', 'success');
 
         profileModalAvatar.removeAttribute('data-pending-blockie-url');
         profileModalAvatar.removeAttribute('data-pending-avatar-seed');
@@ -776,8 +776,8 @@ async function handleSaveGeneratedAvatar() {
         initializeMenu();
 
     } catch (error) {
-        console.error("Errore durante il salvataggio dell'avatar Blockie locale:", error);
-        showToast("Errore durante il salvataggio dell'avatar Blockie.", 'error');
+        console.error("Error saving local Blockie avatar:", error);
+        showToast("Error saving Blockie avatar.", 'error');
         if (saveGeneratedAvatarBtn) {
             saveGeneratedAvatarBtn.disabled = false;
             saveGeneratedAvatarBtn.innerHTML = '<i class="ph-bold ph-floppy-disk"></i>';

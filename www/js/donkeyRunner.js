@@ -1150,18 +1150,18 @@ async function handleShareScore() {
     console.log('handleShareScore attivato!');
 
     if (typeof finalScore === 'undefined' || finalScore < 0) {
-        showToast('Nessun punteggio valido da condividere.', 'warning');
+        showToast('No valid scores to share.', 'warning');
         return;
     }
 
-    let challengerName = 'un Asinello Pixelato'; // Nome di default più amichevole
+    let challengerName = 'a Pixelated Donkey'; // Nome di default più amichevole
     // In un contesto offline, currentUserData è già disponibile globalmente
     // e non c'è un "currentUser" di Firebase Auth
     if (currentUserData && currentUserData.nickname) {
         challengerName = currentUserData.nickname;
     } else {
         // Fallback per un utente locale senza nickname specifico
-        challengerName = 'Offline Player';
+        challengerName = 'a Pixelated Donkey';
     }
 
     // Poiché non ci sono classifiche online, la condivisione sarà solo un messaggio locale
@@ -1178,11 +1178,11 @@ async function handleShareScore() {
                 text: simpleShareText,
                 url: siteBaseUrl, // L'URL generico del gioco
             });
-            showToast('Sfida condivisa con successo!', 'success');
+            showToast('Challenge shared successfully!', 'success');
         } catch (error) {
             if (error.name !== 'AbortError') {
                 console.error('Errore durante navigator.share:', error);
-                showToast('Condivisione annullata o fallita.', 'info');
+                showToast('Sharing cancelled or failed.', 'info');
             }
         }
     } else {
@@ -1202,17 +1202,17 @@ function fallbackShare(textToShare) {
         textarea.select();
         try {
             document.execCommand('copy');
-            showToast('Testo della sfida copiato negli appunti!', 'info');
+            showToast('Challenge text copied to clipboard!', 'info');
         } catch (err) {
-            console.error('Fallback: Impossibile copiare negli appunti:', err);
+            console.error('Fallback: Unable to copy to clipboard:', err);
             // Fallback finale se nemmeno execCommand funziona
-            prompt('Copia questo testo per condividere la tua sfida:', textToShare);
+            prompt('Copy this text to share your challenge:', textToShare);
         } finally {
             document.body.removeChild(textarea);
         }
     } else {
         // Fallback più semplice e meno intrusivo se execCommand non è disponibile
-        prompt('Copia questo testo per condividere la tua sfida:', textToShare);
+        prompt('Copy this text to share your challenge:', textToShare);
     }
 }
 
@@ -2083,7 +2083,7 @@ drawFallback() {
             this.hasCodeInjector = false; // Slayer sovrascrive Injector
             hasSlayerSubroutineUpgrade = true; // Aggiorna flag globale
             gameStats.slayerCollected = true; // Traccia lo stat
-            showToast('Slayer Subroutine ATTIVATO!', 'success');
+            showToast('SLAYER SUBROUTINE: TRUE', 'success');
         }
         return; 
     }
@@ -2092,7 +2092,7 @@ drawFallback() {
             this.hasCodeInjector = true;
             hasCodeInjectorUpgrade = true; // Aggiorna flag globale
             gameStats.injectorCollected = true; // Traccia lo stat
-            showToast('Code Injector ATTIVATO!', 'success');
+            showToast('CODE INJECTOR MODULE: ON', 'success');
         }
         return;
     }
@@ -2101,7 +2101,7 @@ drawFallback() {
             this.hasDebugMode = true;
             hasDebugModeUpgrade = true; // Aggiorna flag globale
             gameStats.debugCollected = true; // Traccia lo stat
-            showToast('Debug Mode ENGAGED!', 'success');
+            showToast('DEBUG MOULE: ON', 'success');
         }
         return;
     }
@@ -2147,13 +2147,13 @@ drawFallback() {
         case POWERUP_TYPE.BIT_VACUUM:
             this.powerUpTimer = POWERUP_DURATION.BIT_VACUUM;
             this.isBitVacuumActive = true;
-            showToast('Bit Vacuum Attivo!', 'info');
+            showToast('Bit Vacuum: on', 'info');
             break;
         case POWERUP_TYPE.PURGE_PROTOCOL:
             this.powerUpTimer = POWERUP_DURATION.PURGE_PROTOCOL;
             this.isPurgeProtocolActive = true;
             this.canEatEnemy = true;
-            showToast('Purge Protocol Attivo! Inizia a cacciare!', 'info');
+            showToast('Purge Protocol Active! Start Hunting!', 'info');
             break;
         }
     }
@@ -2329,7 +2329,7 @@ class ExtraLifeCollectible {
                 // Logica per quando il player raccoglie
                 if (asyncDonkey.health < asyncDonkey.maxHealth) {
                     asyncDonkey.health++;
-                    showToast('Extra Life Acquisita!', 'success');
+                    showToast('++ integrity_module', 'success');
                 } else {
                     showToast('Integrity Maxed!', 'info');
                 }
@@ -5552,7 +5552,7 @@ async function processGameOver() { // FUNZIONE RESA ASYNC
 
     if (!window.currentUserData || window.currentUserData.userId !== localUserId) {
         console.error("window.currentUserData non disponibile o non corrisponde all'utente locale. Impossibile salvare le statistiche."); //
-        showToast('Errore: impossibile salvare le statistiche locali.', 'error'); //
+        showToast('Error: Unable to save local statistics.', 'error'); //
         // Non fare 'return' qui, vogliamo comunque mostrare la schermata Game Over.
     }
 
@@ -5791,7 +5791,7 @@ async function processGameOver() { // FUNZIONE RESA ASYNC
     try {
         await saveUser(currentUserData); //
         console.log('[donkeyRunner.js] Statistiche di gioco e badge/skin salvati localmente:', currentUserData.gameStats);
-        showToast('Statistiche e progressi salvati localmente!', 'success'); //
+        showToast('Stats and progress saved locally!', 'success'); //
 
         // Mostra i toast per i badge appena guadagnati
         if (newBadgesAwardedDuringThisRun.length > 0) {
@@ -5809,12 +5809,12 @@ async function processGameOver() { // FUNZIONE RESA ASYNC
             }
             for (const badgeId of newBadgesAwardedDuringThisRun) {
                 const badgeName = badgeDefinitions[badgeId] || badgeId; // Fallback all'ID se il nome non è trovato
-                showToast(`Nuovo badge: "${badgeName}" sbloccato!`, 'info');
+                showToast(`New badge: "${badgeName}" unlocked!`, 'info');
             }
         }
     } catch (error) {
         console.error('[donkeyRunner.js] Errore nel salvataggio delle statistiche, badge e skin su IndexedDB:', error); //
-        showToast(`Errore salvataggio locale: ${error.message}`, 'error'); //
+        showToast(`Local save error: ${error.message}`, 'error'); //
     }
     // --- FINE LOGICA ASSEGNAZIONE BADGE ---
 
@@ -7047,7 +7047,7 @@ async function toggleFullscreen() {
             }
         } catch (err) {
             console.error(`Errore attivazione fullscreen: ${err.message} (${err.name})`);
-            showToast('Impossibile attivare la modalità fullscreen.', 'error');
+            showToast('Unable to activate fullscreen mode.', 'error');
         }
     } else {
         try {
