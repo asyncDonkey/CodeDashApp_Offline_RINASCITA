@@ -435,6 +435,17 @@
   -webkit-overflow-scrolling: touch; /* Migliora lo scorrimento su iOS */
   scrollbar-width: thin; /* Per Firefox */
   scrollbar-color: var(--secondary-text) var(--tertiary-bg); /* Per Firefox */
+  min-height: 280px; /* Aumenta l'altezza minima */
+  max-height: 320px; /* Aumenta l'altezza massima per dare più respiro */
+  padding-bottom: 15px; /* Aggiungi un po' di padding in basso */
+  /* Stili esistenti, con aggiustamenti per il layout orizzontale */
+  padding: 10px; /* Padding interno del contenitore scorrevole */
+  border: 1px dashed var(--secondary-text); /* Bordo grigio tratteggiato */
+  border-radius: 8px;
+  background-color: var(--tertiary-bg); /* Sfondo scuro */
+  
+  align-items: flex-start; /* Allinea gli elementi in alto (inizio della riga) */
+  
 
   /* Stili per la scrollbar (Webkit - Chrome, Safari) */
   &::-webkit-scrollbar {
@@ -450,14 +461,6 @@
     border: 2px solid var(--tertiary-bg);
   }
 
-  /* Stili esistenti, con aggiustamenti per il layout orizzontale */
-  padding: 10px; /* Padding interno del contenitore scorrevole */
-  border: 1px dashed var(--secondary-text); /* Bordo grigio tratteggiato */
-  border-radius: 8px;
-  background-color: var(--tertiary-bg); /* Sfondo scuro */
-  min-height: 250px; /* AUMENTATO: Altezza minima per accogliere card orizzontali */
-  align-items: flex-start; /* Allinea gli elementi in alto (inizio della riga) */
-  max-height: 300px; /* Altezza massima (verticale) prima del clipping, se necessario */
 }
 
 /* Contenitore interno delle card (flex) - gestisce il gap tra le card */
@@ -465,7 +468,7 @@
   display: flex; /* ESSENZIALE: Questo contenitore è il flex parent delle singole card */
   gap: 1.5rem; /* Spazio tra le card */
   padding-top: 1rem; /* Padding interno */
-  padding-bottom: 1rem; /* Padding interno per spazio alla scrollbar */
+  padding-bottom: 5px;
 }
 
 /* Stili per la singola card del badge */
