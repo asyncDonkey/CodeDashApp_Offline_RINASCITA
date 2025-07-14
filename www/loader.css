@@ -1578,6 +1578,9 @@ body.game-fullscreen-active.game-fullscreen-landscape #mission-display {
     }
   }
 
+#run-stats-container {
+    display: block !important; /* Mostra il contenitore solo qui */
+  }
 }
 
 /* Media Query for larger screens than tablets, for greater canvas scalability if necessary */
@@ -2028,3 +2031,60 @@ body.game-fullscreen-active.game-fullscreen-landscape #mission-display {
     background-color: var(--terminal-red-dark);
   }
 }
+
+
+/* 1. Stile di Base: Nascosto su tutti i dispositivi di default */
+#run-stats-container {
+  display: none; /* Nascosto di default per tutti i dispositivi */
+  position: absolute;
+  bottom: 2%; 
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  max-width: 600px;
+  background-color: rgba(10, 20, 30, 0.75);
+  border: 2px solid var(--accent-cyan);
+  border-radius: 8px;
+  padding: 10px 15px;
+  box-sizing: border-box;
+  z-index: 815;
+  box-shadow: 0 0 15px var(--accent-cyan-glow);
+  backdrop-filter: blur(3px);
+}
+
+/* 2. Titolo e Lista: layout a blocco standard */
+.run-stats-title {
+  display: block; /* Assicura che sia un blocco */
+  font-family: 'Courier Prime', cursive;
+  font-weight: bold;
+  font-size: 1.1em;
+  color: var(--accent-cyan);
+  text-align: center;
+  margin: 0 0 10px 0;
+  padding-bottom: 5px;
+  border-bottom: 1px dashed var(--accent-cyan);
+  text-shadow: 0 0 8px var(--accent-cyan-glow);
+}
+
+.stats-list {
+  display: flex; /* Flexbox solo per gli elementi della lista */
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 5px 15px;
+}
+
+.stats-list li {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.9em;
+  color: var(--primary-text);
+}
+
+.stats-list span {
+  font-weight: bold;
+  color: var(--accent-yellow);
+  padding-left: 5px;
+}
+

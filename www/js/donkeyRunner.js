@@ -326,6 +326,7 @@ const RANDOMLY_SPAWNABLE_POWERUPS = [
 // Declare global DOM element variables with 'let' and no initial assignment
 // They will be assigned in setupGameEngine() once the DOM is ready.
 let miniLeaderboardListEl = null;
+let runStatsContainerEl = null;
 
 let creditsModal = null;
 let closeCreditsModalBtn = null;
@@ -1511,6 +1512,7 @@ export function setupGameEngine() {
   backToMenuBtn = document.getElementById('backToMenuBtn');
   mainMenuBtn = document.getElementById('mainMenuBtn');
   accountIconContainer = document.getElementById('account-icon-container');
+  runStatsContainerEl = document.getElementById('run-stats-container');
 
   // NUOVO: Riferimenti agli elementi della pausa
   pauseButton = document.getElementById('pauseButton');
@@ -1605,6 +1607,7 @@ export function pauseGame(isNativeAppPause = false) {
   }
 }
 
+
 function resumeGame() {
   if (currentGameState !== GAME_STATE.PAUSE) return;
 
@@ -1620,6 +1623,16 @@ function resumeGame() {
   if (mobileControlsDiv && isTouchDevice) mobileControlsDiv.style.display = 'flex';
   if (pauseButton) pauseButton.style.display = 'block';
   console.log('Gioco RIPRESO.');
+}
+
+function updateRunStatsDisplay() {
+  if (!runStatsContainerEl) return;
+
+  document.getElementById('stat-enemies').textContent = gameStats.enemiesDefeated;
+  document.getElementById('stat-shots').textContent = gameStats.shotsFired;
+  document.getElementById('stat-jumps').textContent = gameStats.jumps;
+  document.getElementById('stat-powerups').textContent = gameStats.powerUpsCollected;
+  document.getElementById('stat-datapackets').textContent = gameStats.dataPacketsCollected;
 }
 
 async function playBossMusic(bossName) {
@@ -6237,7 +6250,7 @@ async function processGameOver() {
     return; // Annulla Game Over se il gioco è in fase di inizializzazione
   }
   // --- FINE BUG FIX ---
-
+  if (runStatsContainerEl) runStatsContainerEl.style.display = 'none';
   gameOverTrigger = false; //
   currentGameState = 'GAME_OVER'; //
   finalScore = Math.floor(score); //
@@ -7232,6 +7245,7 @@ function resetGame(options = {}) {
     touchOverlayRight.style.opacity = '1';
   }
 
+  
   console.log('Gioco resettato.');
   MissionManager.resetMissions();
 }
@@ -7646,6 +7660,7 @@ function updatePlaying(dt) {
       dt: dt,
       playerTookDamage: asyncDonkey.invulnerableTimer > 0,
     });
+    updateRunStatsDisplay();
   }
 }
 
