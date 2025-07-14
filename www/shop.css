@@ -83,7 +83,8 @@
 
 /* Nome dell'oggetto */
 .item-name {
-  font-family: 'Pixelify Sans', cursive;
+  font-family: 'Courier Prime', cursive;
+  font-weight: bold;
   font-size: 1.05rem; /* Leggermente più grande */
   color: var(--accent-pink);
   margin-bottom: 10px;
@@ -109,7 +110,8 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  font-family: 'Pixelify Sans', cursive;
+  font-family: 'Courier Prime', cursive;
+  font-weight: bold;
   font-size: 1.2rem; /* Più grande e più leggibile */
   color: var(--accent-purple);
   margin-bottom: 15px;
@@ -119,7 +121,8 @@
 .buy-button {
   background-color: var(--primary-text);
   color: #282a36;
-  font-family: 'Pixelify Sans', cursive;
+  font-family: 'Courier Prime', cursive;
+  font-weight: bold;
   border: none;
   padding: 14px; /* Padding leggermente aumentato */
   border-radius: 4px;
@@ -198,7 +201,8 @@
   padding: 8px 15px;
   border-radius: 5px;
   cursor: pointer;
-  font-family: 'Pixelify Sans', cursive;
+  font-family: 'Courier Prime', cursive;
+  font-weight: bold;
   font-size: 0.8rem;
   white-space: nowrap;
   transition:

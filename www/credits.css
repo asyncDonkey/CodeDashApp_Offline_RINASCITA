@@ -16,12 +16,13 @@
 
 /* Titolo della modale */
 #creditsModal h2 {
-  color: var(--primary-text); /* Colore del titolo dalla nuova palette */
+  color: var(--terminal-purple-dark); /* Colore del titolo dalla nuova palette */
   text-align: center;
   margin-bottom: 30px;
-  font-family: 'Pixelify Sans', cursive;
+  font-family: 'Courier Prime', cursive;
+  font-weight: bold;
   font-size: 1.8em;
-  text-shadow: 0 0 12px var(--bright-glow); /* Effetto glow sul titolo dalla nuova palette */
+  text-shadow: 0 0 12px var(--terminal-purple-glow); /* Effetto glow sul titolo dalla nuova palette */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -65,13 +66,14 @@
 
 /* Sottotitoli principali delle sezioni */
 .credits-content h3 {
-  color: var(--accent-pink); /* Verde brillante dalla nuova palette */
-  font-family: 'Pixelify Sans', cursive;
+  color: var(--terminal-green-bright); /* Verde brillante dalla nuova palette */
+  font-family: 'Courier Prime', cursive;
+  font-weight: bold;
   font-size: 1.3em;
   text-align: center;
   margin-top: 30px;
   margin-bottom: 20px;
-  text-shadow: 0 0 8px var(--accent-pink-glow); /* Glow verde dalla nuova palette */
+  text-shadow: 0 0 8px var(--terminal-green-dark); /* Glow verde dalla nuova palette */
 }
 
 /* Sezioni specifiche dei crediti (Tecnologie, Asset, ecc.) */
@@ -87,14 +89,15 @@
 }
 
 .credits-section h4 {
-  color: var(--highlight-text); /* Ciano brillante dalla nuova palette */
-  font-family: 'Pixelify Sans', cursive;
+  color: var(--terminal-green-dark); /* Ciano brillante dalla nuova palette */
+  font-family: 'Courier Prime', cursive;
+  font-weight: bold;
   font-size: 1.1em;
   margin-top: 0;
   margin-bottom: 15px;
   border-bottom: 1px dotted rgba(var(--secondary-text), 0.4); /* Bordo punteggiato ciano dalla nuova palette */
   padding-bottom: 8px;
-  text-shadow: 0 0 5px var(--bright-glow); /* Glow ciano dalla nuova palette */
+  text-shadow: 0 0 5px var(--terminal-green-bright); /* Glow ciano dalla nuova palette */
 }
 
 .credits-section ul {
@@ -144,7 +147,8 @@
 
 .credits-special-thanks h4 {
   color: var(--accent-purple); /* Viola brillante dalla nuova palette */
-  font-family: 'Pixelify Sans', cursive;
+  font-family: 'Courier Prime', cursive;
+  font-weight: bold;
   font-size: 1.1em;
   margin-bottom: 15px;
   text-shadow: 0 0 8px var(--accent-purple-glow); /* Glow viola dalla nuova palette */

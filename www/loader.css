@@ -1,27 +1,23 @@
 /* www/css/style.css */
 
 :root {
-  --terminal-error-bright: #f14e52; /* Rosso acceso per il flash */
-  --terminal-error-dark: #9b222b; /* Rosso scuro per il flash */
-  --terminal-comment: #6272a4; /* Dracula comment */
-  --terminal-red: #ff5555; /* Dracula red */
-  --terminal-orange: #ffb86c; /* Dracula orange */
-  --terminal-yellow: #f1fa8c; /* Dracula yellow */
-  --terminal-green: #50fa7b; /* Dracula green */
-  --terminal-cyan: #0ce6f2; /* Dracula cyan */
-  --terminal-purple: #bd93f9; /* Dracula purple */
-  --terminal-pink: #ff79c6; /* Dracula pink */
-  --terminal-blue: rgba(0, 152, 219, 1);
-  --bright-green-teal: #0098db; /* A bright green-teal for highlights */
-  --medium-teal: #0b8a8f;
-  --bright-teal: #0eaf9b;
-  --dark-teal-blue: #32535f;
-  --medium-purple: #631b34;
-  --terminal-border: var(--terminal-green); /* Use green for border for old-school feel */
 
-  --glow-color: rgba(0, 152, 219, 0.4); /* Colore per l'effetto di brillantezza */
-  --terminal-green-bright: #33ff33;
-  --terminal-green-dark: #1a4d1a;
+  --terminal-foreground: #e5dff1;
+  --terminal-blue-bright: #88b1e5;
+  --terminal-blue-dark: #6b9bd9;
+  --terminal-red-bright: #e6949a;
+  --terminal-red-dark: #d97780;
+  --terminal-white-glow: #f2eff8;
+  --terminal-white-dark: #beb1da;
+  --terminal-orange-glow: #d3a563;
+  --terminal-orange-dark: #bc904f;
+  --terminal-purple-glow: #c899de;
+  --terminal-purple-dark: #b77ed1;
+  
+
+
+  --terminal-green-bright: #8ebf73;
+  --terminal-green-dark: #7aa860;
   --terminal-bg-speech: rgba(10, 25, 10, 0.85); /* Sfondo semi-trasparente */
 
   /* Backgrounds - Tonalità di nero e grigio molto scuro per un look "monocromatico" */
@@ -75,6 +71,30 @@
   --transition-fast: 0.15s ease-out; /* Per reazioni rapide (hover, click) */
   --transition-normal: 0.3s ease-in-out; /* Standard per animazioni fluide */
   --transition-slow: 0.5s ease-in-out; /* Per transizioni più lente o fade */
+}
+
+.courier-prime-regular {
+  font-family: "Courier Prime", monospace;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.courier-prime-bold {
+  font-family: "Courier Prime", monospace;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.courier-prime-regular-italic {
+  font-family: "Courier Prime", monospace;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.courier-prime-bold-italic {
+  font-family: "Courier Prime", monospace;
+  font-weight: 700;
+  font-style: italic;
 }
 
 body {
@@ -188,9 +208,7 @@ html {
 }
 
 #game-container-wrapper {
-  display: none; /* AGGIUNGI O MODIFICA QUESTA LINEA: deve essere 'none' all'inizio */
-  justify-content: center;
-  align-items: center;
+  display: none; /* DEVE ESSERE 'none' ALL'INIZIO */
   position: fixed;
   top: 0;
   left: 0;
@@ -207,7 +225,10 @@ html {
   max-width: 800px;
   max-height: 450px;
   object-fit: contain;
-  margin: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Centra perfettamente il canvas */
 
   image-rendering: -moz-crisp-edges;
   image-rendering: -webkit-crisp-edges;
@@ -276,8 +297,8 @@ div#game-container-wrapper {
   padding: 25px; /* Increased padding for larger feel */
   background-color: rgba(0, 0, 0, 0.95); /* Slightly darker background and less transparent */
   border-radius: 12px; /* More rounded corners */
-  border: 3px solid var(--bright-green-teal); /* Thicker, themed border */
-  box-shadow: 0 0 30px rgba(48, 225, 185, 0.9); /* More prominent glow */
+  border: 3px solid var(--terminal-white-dark); /* Thicker, themed border */
+  box-shadow: 0 0 30px var(--terminal-foreground); /* More prominent glow */
 
   position: absolute; /* Position relative to #game-container-wrapper */
   top: 50%; /* Center vertically */
@@ -300,11 +321,12 @@ div#game-container-wrapper {
 }
 
 #scoreInputContainerDonkey #finalScoreDisplayDonkey {
-  font-family: 'Pixelify Sans', cursive; /* Keep pixel font for score */
-  color: var(--terminal-yellow); /* Highlight score */
+  font-family: 'Courier Prime', cursive; /* Keep pixel font for score */
+  font-weight: bold;
+  color: var(--terminal-white-dark); /* Highlight score */
   font-size: 1.8em; /* Larger score font */
   text-shadow:
-    0 0 10px var(--terminal-yellow),
+    0 0 10px var(--terminal-blue-bright),
     0 0 20px rgba(241, 250, 140, 0.5);
   margin-top: 5px; /* Space from "Game Over" */
 }
@@ -328,8 +350,8 @@ div#game-container-wrapper {
 }
 
 #scoreInputContainerDonkey input[type='text']:focus {
-  border-color: var(--bright-green-teal);
-  box-shadow: 0 0 10px rgba(48, 225, 185, 0.7);
+  border-color: var(--terminal-white-dark);
+  box-shadow: 0 0 10px var(--terminal-foreground);
 }
 
 #scoreInputContainerDonkey .score-buttons {
@@ -381,46 +403,37 @@ div#game-container-wrapper {
   font-size: 1.3em; /* Larger icons */
 }
 
-/* Specific button styles */
-.game-over-save-btn {
-  background-color: var(--terminal-green);
-  border-color: var(--terminal-green);
-  color: var(--primary-bg);
-}
-.game-over-save-btn:hover {
-  background-color: var(--bright-green-teal);
-  border-color: var(--bright-green-teal);
-}
+
 
 .game-over-share-btn {
-  background-color: var(--terminal-blue);
-  border-color: var(--terminal-blue);
-  color: var(--primary-bg);
+  background-color: var(--terminal-blue-dark);
+  border-color: var(--terminal-white-dark);
+  color: var(--terminal-foreground);
 }
 .game-over-share-btn:hover {
-  background-color: var(--terminal-cyan);
-  border-color: var(--terminal-cyan);
+  background-color: var(--terminal-blue-bright);
+  border-color: var(--terminal-white-glow);
 }
 
 .game-over-restart-btn {
-  background-color: var(--terminal-orange);
-  border-color: var(--terminal-orange);
-  color: var(--primary-bg);
+  background-color: var(--terminal-red-dark);
+  border-color: var(--terminal-white-dark);
+  color: var(--terminal-foreground);
 }
 .game-over-restart-btn:hover {
-  background-color: var(--terminal-red);
-  border-color: var(--terminal-red);
+  background-color: var(--terminal-red-bright);
+  border-color: var(--terminal-white-glow);
 }
 
 .game-over-main-menu-btn {
   /* New button style */
-  background-color: var(--terminal-purple);
-  border-color: var(--terminal-purple);
-  color: var(--primary-bg);
+  background-color: var(--terminal-purple-dark);
+  border-color: var(--terminal-white-dark);
+  color: var(--terminal-foreground);
 }
 .game-over-main-menu-btn:hover {
-  background-color: var(--terminal-pink);
-  border-color: var(--terminal-pink);
+  background-color: var(--terminal-purple-glow);
+  border-color: var(--terminal-white-glow);
 }
 
 /* Fullscreen adjustments for score input container */
@@ -491,10 +504,11 @@ body.game-fullscreen-active #scoreInputContainerDonkey[style*='display: flex'] {
 
 .modal-content h2,
 .modal-content h3 {
-  color: var(--highlight-text); /* Verde brillante per i titoli */
+  color: var(--terminal-blue-dark); /* Verde brillante per i titoli */
   text-align: center;
-  font-family: 'Pixelify Sans', cursive;
-  text-shadow: 0 0 10px var(--accent-green-glow); /* Glow verde sui titoli */
+  font-family: 'Courier Prime', cursive;
+  font-weight: bold;
+  text-shadow: 0 0 10px var(--terminal-blue-bright); /* Glow verde sui titoli */
 }
 
 .close-button {
@@ -552,16 +566,16 @@ body.game-fullscreen-active #scoreInputContainerDonkey[style*='display: flex'] {
   box-sizing: border-box; /* Assicura che padding e bordo siano inclusi nella larghezza */
 }
 .toast-notification.success {
-  background-color: var(--accent-green); /* Verde brillante per successo */
+  background-color: var(--terminal-green-dark); /* Verde brillante per successo */
 }
 .toast-notification.error {
-  background-color: var(--accent-red); /* Rosso brillante per errore */
+  background-color: var(--terminal-red-dark); /* Rosso brillante per errore */
 }
 .toast-notification.info {
-  background-color: var(--accent-blue); /* Blu brillante per info */
+  background-color: var(--terminal-blue-bright); /* Blu brillante per info */
 }
 .toast-notification.warning {
-  background-color: var(--accent-orange); /* Arancione brillante per warning */
+  background-color: var(--terminal-orange-glow); /* Arancione brillante per warning */
 }
 
 /* Regole per le animazioni di entrata/uscita */
@@ -897,9 +911,9 @@ body.modal-open {
 }
 
 #account-icon-container #show-login-modal-btn:hover i {
-  color: var(--highlight-text); /* Pure white on hover */
+  color: var(--terminal-white-dark); /* Pure white on hover */
   transform: scale(1.1);
-  text-shadow: 0 0 20px var(--bright-glow); /* More intense white glow */
+  text-shadow: 0 0 20px var(--terminal-white-glow); /* More intense white glow */
 }
 
 /* 4. Display logic (managed by JS) */
@@ -1003,12 +1017,12 @@ body.modal-open {
 }
 
 #now-playing-container > span {
-  color: var(--secondary-text); /* "NOW PLAYING:" and "by" text in gray */
+  color: var(--terminal-white-dark); /* "NOW PLAYING:" and "by" text in gray */
 }
 
 #now-playing-container .track-title {
   font-weight: bold;
-  color: var(--primary-text); /* Title and artist in white */
+  color: var(--terminal-white-glow); /* Title and artist in white */
 }
 
 /* ACTIONS 1.3 and 1.4: Styles for new touch guide overlays */
@@ -1016,7 +1030,8 @@ body.modal-open {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  font-family: 'Pixelify Sans', cursive;
+  font-family: 'Courier Prime', cursive;
+  font-weight: bold;
   font-size: 2.5em;
   color: rgba(255, 255, 255, 0.4); /* Semi-transparent white */
   text-shadow: 0 0 10px var(--accent-cyan-glow); /* Cyan/blue glow */
@@ -1077,8 +1092,8 @@ body.modal-open {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--primary-text); /* White text */
-  text-shadow: 0 0 8px var(--white-glow); /* White glow */
+  color: var(--terminal-foreground); /* White text */
+  text-shadow: 0 0 8px var(--terminal-white-glow); /* White glow */
   width: 50px; /* Fixed width for icon buttons */
   height: 50px; /* Fixed height for icon buttons */
   border-radius: 50%; /* Make buttons round */
@@ -1199,7 +1214,7 @@ body.modal-open {
 }
 
 #codedash-title {
-  font-family: 'Pixelify Sans', cursive; /* Use Pixelify Sans */
+  font-family: 'Courier Prime', cursive; /* Use Pixelify Sans */
   font-size: 2.5em; /* Smaller font size as requested */
   font-weight: bold;
   text-align: center;
@@ -1267,7 +1282,7 @@ body.modal-open {
   left: 50%;
   transform: translateX(-50%);
   background-color: rgba(0, 0, 0, 0.4);
-  color: var(--primary-text); /* Light text */
+  color: var(--terminal-white-dark); /* Light text */
   padding: 8px 15px;
   border-radius: 5px;
   font-family: 'Courier Prime', monospace;
@@ -1280,22 +1295,22 @@ body.modal-open {
   box-sizing: border-box;
   z-index: 810;
   display: none;
-  box-shadow: 0 0 10px var(--white-glow); /* White glow effect */
+  box-shadow: 0 0 10px var(--terminal-white-glow); /* White glow effect */
 }
 
 #mission-display .mission-title {
   font-weight: bold;
-  color: var(--highlight-text); /* Bright cyan for mission title */
+  color: var(--terminal-white-glow); /* Bright cyan for mission title */
   margin-right: 5px;
 }
 
 #mission-display .mission-desc {
-  color: var(--primary-text); /* White text for description */
+  color: var(--terminal-white-dark); /* White text for description */
 }
 
 #mission-display .mission-progress {
   font-weight: bold;
-  color: var(--accent-pink); /* Bright purple for progress */
+  color: var(--terminal-green-bright); /* Bright purple for progress */
   margin-left: 5px;
 }
 
@@ -1352,8 +1367,8 @@ body.game-fullscreen-active.game-fullscreen-landscape #mission-display {
 .pause-view .modal-content {
   max-width: 500px;
   background-color: rgba(0, 0, 0, 0.95);
-  border: 3px solid var(--accent-red); /* Red border */
-  box-shadow: 0 0 30px var(--accent-red-glow); /* Red glow */
+  border: 3px solid var(--termminal-red-bright); /* Red border */
+  box-shadow: 0 0 30px var(--terminal-red-dark); /* Red glow */
 }
 
 .pause-view h2 {
@@ -1426,6 +1441,42 @@ body.game-fullscreen-active.game-fullscreen-landscape #mission-display {
 /* Media Queries for Tablets (769px - 1024px) */
 /* ------------------------------------------- */
 @media (min-width: 769px) and (max-width: 1024px) {
+  /*
+    Questa regola si applica solo ai tablet.
+    Forza il contenitore del gioco a usare l'intera larghezza
+    e a centrare il suo contenuto (il canvas).
+  */
+  #game-container-wrapper {
+    display: flex;
+    justify-content: center; /* Centra orizzontalmente */
+    align-items: center;     /* Centra verticalmente */
+    overflow: visible;  /* Assicura che il glow non venga tagliato */
+  }
+
+  /*
+    Il canvas manterrà le sue dimensioni fisse (800x450)
+    ma sarà perfettamente centrato all'interno del contenitore.
+  */
+  #gameCanvas {
+    margin: auto; /* Assicura il centraggio */
+  }
+#mission-display {
+    top: 20px;
+    left: 20px;
+    bottom: auto; 
+    transform: none; 
+    max-width: 70%; /* AUMENTATO: Dà più spazio alla descrizione */
+    text-align: left;
+  }
+
+  #pauseButton {
+    top: auto;         /* Rimuove l'ancoraggio in alto */
+    right: auto;       /* Rimuove l'ancoraggio a destra */
+    bottom: 20px;       /* AGGIUNTO: Posiziona in basso */
+    left: 20px;        /* AGGIUNTO: Posiziona a sinistra */
+  }
+
+
   body,
   html,
   #app-root,
@@ -1484,6 +1535,51 @@ body.game-fullscreen-active.game-fullscreen-landscape #mission-display {
   .touch-overlay-guide {
     font-size: 3em;
   }
+/* NUOVO: Logica di centraggio e Glow su #gameCanvas per Tablet (SOLUZIONE DEFINITIVA) */
+  #game-container-wrapper {
+    /* Questo contenitore ora funge solo da sfondo nero a schermo intero */
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    z-index: 800;
+  }
+
+  #gameCanvas {
+    /* È IL CANVAS STESSO ADESSO A CENTRARSI E AD AVERE IL GLOW */
+    
+    width: 100%;
+    height: 100%;
+    max-width: 800px;
+    max-height: 450px;
+    object-fit: contain;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    /* Animazione GLOW applicata direttamente al canvas */
+    animation: white-glow-pulse-strong 2s infinite alternate;
+
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-crisp-edges;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+  }
+
+  /* Animazione per il glow (ora usa box-shadow perché è sul canvas stesso) */
+  @keyframes white-glow-pulse-strong {
+    from {
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.2);
+    }
+    to {
+      box-shadow: 0 0 40px rgba(255, 255, 255, 0.6);
+    }
+  }
+
 }
 
 /* Media Query for larger screens than tablets, for greater canvas scalability if necessary */
@@ -1545,7 +1641,7 @@ body.game-fullscreen-active.game-fullscreen-landscape #mission-display {
   right: 20px; /* Or left: 20px if preferred on the left, near "now playing" */
   font-family: 'Courier Prime', monospace; /* Ensures consistent terminal look */
   font-size: 14px;
-  color: white; /* Default color for the "isRaining = " part */
+  color: var(--terminal-white-dark); /* Default color for the "isRaining = " part */
   white-space: pre; /* Important for preserving spaces and potential cursor */
   z-index: 950; /* A high z-index to be above main menu and canvas */
   pointer-events: none; /* Do not block clicks */
@@ -1597,7 +1693,8 @@ body.game-fullscreen-active.game-fullscreen-landscape #mission-display {
   background-color: transparent;
   border: none;
   border-bottom: 3px solid transparent;
-  color: var(--primary-text);
+  color: var(--terminal-white-dark);
+  font-family: 'Courier Prime';
   font-size: 1.1em;
   font-weight: bold;
   cursor: pointer;
@@ -1606,7 +1703,7 @@ body.game-fullscreen-active.game-fullscreen-landscape #mission-display {
 
 .category-btn.active {
   color: var(--accent-white);
-  border-bottom-color: var(--accent-white);
+  border-bottom-color: var(--terminal-white-glow);
 }
 
 .category-btn:not(.active):hover {
@@ -1816,7 +1913,7 @@ body.game-fullscreen-active.game-fullscreen-landscape #mission-display {
   padding: 12px 18px;
   border: 1px solid #333;
   box-shadow: 0 0 15px rgba(0, 255, 0, 0.2); /* Leggero bagliore verde */
-  color: #00ff00; /* Colore testo verde brillante */
+  color: var(--terminal-green-dark); /* Colore testo verde brillante */
   text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
   max-width: 350px;
   opacity: 0;
@@ -1856,7 +1953,7 @@ body.game-fullscreen-active.game-fullscreen-landscape #mission-display {
 /* Cursore lampeggiante */
 .toast-cursor {
   display: inline-block;
-  background-color: #00ff00;
+  background-color: var(--terminal-green-dark);
   width: 8px; /* Larghezza del cursore */
   margin-left: 5px;
   animation: blink 1s step-end infinite;
@@ -1868,22 +1965,22 @@ body.game-fullscreen-active.game-fullscreen-landscape #mission-display {
     background-color: transparent;
   }
   50% {
-    background-color: #00ff00;
+    background-color: var(--terminal-green-bright);
   }
 }
 
 /* Variazioni di colore per tipo di notifica */
 .terminal-toast.toast-success {
-  border-color: #00ff00;
+  border-color: var(--highlight-text);
 }
 
 .terminal-toast.toast-info {
-  color: #31b0b0; /* Ciano/Turchese */
-  border-color: #31b0b0;
+  color: var(--terminal-blue-bright); /* Ciano/Turchese */
+  border-color: var(--highlight-text);
   box-shadow: 0 0 15px rgba(49, 176, 176, 0.2);
 }
 .terminal-toast.toast-info .toast-cursor {
-  background-color: #31b0b0;
+  background-color: var(--terminal-blue-bright);
   animation-name: blink-info;
 }
 @keyframes blink-info {
@@ -1892,17 +1989,17 @@ body.game-fullscreen-active.game-fullscreen-landscape #mission-display {
     background-color: transparent;
   }
   50% {
-    background-color: #31b0b0;
+    background-color: var(--terminal-blue-bright);
   }
 }
 
 .terminal-toast.toast-warning {
-  color: #f1fa8c; /* Giallo */
-  border-color: #f1fa8c;
+  color: var(--terminal-orange-glow); /* Giallo */
+  border-color: var(--highlight-text);
   box-shadow: 0 0 15px rgba(241, 250, 140, 0.2);
 }
 .terminal-toast.toast-warning .toast-cursor {
-  background-color: #f1fa8c;
+  background-color: var(--terminal-orange-glow);
   animation-name: blink-warning;
 }
 @keyframes blink-warning {
@@ -1911,17 +2008,17 @@ body.game-fullscreen-active.game-fullscreen-landscape #mission-display {
     background-color: transparent;
   }
   50% {
-    background-color: #f1fa8c;
+    background-color: var(--terminal-orange-glow);
   }
 }
 
 .terminal-toast.toast-error {
-  color: #ff5555; /* Rosso */
-  border-color: #ff5555;
+  color: var(--terminal-red-bright); /* Rosso */
+  border-color: var(--highlight-text);
   box-shadow: 0 0 15px rgba(255, 85, 85, 0.3);
 }
 .terminal-toast.toast-error .toast-cursor {
-  background-color: #ff5555;
+  background-color: var(--terminal-red-bright);
   animation-name: blink-error;
 }
 @keyframes blink-error {
@@ -1930,6 +2027,6 @@ body.game-fullscreen-active.game-fullscreen-landscape #mission-display {
     background-color: transparent;
   }
   50% {
-    background-color: #ff5555;
+    background-color: var(--terminal-red-dark);
   }
 }

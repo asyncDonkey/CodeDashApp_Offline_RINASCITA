@@ -13,11 +13,9 @@ import {
   SKIN_ASSET_MAP,
 } from './donkeyRunner.js'; // Added SKIN_ASSET_MAP
 import * as AudioManager from './audioManager.js';
-import { initLeaderboard } from './leaderboardManager.js'; // Verrà svuotato/rimosso in seguito
 import { startLoadingSequence } from './loader.js';
 import * as MissionManager from './missionManager.js';
 
-import { showAuthModal } from './auth.js'; // Verrà minimalizzato/rimosso
 import {
   openProfileModal,
   handleEquipItem,
@@ -357,7 +355,6 @@ const startGameSequence = async () => {
 document.addEventListener('DOMContentLoaded', function () {
   console.log('[Main.js] DOMContentLoaded: Inizializzazione applicazione.');
   startLoadingSequence();
-  initLeaderboard();
   initProfileControls();
   MissionManager.initMissions();
 
@@ -402,7 +399,7 @@ document.addEventListener('DOMContentLoaded', function () {
   window.addEventListener('equippedItemChanged', async (event) => {
     console.log('[Main.js] Evento equippedItemChanged ricevuto.', event.detail);
     initializeMenu();
-    showToast('_Update: complete', 'info');
+    showToast('update: complete', 'info');
 
     const openModals = {
       skinsModal: window.renderSkinsModal, // Assumi che queste funzioni siano globali o importate
@@ -443,11 +440,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Touchend listener no longer needed here, handled by global listener below.
   }
 
-  const leaderboardBtn = document.getElementById('leaderboard-btn');
-  if (leaderboardBtn) {
-    leaderboardBtn.style.display = 'none'; // Initially hidden
-    // Touchend listener no longer needed here, handled by global listener below.
-  }
+  
   const skinsBtn = document.getElementById('skins-btn');
   if (skinsBtn) {
     skinsBtn.addEventListener('click', async () => {
@@ -538,7 +531,6 @@ document.addEventListener('DOMContentLoaded', function () {
   // Modal closing logic directly within DOMContentLoaded
   const modalsToManage = [
     { id: 'shopModal', closeBtnId: 'closeShopModal' },
-    { id: 'leaderboardModal', closeBtnId: 'closeLeaderboardModal' },
     { id: 'creditsModal', closeBtnId: 'closeCreditsModalBtn' },
     { id: 'profileModal', closeBtnId: 'closeProfileModal' },
     { id: 'skinsModal', closeBtnId: 'closeSkinsModal' },
@@ -815,7 +807,7 @@ export async function updateMenuVisuals() {
       // 2. Chiama la funzione specifica di menuAnimation per aggiornare solo la grafica.
       if (menuAnimation) {
         menuAnimation.updateMenuPlayerDisplay(currentUserData);
-        showToast('_Update: successful', 'success');
+        showToast('update: successful', 'success');
       }
     }
   } catch (error) {

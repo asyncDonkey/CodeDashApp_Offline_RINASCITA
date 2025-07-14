@@ -51,7 +51,8 @@
 #profile-modal-name {
   color: var(--highlight-text); /* Testo bianco */
   margin: 0;
-  font-family: 'Pixelify Sans', cursive;
+  font-family: 'Courier Prime', cursive;
+  font-weight: bold;
   font-size: 1.6em;
   text-shadow: 0 0 8px var(--white-glow); /* Glow bianco sul nome */
   text-align: left;
@@ -248,7 +249,8 @@
   padding: 8px 15px;
   border-radius: 5px;
   cursor: pointer;
-  font-family: 'Pixelify Sans', cursive;
+  font-family: 'Courier Prime', cursive;
+  font-weight: bold;
   font-size: 0.8rem;
   white-space: nowrap;
   transition:
@@ -369,14 +371,16 @@
   margin-bottom: 10px;
   color: var(--accent-pink); /* Verde brillante per il nome item */
   text-shadow: 0 0 5px var(--accent-pink-glow); /* Glow verde */
-  font-family: 'Pixelify Sans', cursive;
+  font-family: 'Courier Prime', cursive;
+  font-weight: bold;
 }
 
 .equip-button {
   margin-top: auto;
   width: 90%;
   padding: 10px;
-  font-family: 'Pixelify Sans', cursive;
+  font-family: 'Courier Prime', cursive;
+  font-weight: bold;
   font-size: 0.85em;
   cursor: pointer;
   border: none;
@@ -507,7 +511,8 @@
 }
 
 h3.badge-name {
-  font-family: 'Pixelify Sans', cursive;
+  font-family: 'Courier Prime', cursive;
+  font-weight: bold;
   font-size: 0.8em;
   color: var(--accent-pink); /* Verde brillante */
   text-shadow: 0 0 5px var(--accent-pink-glow); /* Glow verde */
@@ -686,7 +691,8 @@ h3.profile-content {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-family: 'Pixelify Sans', cursive;
+  font-family: 'Courier Prime', cursive;
+  font-weight: bold;
   font-size: 1.1em;
   transition:
     background-color 0.2s ease,
@@ -783,7 +789,8 @@ h3.profile-content {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-family: 'Pixelify Sans', cursive;
+  font-family: 'Courier Prime', cursive;
+  font-weight: bold;
   font-size: 1.1em;
   transition:
     background-color 0.2s ease,
