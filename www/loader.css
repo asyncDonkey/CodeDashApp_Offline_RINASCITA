@@ -1275,14 +1275,14 @@ body.modal-open {
   align-items: center;
 }
 
-/* Styles for the in-game mission display */
 #mission-display {
   position: absolute;
-  bottom: 10px;
+  bottom: 10px;              /* MODIFICATO: Posiziona in basso */
+  top: auto;                   /* AGGIUNTO: Assicura che non sia posizionato in alto */
   left: 50%;
   transform: translateX(-50%);
   background-color: rgba(0, 0, 0, 0.4);
-  color: var(--terminal-white-dark); /* Light text */
+  color: var(--terminal-white-dark);
   padding: 8px 15px;
   border-radius: 5px;
   font-family: 'Courier Prime', monospace;
@@ -1295,9 +1295,8 @@ body.modal-open {
   box-sizing: border-box;
   z-index: 810;
   display: none;
-  box-shadow: 0 0 10px var(--terminal-white-glow); /* White glow effect */
+  box-shadow: 0 0 10px var(--terminal-white-glow);
 }
-
 #mission-display .mission-title {
   font-weight: bold;
   color: var(--terminal-white-glow); /* Bright cyan for mission title */
@@ -1440,7 +1439,7 @@ body.game-fullscreen-active.game-fullscreen-landscape #mission-display {
 /* ------------------------------------------- */
 /* Media Queries for Tablets (769px - 1024px) */
 /* ------------------------------------------- */
-@media (min-width: 769px) and (max-width: 1024px) {
+@media (min-width: 769px) and (min-height: 600px) and (orientation: landscape) {
   /*
     Questa regola si applica solo ai tablet.
     Forza il contenitore del gioco a usare l'intera larghezza
@@ -1463,12 +1462,11 @@ body.game-fullscreen-active.game-fullscreen-landscape #mission-display {
 #mission-display {
     top: 20px;
     left: 20px;
-    bottom: auto; 
-    transform: none; 
-    max-width: 70%; /* AUMENTATO: Dà più spazio alla descrizione */
+    bottom: auto;
+    transform: none;
+    max-width: 70%;
     text-align: left;
   }
-
   #pauseButton {
     top: auto;         /* Rimuove l'ancoraggio in alto */
     right: auto;       /* Rimuove l'ancoraggio a destra */
