@@ -144,6 +144,10 @@ export const SKIN_ASSET_MAP = {
     walk: 'images/skins/skin_donkey_dev_walk.png',
     digest: 'images/skins/skin_donkey_dev_digest.png',
   },
+  skin_donkey_dash: {
+    walk: 'images/skins/skin_donkey_dash_walk.png',
+    digest: 'images/skins/skin_donkey_dash_digest.png',
+  },
   // --- FINE NUOVE SKIN ACQUISTABILI ---
   // --- INIZIO NUOVE SKIN PROIETTILI ACQUISTABILI ---
   skin_bullet_binary: {

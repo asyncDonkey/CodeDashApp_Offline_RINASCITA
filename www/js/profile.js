@@ -100,6 +100,13 @@ const cosmeticCatalog = {
     icon: 'code',
     preview_asset: 'images/shop_previews/skin_donkey_dev_preview.gif',
   },
+  skin_donkey_dash: {
+    price: 10000,
+    name: 'Donkey Dash!',
+    type: 'donkeySkin',
+    icon: 'code',
+    preview_asset: 'images/shop_previews/skin_donkey_dash_preview.gif',
+  },
   skin_bullet_binary: {
     price: 3000,
     name: 'Binary Bombs',

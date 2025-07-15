@@ -7,8 +7,8 @@ android {
         applicationId "asynced.codedash"
         minSdk 22
         targetSdk 35
-        versionCode 46 // i++ on new release 
-        versionName "1.0"
+        versionCode 47 // i++ on new release 
+        versionName "1.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
