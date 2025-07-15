@@ -5,6 +5,8 @@
   --terminal-foreground: #e5dff1;
   --terminal-blue-bright: #88b1e5;
   --terminal-blue-dark: #6b9bd9;
+  --terminal-blue-bright-alt: #9bcbed;
+  --terminal-blue-dark-dark: #78b6e2;
   --terminal-red-bright: #e6949a;
   --terminal-red-dark: #d97780;
   --terminal-white-glow: #f2eff8;
@@ -13,6 +15,10 @@
   --terminal-orange-dark: #bc904f;
   --terminal-purple-glow: #c899de;
   --terminal-purple-dark: #b77ed1;
+  --terminal-bg-light: #43391c;
+  --terminal-bg-dark: #29220e;
+  --terminal-whip-glow: #faf6ec;
+  --terminal-whip-dark: #f3ebd4;
   
 
 
@@ -504,11 +510,11 @@ body.game-fullscreen-active #scoreInputContainerDonkey[style*='display: flex'] {
 
 .modal-content h2,
 .modal-content h3 {
-  color: var(--terminal-blue-dark); /* Verde brillante per i titoli */
+  color: var(--terminal-white-glow); /* Verde brillante per i titoli */
   text-align: center;
   font-family: 'Courier Prime', cursive;
   font-weight: bold;
-  text-shadow: 0 0 10px var(--terminal-blue-bright); /* Glow verde sui titoli */
+  text-shadow: 0 0 10px var(--terminal-white-dark); /* Glow verde sui titoli */
 }
 
 .close-button {
@@ -613,7 +619,7 @@ body.game-fullscreen-active #scoreInputContainerDonkey[style*='display: flex'] {
   color: var(--primary-text); /* Testo bianco */
   padding: 25px;
   border: 1px solid var(--bright-glow); /* Bordo brillante */
-  box-shadow: var(--bright-glow);
+  box-shadow: 0 0 30px var(--terminal-foreground);
   border-radius: 8px;
   width: 90%;
   max-width: 700px;
@@ -1371,10 +1377,10 @@ body.game-fullscreen-active.game-fullscreen-landscape #mission-display {
 }
 
 .pause-view h2 {
-  color: var(--accent-pink); /* Bright pink for title */
+  color: var(--terminal-white-glow); /* Bright pink for title */
   font-size: 2.2em;
   margin-bottom: 30px;
-  text-shadow: 0 0 10px var(--accent-pink-glow); /* Pink glow */
+  text-shadow: 0 0 10px var(--terminal-white-dark); /* Pink glow */
 }
 
 .pause-view .pause-buttons {
@@ -1385,42 +1391,41 @@ body.game-fullscreen-active.game-fullscreen-landscape #mission-display {
 
 /* Reuse .game-over-button styles for pause buttons, with color overrides */
 .pause-resume-btn {
-  background-color: var(--accent-green); /* Bright green for Resume */
-  border-color: var(--accent-green);
-  color: var(--primary-bg);
+  background-color: var(--terminal-green-bright); /* Bright green for Resume */
+  border-color: var(--terminal-green-dark)
 }
 .pause-resume-btn:hover {
-  background-color: var(--accent-green-glow);
-  border-color: var(--accent-green-glow);
+  background-color: var(--terminal-green-bright);
+  border-color: var(--terminal-foreground);
   box-shadow:
-    0 5px 20px var(--accent-green-glow),
-    0 0 15px var(--accent-green-glow);
+    0 5px 20px var(--terminal-green-bright),
+    0 0 15px var(--terminal-foreground);
 }
 
 .pause-restart-btn {
-  background-color: var(--accent-orange); /* Orange for Restart */
-  border-color: var(--accent-orange);
-  color: var(--primary-bg);
+  background-color: var(--terminal-orange-glow); /* Orange for Restart */
+  border-color: var(--terminal-orange-dark);
+  color: var(--primary-text);
 }
 .pause-restart-btn:hover {
   background-color: var(--accent-orange-glow);
-  border-color: var(--accent-orange-glow);
+  border-color: var(--terminal-foreground);
   box-shadow:
-    0 5px 20px var(--accent-orange-glow),
-    0 0 15px var(--accent-orange-glow);
+    0 5px 20px var(--terminal-orange-glow),
+    0 0 15px var(--terminal-foreground);
 }
 
 .pause-main-menu-btn {
-  background-color: var(--accent-cyan); /* Bright cyan for Main Menu */
-  border-color: var(--accent-cyan);
-  color: var(--primary-bg);
+  background-color: var(--terminal-blue-bright); /* Bright cyan for Main Menu */
+  border-color: var(--terminal-blue-dark);
+  color: var(--primary-text);
 }
 .pause-main-menu-btn:hover {
-  background-color: var(--accent-cyan-glow);
-  border-color: var(--accent-cyan-glow);
+  background-color: var(--terminal-blue-bright);
+  border-color: var(--terminal-foreground);
   box-shadow:
-    0 5px 20px var(--accent-cyan-glow),
-    0 0 15px var(--accent-cyan-glow);
+    0 5px 20px var(--terminal-blue-bright),
+    0 0 15px var(--terminal-foreground);
 }
 
 /* Responsive adjustments for small screens (pause button) */
@@ -1708,7 +1713,7 @@ body.game-fullscreen-active.game-fullscreen-landscape #mission-display {
 }
 
 .category-btn:not(.active):hover {
-  color: var(--accent-cyan);
+  color: var(--terminal-blue-bright);
 }
 
 /* Style for item grids within modals */
@@ -1728,7 +1733,7 @@ body.game-fullscreen-active.game-fullscreen-landscape #mission-display {
 
 .item-card {
   background-color: var(--secondary-bg);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--terminal-white-dark);
   border-radius: 8px;
   padding: 10px;
   display: flex;
@@ -1744,13 +1749,13 @@ body.game-fullscreen-active.game-fullscreen-landscape #mission-display {
 
 .item-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 5px 15px var(--accent-blue-glow);
-  border-color: var(--accent-blue);
+  box-shadow: 0 5px 15px var(--terminal-white-glow);
+  border-color: var(--terminal-foreground);
 }
 
 .item-card.default-item-card {
-  border-color: var(--accent-green);
-  box-shadow: 0 2px 8px var(--accent-green-glow);
+  border-color: var(--terminal-whip-dark);
+  box-shadow: 0 2px 8px var(--terminal-whip-glow);
 }
 
 .item-card .item-preview {
@@ -1772,19 +1777,19 @@ body.game-fullscreen-active.game-fullscreen-landscape #mission-display {
 
 .item-card .item-preview i {
   font-size: 3em;
-  color: var(--accent-cyan);
+  color: var(--terminal-red-dark);
 }
 
 .item-card .item-name {
   font-size: 0.9em;
   font-weight: bold;
-  color: var(--primary-text);
+  color: var(--terminal-white-glow);
   margin-bottom: 10px;
   white-space: normal; /* Allow text to wrap */
 }
 
 .item-card .equip-button {
-  background-color: var(--accent-green);
+  background-color: var(--terminal-blue-dark-dark);
   color: var(--primary-bg);
   border: none;
   padding: 8px 12px;
@@ -1798,12 +1803,12 @@ body.game-fullscreen-active.game-fullscreen-landscape #mission-display {
 }
 
 .item-card .equip-button:hover:not(:disabled) {
-  background-color: var(--accent-green-glow);
-  box-shadow: 0 0 8px var(--accent-green-glow);
+  background-color: var(--terminal-blue-bright-alt);
+  box-shadow: 0 0 8px var(--terminal-foreground);
 }
 
 .item-card .equip-button.equipped {
-  background-color: var(--accent-red);
+  background-color: var(--terminal-red-bright);
   cursor: default;
 }
 
@@ -2043,12 +2048,12 @@ body.game-fullscreen-active.game-fullscreen-landscape #mission-display {
   width: 80%;
   max-width: 600px;
   background-color: rgba(10, 20, 30, 0.75);
-  border: 2px solid var(--accent-cyan);
+  border: 2px solid var(--terminal-blue-bright);
   border-radius: 8px;
   padding: 10px 15px;
   box-sizing: border-box;
   z-index: 815;
-  box-shadow: 0 0 15px var(--accent-cyan-glow);
+  box-shadow: 0 0 15px var(--terminal-blue-dark);
   backdrop-filter: blur(3px);
 }
 
@@ -2058,12 +2063,12 @@ body.game-fullscreen-active.game-fullscreen-landscape #mission-display {
   font-family: 'Courier Prime', cursive;
   font-weight: bold;
   font-size: 1.1em;
-  color: var(--accent-cyan);
+  color: var(--terminal-blue-bright);
   text-align: center;
   margin: 0 0 10px 0;
   padding-bottom: 5px;
-  border-bottom: 1px dashed var(--accent-cyan);
-  text-shadow: 0 0 8px var(--accent-cyan-glow);
+  border-bottom: 1px dashed var(--terminal-blue-dark-dark);
+  text-shadow: 0 0 8px var(--terminal-blue-dark);
 }
 
 .stats-list {
@@ -2084,7 +2089,7 @@ body.game-fullscreen-active.game-fullscreen-landscape #mission-display {
 
 .stats-list span {
   font-weight: bold;
-  color: var(--accent-yellow);
+  color: var(--terminal-red-bright);
   padding-left: 5px;
 }
 

@@ -16,13 +16,13 @@
 
 /* Titolo della modale */
 #creditsModal h2 {
-  color: var(--terminal-purple-dark); /* Colore del titolo dalla nuova palette */
+  color: var(--terminal-white-glow); /* Colore del titolo dalla nuova palette */
   text-align: center;
   margin-bottom: 30px;
   font-family: 'Courier Prime', cursive;
   font-weight: bold;
   font-size: 1.8em;
-  text-shadow: 0 0 12px var(--terminal-purple-glow); /* Effetto glow sul titolo dalla nuova palette */
+  text-shadow: 0 0 12px var(--terminal-white-dark); /* Effetto glow sul titolo dalla nuova palette */
   display: flex;
   align-items: center;
   justify-content: center;

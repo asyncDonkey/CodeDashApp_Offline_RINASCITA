@@ -180,9 +180,9 @@
 }
 
 .profile-stats strong {
-  color: var(--accent-pink); /* Giallo brillante per i valori */
+  color: var(--terminal-red-dark); /* Giallo brillante per i valori */
   font-weight: bold;
-  text-shadow: 0 0 5px var(--accent-pink-glow); /* Glow giallo */
+  text-shadow: 0 0 5px var(--terminal-red-glow); /* Glow giallo */
 }
 
 /* Animazione cursore lampeggiante */
@@ -199,7 +199,7 @@
 .blinking-cursor {
   animation: blink-cursor 1s step-end infinite;
   font-weight: bold;
-  color: var(--accent-pink);
+  color: var(--terminal-red-glow);
   margin-left: 2px;
 }
 
@@ -369,8 +369,8 @@
   text-align: center;
   min-height: 45px;
   margin-bottom: 10px;
-  color: var(--accent-pink); /* Verde brillante per il nome item */
-  text-shadow: 0 0 5px var(--accent-pink-glow); /* Glow verde */
+  color: var(--terminal-red-dark); /* Verde brillante per il nome item */
+  text-shadow: 0 0 5px var(--terminal-red-glow); /* Glow verde */
   font-family: 'Courier Prime', cursive;
   font-weight: bold;
 }
@@ -420,8 +420,8 @@
 }
 
 .locker-item-card.default-skin-card:hover {
-  border-color: var(--accent-pink); /* Bordo rosa su hover */
-  box-shadow: 0 0 18px var(--accent-pink-glow); /* Glow rosa intenso */
+  border-color: var(--terminal-red-dark); /* Bordo rosa su hover */
+  box-shadow: 0 0 18px var(--terminal-red-glow); /* Glow rosa intenso */
 }
 
 /* Stili per la Sezione Badge */
@@ -510,15 +510,15 @@
   image-rendering: pixelated;
 
   /* Puoi aggiungere un drop-shadow qui usando i nuovi colori se vuoi un glow diretto sull'icona */
-  filter: drop-shadow(0 0 5px var(--accent-pink-glow));
+  filter: drop-shadow(0 0 5px var(--terminal-red-glow));
 }
 
 h3.badge-name {
   font-family: 'Courier Prime', cursive;
   font-weight: bold;
   font-size: 0.8em;
-  color: var(--accent-pink); /* Verde brillante */
-  text-shadow: 0 0 5px var(--accent-pink-glow); /* Glow verde */
+  color: var(--terminal-green-dark); /* Verde brillante */
+  text-shadow: 0 0 5px var(--terminal-green-bright); /* Glow verde */
   margin-top: 0;
   margin-bottom: 5px;
 }
@@ -787,7 +787,7 @@ h3.profile-content {
 #editNicknameModal button#saveNewNicknameBtn {
   width: 100%;
   padding: 12px;
-  background-color: var(--accent-pink);
+  background-color: var(--terminal-red-dark);
   color: var(--primary-text);
   border: none;
   border-radius: 5px;
@@ -803,10 +803,10 @@ h3.profile-content {
 }
 
 #editNicknameModal button#saveNewNicknameBtn:hover:not(:disabled) {
-  background-color: var(--accent-pink, #30e1b9);
+  background-color: var(--terminal-red-dark, #30e1b9);
   box-shadow:
-    0 0 15px var(--accent-pink),
-    0 0 25px rgba(--accent-pink-glow);
+    0 0 15px var(--terminal-red-dark),
+    0 0 25px rgba(--terminal-red-glow);
 }
 
 #editNicknameModal button#saveNewNicknameBtn:disabled {

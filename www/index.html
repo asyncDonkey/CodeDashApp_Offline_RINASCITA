@@ -14,6 +14,8 @@
 
     
     <link rel="stylesheet" href="shop.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/iconoir-icons/iconoir@main/css/iconoir.css" />
+
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -82,36 +84,36 @@
     <div id="top-bar-left" class="top-bar-section">
       <div id="bit-counter" style="display: none">
         <span id="bit-count-value">0</span>
-        <i class="ph-bold ph-currency-btc"></i>
+        <i class="iconoir-bitcoin-circle"></i>
       </div>
       <div id="digital-fruit-counter" class="top-bar-element" style="display: none">
         <span id="digital-fruit-count-value">0</span>
-        <i class="ph-bold ph-orange"></i>
+        <i class="iconoir-apple"></i>
       </div>
       <div class="new-menu-icons-group">
         <button id="skins-btn" class="menu-btn top-bar-icon-btn" aria-label="Skins">
-          <i class="ph-bold ph-t-shirt"></i>
+          <i class="iconoir-glasses"></i>
         </button>
         <button id="companions-btn" class="menu-btn top-bar-icon-btn" aria-label="Companions">
-          <i class="ph-bold ph-robot"></i>
+          <i class="iconoir-link"></i>
         </button>
         <button id="powerups-btn" class="menu-btn top-bar-icon-btn" aria-label="Powerups">
-          <i class="ph-bold ph-lightning"></i>
+          <i class="iconoir-electronics-chip"></i>
         </button>
       </div>
     </div>
 
     <div id="top-bar-right" class="top-bar-section">
       <button id="start-game-btn" class="menu-btn top-bar-icon-btn" aria-label="Start Game">
-        <i class="ph-bold ph-play"></i>
+        <i class="iconoir-play"></i>
       </button>
       <!-- Pulsante Crediti/Info spostato qui, sotto il tasto Play -->
       <button id="credits-btn" class="menu-btn top-bar-icon-btn" aria-label="Crediti">
-        <i class="ph-bold ph-question"></i>
+        <i class="iconoir-info-circle"></i>
       </button>
       <!-- Pulsanti Shop e Leaderboard senza testo -->
       <button id="shop-btn" class="menu-btn top-bar-icon-btn" style="display: none">
-        <i class="ph-bold ph-storefront"></i>
+        <i class="iconoir-database-tag"></i>
       </button>
       
 
@@ -123,11 +125,12 @@
         <img id="user-avatar-icon" src="" alt="User Avatar" title="Vai al profilo" />
       </div>
     </div>
+    
 
     <div id="shopModal" class="modal">
       <div class="modal-content landscape-modal">
         <span class="close-button" id="closeShopModal">×</span>
-        <h2><i class="ph-bold ph-storefront"></i> ROM</h2>
+        <h2><i class="iconoir-database-tag"></i> ROM</h2>
 
         <div id="shop-categories-nav">
           <button class="shop-category-btn" data-category="donkeySkin">Skins</button>
@@ -195,21 +198,21 @@
       <div id="touch-overlay-right" class="touch-overlay-guide">SHOOT</div>
 
       <button id="pauseButton" class="game-control-button" title="Pausa">
-        <i class="ph-bold ph-pause"></i>
+        <i class="iconoir-pause"></i>
       </button>
 
       <div id="pauseModal" class="modal">
         <div class="modal-content landscape-modal pause-view">
-          <h2><i class="ph-bold ph-pause-circle"></i> PAUSE</h2>
+          <h2><i class="iconoir-pause"></i> PAUSE</h2>
           <div class="pause-buttons">
             <button id="resumeGameBtn" class="game-over-button pause-resume-btn">
-              <i class="ph-bold ph-play-circle"></i> <span>Resume</span>
+              <i class="iconoir-play"></i> <span>Resume</span>
             </button>
             <button id="restartGameFromPauseBtn" class="game-over-button pause-restart-btn">
-              <i class="ph-bold ph-arrow-counter-clockwise"></i> <span>Restart</span>
+              <i class="iconoir-restart"></i> <span>Restart</span>
             </button>
             <button id="mainMenuFromPauseBtn" class="game-over-button pause-main-menu-btn">
-              <i class="ph-bold ph-squares-four"></i> <span>Main Menu</span>
+              <i class="iconoir-home-simple"></i> <span>Main Menu</span>
             </button>
           </div>
         </div>
@@ -252,7 +255,7 @@
             <img id="profile-modal-avatar" src="data:," alt="User Avatar" />
             <div class="profile-avatar-buttons">
               <button id="generate-avatar-btn" class="icon-button" title="Genera Avatar">
-                <i class="ph-bold ph-magic-wand"></i>
+                <i class="iconoir-magic-wand"></i>
               </button>
               <button
                 id="save-generated-avatar-btn"
@@ -260,7 +263,7 @@
                 title="Salva Avatar"
                 style="display: none"
               >
-                <i class="ph-bold ph-floppy-disk"></i>
+                <i class="iconoir-floppy-disk"></i>
               </button>
             </div>
           </div>
@@ -268,7 +271,7 @@
             <div class="profile-name-container">
               <h2 id="profile-modal-name"></h2>
               <button id="edit-nickname-btn" class="icon-button" title="Modifica Nickname">
-                <i class="ph-bold ph-pencil-simple"></i>
+                <i class="iconoir-edit-pencil"></i>
               </button>
             </div>
             <p id="profile-modal-email"></p>
@@ -281,9 +284,6 @@
           </button>
           <button id="profile-nav-badges" class="profile-nav-btn">
             <i class="ph-bold ph-medal"></i> Badges
-          </button>
-          <button id="profile-nav-options" class="profile-nav-btn">
-            <i class="ph-bold ph-gear"></i> Options
           </button>
         </div>
 
