@@ -620,8 +620,40 @@ document.addEventListener('DOMContentLoaded', function () {
           updatedAt: Date.now(),
           profileUpdatedAt: Date.now(),
           gameStats: {
-            /* ... le tue statistiche di gioco di default ... */
-          },
+          jumps: 0,
+  shotsFired: 0,
+  powerUpsCollected: 0,
+  missionsCompleted: 0,
+  missionBitsEarned: 0,
+  slayerCollected: false,
+  injectorCollected: false,
+  debugCollected: false,
+  enemiesDefeated: 0,
+  enemiesDevoured: 0,
+  dataPacketsCollected: 0,
+  // NUOVO: Contatori per i Digital Fruits raccolti in-game
+  digitalKiwiCollected: 0,
+  digitalOrangeCollected: 0,
+  digitalPearCollected: 0,
+  digitalAppleCollected: 0,
+  digitalBananaCollected: 0,
+  digitalBerryCollected: 0,
+  digitalBlueberryCollected: 0,
+  digitalCherryCollected: 0,
+  digitalCoconutCollected: 0,
+  digitalDragonfruitCollected: 0,
+  digitalGrapesCollected: 0,
+  digitalLemonCollected: 0,
+  digitalMelonCollected: 0,
+  digitalPapayaCollected: 0,
+  digitalPeachCollected: 0,
+  digitalPineappleCollected: 0,
+  digitalStrawberryCollected: 0,
+  digitalWatermelonCollected: 0,
+
+  digitalFruitsCollected: 0, // Contatore totale per la run
+  rainRunEnemiesDefeated: 0, // Inizializzato a 0
+},
           inventory: {
             equipped: {
               bulletSkin: null,

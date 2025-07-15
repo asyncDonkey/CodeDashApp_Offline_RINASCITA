@@ -1042,6 +1042,7 @@ let gameStats = {
   injectorCollected: false,
   debugCollected: false,
   enemiesDefeated: 0,
+  enemiesDevoured: 0,
   dataPacketsCollected: 0,
   // NUOVO: Contatori per i Digital Fruits raccolti in-game
   digitalKiwiCollected: 0,
@@ -6166,7 +6167,7 @@ function spawnPowerUpAmbientIfNeeded(dt) {
       powerupToSpawn = POWERUP_TYPE.BIT_VACUUM;
     }
     // 3. Logica per PURGE_PROTOCOL (dopo TrojanByte) - spawnrate un po' più basso
-    else if (isTrojanByteDefeatedThisGame && Math.random() < 0.1) {
+    else if (isTrojanByteDefeatedThisGame && Math.random() < 0.9) {
       // 8% di probabilità (più basso di Bit Vacuum)
       powerupToSpawn = POWERUP_TYPE.PURGE_PROTOCOL;
     }
@@ -6436,6 +6437,8 @@ async function processGameOver() {
       currentUserData.inventory.unlockedItems.push('debug_mode'); //
     }
   }
+
+  currentUserData.gameStats.totalEnemiesDevoured = (currentUserData.gameStats.totalEnemiesDevoured || 0) + gameStats.enemiesDevoured;
 
   // Aggiorna i timestamp di modifica
   currentUserData.updatedAt = Date.now(); //
@@ -6766,32 +6769,33 @@ function checkCollisions() {
       const enemy = enemyArray[i];
       if (!enemy) continue;
 
-      if (
-        asyncDonkey.isPurgeProtocolActive &&
-        enemy !== activeMiniboss &&
-        !(enemy instanceof FlyingEnemy && !enemy.isDangerousFlyer)
-      ) {
-        if (removeEnemyFromAnyArray(enemy)) {
-          score += enemy.scoreValue;
-          gameStats.enemiesDefeated++;
-          AudioManager.playSound('sfx_enemy_devour');
-          if (asyncDonkey && !asyncDonkey.isDigesting) {
-            asyncDonkey.isDigesting = true;
-            asyncDonkey.digestTimer = 0.5;
-          }
-        }
-        continue;
-      }
-
-      if (enemy instanceof FlyingEnemy && !enemy.isDangerousFlyer) {
-        continue;
-      }
+      // --- INIZIO BLOCCO MODIFICATO ---
       if (
         playerRect.x < enemy.x + enemy.width &&
         playerRect.x + playerRect.width > enemy.x &&
         playerRect.y < enemy.y + enemy.height &&
         playerRect.y + playerRect.height > enemy.y
       ) {
+        // Se il Purge Protocol è attivo, "mangia" il nemico
+        if (asyncDonkey.isPurgeProtocolActive && enemy !== activeMiniboss) {
+          if (removeEnemyFromAnyArray(enemy)) {
+            score += enemy.scoreValue;
+            gameStats.enemiesDevoured++; // Incrementa il contatore dei nemici mangiati
+            AudioManager.playSound('sfx_enemy_devour'); // Assicurati di avere un suono "sfx_enemy_devour"
+            if (asyncDonkey && !asyncDonkey.isDigesting) {
+              asyncDonkey.isDigesting = true;
+              asyncDonkey.digestTimer = 0.5;
+            }
+          }
+          continue; // Passa al prossimo nemico senza subire danni
+        }
+        // --- FINE BLOCCO MODIFICATO ---
+
+        // Se non c'è il Purge Protocol, il giocatore subisce danno
+        if (enemy instanceof FlyingEnemy && !enemy.isDangerousFlyer) {
+            continue;
+        }
+
         asyncDonkey.takeHit();
         if (gameOverTrigger) return;
 
@@ -7179,6 +7183,7 @@ function resetGame(options = {}) {
     injectorCollected: false,
     debugCollected: false,
     enemiesDefeated: 0,
+    enemiesDevoured: 0,
     dataPacketsCollected: 0,
     digitalKiwiCollected: 0,
     digitalOrangeCollected: 0,
@@ -7794,6 +7799,18 @@ function drawPlayingScreen() {
 
     const trackText = `♪ "${currentPlayingMusicInfo.title}" by ${currentPlayingMusicInfo.artist}`;
     ctx.fillText(trackText, canvas.width - 20, statusY);
+  }
+
+  if (asyncDonkey && asyncDonkey.isPurgeProtocolActive && gameStats.enemiesDevoured > 0) {
+    ctx.textAlign = 'center';
+    ctx.font = '20px "Courier Prime", monospace';
+    ctx.fillStyle = '#ff5555'; // Colore rosso per il contatore
+    ctx.shadowColor = 'rgba(255, 0, 0, 0.7)';
+    ctx.shadowBlur = 10;
+    // Posiziona il contatore sotto le informazioni della musica
+    const enemiesDevouredY = canvas.height - 20; // Ad esempio, in basso al centro
+    ctx.fillText(`ENEMIES DEVOURED: ${gameStats.enemiesDevoured}`, canvas.width / 2, enemiesDevouredY);
+    ctx.shadowBlur = 0; // Resetta l'ombra
   }
 
   floatingTexts.forEach((text) => text.draw(ctx));
