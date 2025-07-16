@@ -2000,22 +2000,29 @@ class Player {
   draw() {
     let animationToDraw, spriteToDraw;
 
-    // Se sta digerendo, questa animazione ha la priorità su tutto
     if (this.isDigesting) {
       animationToDraw = this.isReinforced ? this.reinforcedDigestAnimation : this.digestAnimation;
       spriteToDraw = this.isReinforced ? this.reinforcedDigestSprite : this.digestSprite;
     } else {
-      // Altrimenti, usa la normale logica di camminata/rinforzato
       animationToDraw = this.isReinforced ? this.reinforcedWalkAnimation : this.walkAnimation;
       spriteToDraw = this.isReinforced ? this.reinforcedSprite : this.sprite;
     }
 
-    // NUOVO: Definisci 'f' qui, prima che venga usato.
-    const f = animationToDraw ? animationToDraw.getFrame() : null; // Aggiunto controllo per null
+    const f = animationToDraw ? animationToDraw.getFrame() : null;
 
-    // Disegna lo sprite scelto (con logica di invulnerabilità invariata)
+    // Se il giocatore è invulnerabile, applica l'effetto di lampeggio
     if (!(this.invulnerableTimer > 0 && Math.floor(Date.now() / 100) % 2 === 0)) {
-      // Aggiungi f al controllo, dato che potrebbe essere null se l'animazione non è valida
+      ctx.save(); // Salva lo stato del contesto
+
+      // --- INIZIO BLOCCO AGGIUNTO ---
+      // Applica il glow rosso se il Purge Protocol è attivo
+      if (this.isPurgeProtocolActive) {
+        ctx.shadowColor = 'rgba(255, 20, 20, 0.9)'; // Rosso intenso per il glow
+        ctx.shadowBlur = 15 + Math.sin(Date.now() / 100) * 7; // Effetto pulsante
+      }
+      // --- FINE BLOCCO AGGIUNTO ---
+
+      // Disegna lo sprite
       if (
         animationToDraw &&
         f &&
@@ -2023,39 +2030,26 @@ class Player {
         spriteToDraw.complete &&
         spriteToDraw.naturalWidth > 0
       ) {
-        // Se l'effetto glow è attivo, applica uno stile di ombra (glow)
         if (this.showGlowEffect) {
-          ctx.save();
           ctx.shadowColor = 'rgba(0, 255, 255, 1)';
           ctx.shadowBlur = 15 + Math.sin(Date.now() / 100) * 5;
-          ctx.drawImage(
-            spriteToDraw,
-            f.sx,
-            f.sy,
-            PLAYER_ACTUAL_FRAME_WIDTH,
-            PLAYER_ACTUAL_FRAME_HEIGHT,
-            this.x,
-            this.y,
-            this.displayWidth,
-            this.displayHeight,
-          );
-          ctx.restore();
-        } else {
-          ctx.drawImage(
-            spriteToDraw,
-            f.sx,
-            f.sy,
-            PLAYER_ACTUAL_FRAME_WIDTH,
-            PLAYER_ACTUAL_FRAME_HEIGHT,
-            this.x,
-            this.y,
-            this.displayWidth,
-            this.displayHeight,
-          );
         }
+        ctx.drawImage(
+          spriteToDraw,
+          f.sx,
+          f.sy,
+          PLAYER_ACTUAL_FRAME_WIDTH,
+          PLAYER_ACTUAL_FRAME_HEIGHT,
+          this.x,
+          this.y,
+          this.displayWidth,
+          this.displayHeight,
+        );
       } else {
         this.drawFallback();
       }
+
+      ctx.restore(); // Ripristina il contesto, rimuovendo il glow per gli elementi successivi
     }
 
     // 4. Disegna gli effetti dei power-up (scudo, firewall)
@@ -7730,9 +7724,7 @@ function drawPlayingScreen() {
   ctx.fillStyle = bgColor;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // Disegna la pioggia in-game
   if (isRainRunActive) {
-    // Modifica qui
     gameRainParticles.forEach((p) => p.draw());
   }
 
@@ -7746,7 +7738,6 @@ function drawPlayingScreen() {
   drawAllEnemyTypes();
   drawProjectiles();
   drawPowerUpItems();
-  // AGGIORNATO: Disegna tutti i collezionabili dall'array `collectibles`
   collectibles.forEach((item) => item.draw(ctx));
 
   // --- UI DI GIOCO (CON SPAZIATURA CORRETTA) ---
@@ -7768,8 +7759,7 @@ function drawPlayingScreen() {
     ctx.fillText('Fruits: ' + gameStats.digitalFruitsCollected, 20, 100);
   }
 
-  // 3. Disegna la vita, ma solo se è stata aumentata (Y = 100)
-  // MODIFICATO: Sposta la vita più in basso se i frutti sono mostrati
+  // 3. Disegna la vita, ma solo se è stata aumentata
   const integrityY = gameStats.digitalFruitsCollected > 0 ? 130 : 100;
   if (asyncDonkey && asyncDonkey.maxHealth > 1) {
     ctx.fillStyle = '#f8f8f2';
@@ -7780,19 +7770,17 @@ function drawPlayingScreen() {
     }
   }
 
-  // NUOVO: Disegna gli stati permanenti in alto a destra
+  // Elementi UI in alto a destra
   ctx.textAlign = 'right';
   ctx.font = '16px "Courier Prime", monospace';
   let statusY = 40;
 
   if (asyncDonkey) {
-    // Stato "Running Deprecated Subroutines"
     const deprecatedText = `> RDS_ACTIVE = ${asyncDonkey.isReinforced ? 'TRUE' : 'FALSE'}`;
     ctx.fillStyle = asyncDonkey.isReinforced ? '#50fa7b' : '#6272a4';
     ctx.fillText(deprecatedText, canvas.width - 20, statusY);
     statusY += 22;
 
-    // Stato Arma Permanente
     let weaponOsText = '> WEAPON_OS: default.kern';
     let weaponColor = '#6272a4';
     if (asyncDonkey.hasSlayerSubroutine) {
@@ -7807,7 +7795,6 @@ function drawPlayingScreen() {
     statusY += 22;
   }
 
-  // Disegna l'indicatore del power-up temporaneo (leggermente più in basso)
   if (asyncDonkey && asyncDonkey.activePowerUp && asyncDonkey.powerUpTimer > 0) {
     const powerUpName = (
       POWERUP_THEMATIC_NAMES[asyncDonkey.activePowerUp] || 'SYSTEM_BOOST'
@@ -7818,7 +7805,6 @@ function drawPlayingScreen() {
     let currentX = canvas.width - 20;
 
     ctx.font = '20px "Courier Prime", monospace';
-
     ctx.fillStyle = '#f8f8f2';
     ctx.fillText(textSuffix, currentX, statusY);
     currentX -= ctx.measureText(textSuffix).width;
@@ -7830,53 +7816,44 @@ function drawPlayingScreen() {
     ctx.fillStyle = numberColor;
     ctx.fillText(String(timerValue), currentX, statusY);
     currentX -= ctx.measureText(String(timerValue)).width;
-
     ctx.shadowBlur = 0;
 
     ctx.fillStyle = '#f8f8f2';
     ctx.fillText(textPrefix, currentX, statusY);
     statusY += 22;
   }
+  
+  // --- INIZIO BLOCCO MODIFICATO ---
+  // Disegna il contatore dei nemici mangiati se il Purge Protocol è attivo
+  if (asyncDonkey && asyncDonkey.isPurgeProtocolActive && gameStats.enemiesDevoured > 0) {
+      ctx.font = '18px "Courier Prime", monospace';
+      ctx.fillStyle = '#ff5555';
+      ctx.shadowColor = 'rgba(255, 0, 0, 0.7)';
+      ctx.shadowBlur = 8;
+      
+      const devourText = `> DEVOURED: ${gameStats.enemiesDevoured}`;
+      // Usa la variabile statusY per posizionarsi dinamicamente sotto gli altri elementi
+      ctx.fillText(devourText, canvas.width - 20, statusY);
+      
+      statusY += 22; // Incrementa statusY per il prossimo elemento
+      ctx.shadowBlur = 0;
+  }
+  // --- FINE BLOCCO MODIFICATO ---
 
-  // NUOVO: Sezione "Now Playing" in-game
+  // Disegna "Now Playing"
   if (currentPlayingMusicInfo) {
-    ctx.textAlign = 'right';
     ctx.font = '12px "Courier Prime", monospace';
     ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-
     const trackText = `♪ "${currentPlayingMusicInfo.title}" by ${currentPlayingMusicInfo.artist}`;
     ctx.fillText(trackText, canvas.width - 20, statusY);
   }
 
-  if (asyncDonkey && asyncDonkey.isPurgeProtocolActive && gameStats.enemiesDevoured > 0) {
-        ctx.textAlign = 'center';
-        ctx.font = '20px "Courier Prime", monospace';
-        ctx.fillStyle = '#ff5555'; // Colore rosso per il contatore
-        ctx.shadowColor = 'rgba(255, 0, 0, 0.7)';
-        ctx.shadowBlur = 10;
-
-        // Posiziona il contatore sotto le informazioni della musica
-        const musicInfoElement = document.getElementById('now-playing-container');
-        let counterY;
-        if (musicInfoElement && musicInfoElement.offsetHeight > 0) {
-            counterY = 65; // Posiziona sotto la musica
-        } else {
-            counterY = 40; // Posizione di fallback
-        }
-        
-        ctx.fillText(`ENEMIES DEVOURED: ${gameStats.enemiesDevoured}`, canvas.width - 250, counterY); // Posizionato a destra
-        ctx.shadowBlur = 0; // Resetta l'ombra
-        ctx.textAlign = 'left'; // Ripristina l'allineamento per il resto della UI
-    }
-
   floatingTexts.forEach((text) => text.draw(ctx));
-
   ctx.restore();
 
-  // NUOVO: Disegna l'effetto lampo dello schermo
   if (isFlashingGame) {
     ctx.save();
-    ctx.fillStyle = `rgba(255, 255, 255, ${flashGameTimer / FLASH_GAME_DURATION})`; // Opacità decrescente
+    ctx.fillStyle = `rgba(255, 255, 255, ${flashGameTimer / FLASH_GAME_DURATION})`;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.restore();
   }
