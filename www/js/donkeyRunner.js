@@ -620,7 +620,7 @@ const GLITCHZILLA_NUM_FRAMES = 8;
 const GLITCHZILLA_TARGET_WIDTH = GLITCHZILLA_ACTUAL_FRAME_WIDTH * GLOBAL_SPRITE_SCALE_FACTOR * 1.5;
 const GLITCHZILLA_TARGET_HEIGHT =
   GLITCHZILLA_ACTUAL_FRAME_HEIGHT * GLOBAL_SPRITE_SCALE_FACTOR * 1.5;
-const GLITCHZILLA_HEALTH = 100; // 40
+const GLITCHZILLA_HEALTH = 10; // 40
 const GLITCHZILLA_SCORE_VALUE = 500;
 const GLITCHZILLA_SPAWN_SCORE_THRESHOLD = 2000;
 
@@ -658,7 +658,7 @@ const TROJAN_BYTE_NUM_FRAMES = 4; // Assumendo 4 frame per animazione
 const TROJAN_BYTE_TARGET_WIDTH = TROJAN_BYTE_ACTUAL_FRAME_WIDTH * GLOBAL_SPRITE_SCALE_FACTOR * 1.1; // Leggermente più grande di glitchzilla
 const TROJAN_BYTE_TARGET_HEIGHT =
   TROJAN_BYTE_ACTUAL_FRAME_HEIGHT * GLOBAL_SPRITE_SCALE_FACTOR * 1.1;
-const TROJAN_BYTE_HEALTH = 180; // HP suggeriti 80
+const TROJAN_BYTE_HEALTH = 18; // HP suggeriti 80
 const TROJAN_BYTE_SCORE_VALUE = 1000; // Valore punteggio
 const TROJAN_BYTE_SPAWN_SCORE_THRESHOLD = 5000; // Soglia di apparizione 5000
 const TROJAN_BYTE_PROJECTILE_SPRITE_SRC = 'images/trojanByteProjectile.png';
@@ -863,6 +863,9 @@ const soundsToLoad = [
   { name: SFX_TROJAN_LAUNCH, path: 'audio/sfx_trojan_launch.mp3' }, // Aggiungi il suono di lancio
   { name: SFX_GLITCHZILLA_LOADING_SHOT, path: 'audio/sfx_glitchzilla_loading_shot.mp3' }, // NUOVO
   { name: SFX_MISSING_NUMBER_LOADING_SHOT, path: 'audio/sfx_missing_number_loading_shot.mp3' }, // NUOVO
+{ name: 'sfx_enemy_devour', path: 'audio/sfx/donkey_devouring.mp3' }, // <-- MODIFICATO con il nuovo file
+  { name: 'shot_disabled', path: 'audio/sfx/shot_disabled.mp3' },       // <-- AGGIUNTO
+  { name: 'purge_alert', path: 'audio/sfx/purge_alert.mp3' },             // <-- AGGIUNTO
 ];
 
 const POWERUP_THEMATIC_NAMES = {
@@ -1959,6 +1962,7 @@ class Player {
     this.isBitVacuumActive = false;
     this.isPurgeProtocolActive = false;
     this.canEatEnemy = false;
+    this.purgeAlertPlayed = false;
 
     this.equippedBulletSkinId = equippedItems.bulletSkin || null;
     this.showGlowEffect = false;
@@ -2134,6 +2138,19 @@ class Player {
     // Gestisce la durata dei power-up temporanei
     if (this.activePowerUp && this.powerUpTimer > 0) {
       this.powerUpTimer -= dt;
+
+      // --- INIZIO BLOCCO AGGIUNTO ---
+      // Controlla se mancano 3 secondi alla fine del Purge Protocol
+      if (
+        this.activePowerUp === POWERUP_TYPE.PURGE_PROTOCOL &&
+        this.powerUpTimer <= 3 &&
+        !this.purgeAlertPlayed
+      ) {
+        AudioManager.playSound('purge_alert');
+        this.purgeAlertPlayed = true; // Imposta il flag per non ripeterlo
+      }
+      // --- FINE BLOCCO AGGIUNTO ---
+
       if (this.powerUpTimer <= 0) {
         this.deactivatePowerUp();
       }
@@ -2151,6 +2168,12 @@ class Player {
   }
 
   shoot() {
+
+    if (this.isPurgeProtocolActive) {
+      AudioManager.playSound('shot_disabled'); // <-- AGGIUNTO SUONO
+      return;
+    }
+
     if (this.isMachineLanguageActive) {
       // Non controlla canShoot, la logica è gestita dal timer in updatePlaying
     } else if (!canShoot) {
@@ -2305,6 +2328,8 @@ class Player {
     }
     this.deactivatePowerUp();
 
+    this.purgeAlertPlayed = false;
+
     this.activePowerUp = type;
     switch (type) {
       case POWERUP_TYPE.TRIPLE_SHOT:
@@ -2351,8 +2376,13 @@ class Player {
     if (this.activePowerUp === POWERUP_TYPE.MACHINE_LANGUAGE) this.isMachineLanguageActive = false;
     // NUOVO: Disattiva i nuovi power-up
     if (this.activePowerUp === POWERUP_TYPE.BIT_VACUUM) this.isBitVacuumActive = false; // NUOVO
-    if (this.activePowerUp === POWERUP_TYPE.PURGE_PROTOCOL) this.isPurgeProtocolActive = false; // NUOVO
-    if (this.activePowerUp === POWERUP_TYPE.PURGE_PROTOCOL) this.canEatEnemy = false; // NUOVO: Disabilita l'effetto "mangia nemici"
+     if (this.activePowerUp === POWERUP_TYPE.PURGE_PROTOCOL) {
+        this.isPurgeProtocolActive = false;
+        this.canEatEnemy = false;
+        // Aggiungi 2 secondi di invulnerabilità quando il power-up finisce
+        this.invulnerableTimer = 2.0;
+        showToast('Purge Protocol finished. System integrity stabilized.', 'info');
+    }
 
     this.activePowerUp = null;
     this.powerUpTimer = 0;
@@ -6151,6 +6181,11 @@ function calculateNextPowerUpAmbientSpawnTime() {
 nextPowerUpSpawnTime = calculateNextPowerUpAmbientSpawnTime();
 
 function spawnPowerUpAmbientIfNeeded(dt) {
+// Se il Purge Protocol è attivo, non spawnare nessun power-up ambientale.
+  if (asyncDonkey && asyncDonkey.isPurgeProtocolActive) {
+    return;
+  }
+
   powerUpSpawnTimer += dt;
   if (powerUpSpawnTimer >= nextPowerUpSpawnTime) {
     let powerupToSpawn = null;
@@ -6720,35 +6755,43 @@ function checkCollisions() {
       playerRect.y < enemy.y + enemy.height &&
       playerRect.y + playerRect.height > enemy.y
     ) {
-      flyingEnemies.splice(i, 1);
-      score += enemy.scoreValue;
-      AudioManager.playSound('enemyExplode');
-      gameStats.enemiesDefeated++;
+      // Se il Purge Protocol è attivo, viene "mangiato" come gli altri nemici
+      // e non droppa il power-up. La logica è già gestita nel ciclo successivo.
+      // Qui gestiamo solo il caso di collisione SENZA Purge Protocol.
+      if (!asyncDonkey.isPurgeProtocolActive) {
+        flyingEnemies.splice(i, 1);
+        score += enemy.scoreValue;
+        AudioManager.playSound('enemyExplode');
+        gameStats.enemiesDefeated++;
 
-      let droppedPowerUp = null;
-      if (
-        isGlitchzillaDefeatedThisGame &&
-        !hasDebugModeUpgrade &&
-        !hasSlayerSubroutineUpgrade &&
-        !hasCodeInjectorUpgrade &&
-        Math.random() < 0.1
-      ) {
-        droppedPowerUp = POWERUP_TYPE.DEBUG_MODE;
-      } else {
-        droppedPowerUp =
-          RANDOMLY_SPAWNABLE_POWERUPS[
-            Math.floor(Math.random() * RANDOMLY_SPAWNABLE_POWERUPS.length)
-          ];
-      }
-      if (droppedPowerUp) {
-        powerUpItems.push(
-          new PowerUpItem(
-            enemy.x + enemy.width / 2,
-            enemy.y + enemy.height / 2,
-            droppedPowerUp,
-            images,
-          ),
-        );
+        // --- INIZIO BLOCCO MODIFICATO ---
+        // Droppa il power-up solo se il Purge Protocol NON è attivo
+        let droppedPowerUp = null;
+        if (
+          isGlitchzillaDefeatedThisGame &&
+          !hasDebugModeUpgrade &&
+          !hasSlayerSubroutineUpgrade &&
+          !hasCodeInjectorUpgrade &&
+          Math.random() < 0.1
+        ) {
+          droppedPowerUp = POWERUP_TYPE.DEBUG_MODE;
+        } else {
+          droppedPowerUp =
+            RANDOMLY_SPAWNABLE_POWERUPS[
+              Math.floor(Math.random() * RANDOMLY_SPAWNABLE_POWERUPS.length)
+            ];
+        }
+        if (droppedPowerUp) {
+          powerUpItems.push(
+            new PowerUpItem(
+              enemy.x + enemy.width / 2,
+              enemy.y + enemy.height / 2,
+              droppedPowerUp,
+              images,
+            ),
+          );
+        }
+        // --- FINE BLOCCO MODIFICATO ---
       }
     }
   }
@@ -6777,18 +6820,22 @@ function checkCollisions() {
         playerRect.y + playerRect.height > enemy.y
       ) {
         // Se il Purge Protocol è attivo, "mangia" il nemico
-        if (asyncDonkey.isPurgeProtocolActive && enemy !== activeMiniboss) {
-          if (removeEnemyFromAnyArray(enemy)) {
-            score += enemy.scoreValue;
-            gameStats.enemiesDevoured++; // Incrementa il contatore dei nemici mangiati
-            AudioManager.playSound('sfx_enemy_devour'); // Assicurati di avere un suono "sfx_enemy_devour"
-            if (asyncDonkey && !asyncDonkey.isDigesting) {
-              asyncDonkey.isDigesting = true;
-              asyncDonkey.digestTimer = 0.5;
-            }
+        if (
+        asyncDonkey.isPurgeProtocolActive &&
+        enemy !== activeMiniboss &&
+        !(enemy instanceof FlyingEnemy && !enemy.isDangerousFlyer)
+      ) {
+        if (removeEnemyFromAnyArray(enemy)) {
+          score += enemy.scoreValue;
+          gameStats.enemiesDevoured++;
+          AudioManager.playSound('sfx_enemy_devour'); // <-- Questo ora suonerà "donkey_devouring.mp3"
+          if (asyncDonkey && !asyncDonkey.isDigesting) {
+            asyncDonkey.isDigesting = true;
+            asyncDonkey.digestTimer = 0.5;
           }
-          continue; // Passa al prossimo nemico senza subire danni
         }
+        continue;
+      }
         // --- FINE BLOCCO MODIFICATO ---
 
         // Se non c'è il Purge Protocol, il giocatore subisce danno
@@ -7802,16 +7849,25 @@ function drawPlayingScreen() {
   }
 
   if (asyncDonkey && asyncDonkey.isPurgeProtocolActive && gameStats.enemiesDevoured > 0) {
-    ctx.textAlign = 'center';
-    ctx.font = '20px "Courier Prime", monospace';
-    ctx.fillStyle = '#ff5555'; // Colore rosso per il contatore
-    ctx.shadowColor = 'rgba(255, 0, 0, 0.7)';
-    ctx.shadowBlur = 10;
-    // Posiziona il contatore sotto le informazioni della musica
-    const enemiesDevouredY = canvas.height - 20; // Ad esempio, in basso al centro
-    ctx.fillText(`ENEMIES DEVOURED: ${gameStats.enemiesDevoured}`, canvas.width / 2, enemiesDevouredY);
-    ctx.shadowBlur = 0; // Resetta l'ombra
-  }
+        ctx.textAlign = 'center';
+        ctx.font = '20px "Courier Prime", monospace';
+        ctx.fillStyle = '#ff5555'; // Colore rosso per il contatore
+        ctx.shadowColor = 'rgba(255, 0, 0, 0.7)';
+        ctx.shadowBlur = 10;
+
+        // Posiziona il contatore sotto le informazioni della musica
+        const musicInfoElement = document.getElementById('now-playing-container');
+        let counterY;
+        if (musicInfoElement && musicInfoElement.offsetHeight > 0) {
+            counterY = 65; // Posiziona sotto la musica
+        } else {
+            counterY = 40; // Posizione di fallback
+        }
+        
+        ctx.fillText(`ENEMIES DEVOURED: ${gameStats.enemiesDevoured}`, canvas.width - 250, counterY); // Posizionato a destra
+        ctx.shadowBlur = 0; // Resetta l'ombra
+        ctx.textAlign = 'left'; // Ripristina l'allineamento per il resto della UI
+    }
 
   floatingTexts.forEach((text) => text.draw(ctx));
 
