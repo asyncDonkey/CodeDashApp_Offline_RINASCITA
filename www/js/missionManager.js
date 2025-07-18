@@ -385,23 +385,23 @@ export function updateMissionDisplay() {
         progressText = `Enemies: ${missionProgress}/${currentMission.objective}`;
         break;
       case MISSION_TYPES.SURVIVE_TIME:
-        progressText = `D_Time: ${Math.floor(missionProgress)}/${currentMission.objective}s`;
+        progressText = `deltaTime: ${Math.floor(missionProgress)}/${currentMission.objective}s`;
         break;
       case MISSION_TYPES.DONT_TAKE_DAMAGE:
         if (playerTookDamageThisMission) {
-          progressText = '<span style="color: red;">FALLITA! Danno Subito!</span>';
+          progressText = '<span style="color: red;">FAILED! SYS. UNSTABLE!</span>';
         } else {
-          progressText = `Tempo: ${Math.floor(missionProgress)}/${currentMission.objective}s`;
+          progressText = `deltaTime: ${Math.floor(missionProgress)}/${currentMission.objective}s`;
         }
         break;
       case MISSION_TYPES.JUMP_X_TIMES:
-        progressText = `Salti: ${missionProgress}/${currentMission.objective}`;
+        progressText = `Jumps: ${missionProgress}/${currentMission.objective}`;
         break;
       case MISSION_TYPES.SHOOT_X_TIMES:
-        progressText = `Colpi: ${missionProgress}/${currentMission.objective}`;
+        progressText = `Shots: ${missionProgress}/${currentMission.objective}`;
         break;
       default:
-        progressText = `Progresso: ${missionProgress}/${currentMission.objective}`;
+        progressText = `Progress: ${missionProgress}/${currentMission.objective}`;
         break;
     }
 

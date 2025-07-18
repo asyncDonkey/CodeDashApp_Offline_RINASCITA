@@ -396,8 +396,8 @@ const PLAYER_SPRITESHEET_SRC = 'images/asyncDonkey_walk.png';
 const PLAYER_ACTUAL_FRAME_WIDTH = 64;
 const PLAYER_ACTUAL_FRAME_HEIGHT = 64;
 const PLAYER_NUM_WALK_FRAMES = 5;
-const PLAYER_TARGET_WIDTH = PLAYER_ACTUAL_FRAME_WIDTH; // * 2;
-const PLAYER_TARGET_HEIGHT = PLAYER_ACTUAL_FRAME_HEIGHT; // * 2;
+const PLAYER_TARGET_WIDTH = PLAYER_ACTUAL_FRAME_WIDTH * 1.1; // * 2;
+const PLAYER_TARGET_HEIGHT = PLAYER_ACTUAL_FRAME_HEIGHT * 1.1; // * 2;
 const PLAYER_PROJECTILE_SPRITE_SRC = 'images/bitProjectile.png';
 const PLAYER_UPGRADED_PROJECTILE_SPRITE_SRC = 'images/playerUpgradedProjectile.png';
 const PLAYER_PROJECTILE_ACTUAL_FRAME_WIDTH = 24;
@@ -508,35 +508,35 @@ const OBSTACLE_TARGET_HEIGHT = OBSTACLE_ACTUAL_FRAME_HEIGHT * GLOBAL_SPRITE_SCAL
 const OBSTACLE_HEALTH = 1;
 
 const ENEMY_ONE_SPRITE_SRC = 'images/enemyOne.png';
-const ENEMY_ONE_ACTUAL_FRAME_WIDTH = 48;
+const ENEMY_ONE_ACTUAL_FRAME_WIDTH = 32;
 const ENEMY_ONE_ACTUAL_FRAME_HEIGHT = 64;
 const ENEMY_ONE_NUM_FRAMES = 4;
 const ENEMY_ONE_TARGET_WIDTH = ENEMY_ONE_ACTUAL_FRAME_WIDTH * GLOBAL_SPRITE_SCALE_FACTOR;
 const ENEMY_ONE_TARGET_HEIGHT = ENEMY_ONE_ACTUAL_FRAME_HEIGHT * GLOBAL_SPRITE_SCALE_FACTOR;
 
 const ENEMY_TWO_SPRITE_SRC = 'images/enemyTwo.png';
-const ENEMY_TWO_ACTUAL_FRAME_WIDTH = 40;
-const ENEMY_TWO_ACTUAL_FRAME_HEIGHT = 56;
+const ENEMY_TWO_ACTUAL_FRAME_WIDTH = 32;
+const ENEMY_TWO_ACTUAL_FRAME_HEIGHT = 32;
 const ENEMY_TWO_NUM_FRAMES = 4;
-const ENEMY_TWO_TARGET_WIDTH = ENEMY_TWO_ACTUAL_FRAME_WIDTH * GLOBAL_SPRITE_SCALE_FACTOR;
-const ENEMY_TWO_TARGET_HEIGHT = ENEMY_TWO_ACTUAL_FRAME_HEIGHT * GLOBAL_SPRITE_SCALE_FACTOR;
+const ENEMY_TWO_TARGET_WIDTH = ENEMY_TWO_ACTUAL_FRAME_WIDTH * GLOBAL_SPRITE_SCALE_FACTOR * 1.1;
+const ENEMY_TWO_TARGET_HEIGHT = ENEMY_TWO_ACTUAL_FRAME_HEIGHT * GLOBAL_SPRITE_SCALE_FACTOR * 1.1;
 
 const ENEMY_THREE_BASE_SRC = 'images/enemyThree.png';
 const ENEMY_THREE_DMG1_SRC = 'images/enemyThreeDmgOne.png';
 const ENEMY_THREE_DMG2_SRC = 'images/enemyThreeDmgTwo.png';
-const ENEMY_THREE_ACTUAL_FRAME_WIDTH = 56;
-const ENEMY_THREE_ACTUAL_FRAME_HEIGHT = 72;
+const ENEMY_THREE_ACTUAL_FRAME_WIDTH = 32;
+const ENEMY_THREE_ACTUAL_FRAME_HEIGHT = 48;
 const ENEMY_THREE_NUM_FRAMES = 4;
-const ENEMY_THREE_TARGET_WIDTH = ENEMY_THREE_ACTUAL_FRAME_WIDTH * GLOBAL_SPRITE_SCALE_FACTOR;
-const ENEMY_THREE_TARGET_HEIGHT = ENEMY_THREE_ACTUAL_FRAME_HEIGHT * GLOBAL_SPRITE_SCALE_FACTOR;
+const ENEMY_THREE_TARGET_WIDTH = ENEMY_THREE_ACTUAL_FRAME_WIDTH * GLOBAL_SPRITE_SCALE_FACTOR * 1.3;
+const ENEMY_THREE_TARGET_HEIGHT = ENEMY_THREE_ACTUAL_FRAME_HEIGHT * GLOBAL_SPRITE_SCALE_FACTOR * 1.3;
 const ARMORED_ENEMY_HEALTH = 3;
 
 const ENEMY_FOUR_IDLE_SRC = 'images/enemyFour.png';
-const ENEMY_FOUR_ACTUAL_FRAME_WIDTH = 48;
-const ENEMY_FOUR_ACTUAL_FRAME_HEIGHT = 72;
+const ENEMY_FOUR_ACTUAL_FRAME_WIDTH = 32;
+const ENEMY_FOUR_ACTUAL_FRAME_HEIGHT = 32;
 const ENEMY_FOUR_IDLE_NUM_FRAMES = 4;
-const ENEMY_FOUR_TARGET_WIDTH = ENEMY_FOUR_ACTUAL_FRAME_WIDTH * GLOBAL_SPRITE_SCALE_FACTOR;
-const ENEMY_FOUR_TARGET_HEIGHT = ENEMY_FOUR_ACTUAL_FRAME_HEIGHT * GLOBAL_SPRITE_SCALE_FACTOR;
+const ENEMY_FOUR_TARGET_WIDTH = ENEMY_FOUR_ACTUAL_FRAME_WIDTH * GLOBAL_SPRITE_SCALE_FACTOR * 1.1;
+const ENEMY_FOUR_TARGET_HEIGHT = ENEMY_FOUR_ACTUAL_FRAME_HEIGHT * GLOBAL_SPRITE_SCALE_FACTOR * 1.1;
 const SHOOTING_ENEMY_SHOOT_INTERVAL = 2.5;
 const SHOOTING_ENEMY_PROJECTILE_SOUND = 'audio/enemy_shoot_light.ogg';
 
@@ -560,11 +560,11 @@ const ENEMY_SIX_BASE_SRC = 'images/enemySix.png';
 const ENEMY_SIX_DMG1_SRC = 'images/enemySixDmg1.png';
 const ENEMY_SIX_DMG2_SRC = 'images/enemySixDmg2.png';
 const ENEMY_SIX_DMG3_SRC = 'images/enemySixDmg3.png';
-const ENEMY_SIX_ACTUAL_FRAME_WIDTH = 64;
-const ENEMY_SIX_ACTUAL_FRAME_HEIGHT = 80;
-const ENEMY_SIX_IDLE_NUM_FRAMES = 4;
-const ENEMY_SIX_TARGET_WIDTH = ENEMY_SIX_ACTUAL_FRAME_WIDTH * GLOBAL_SPRITE_SCALE_FACTOR;
-const ENEMY_SIX_TARGET_HEIGHT = ENEMY_SIX_ACTUAL_FRAME_HEIGHT * GLOBAL_SPRITE_SCALE_FACTOR;
+const ENEMY_SIX_ACTUAL_FRAME_WIDTH = 48;
+const ENEMY_SIX_ACTUAL_FRAME_HEIGHT = 72;
+const ENEMY_SIX_IDLE_NUM_FRAMES = 15;
+const ENEMY_SIX_TARGET_WIDTH = ENEMY_SIX_ACTUAL_FRAME_WIDTH * GLOBAL_SPRITE_SCALE_FACTOR * 1.2;
+const ENEMY_SIX_TARGET_HEIGHT = ENEMY_SIX_ACTUAL_FRAME_HEIGHT * GLOBAL_SPRITE_SCALE_FACTOR * 1.2;
 const ARMORED_SHOOTING_ENEMY_HEALTH = 4;
 const ARMORED_SHOOTING_ENEMY_SHOOT_INTERVAL = 3.0;
 const ARMORED_SHOOTING_ENEMY_PROJECTILE_SOUND = 'audio/enemy_shoot_heavy.ogg';
@@ -583,13 +583,13 @@ const ENEMY_SEVEN_DMG1_SRC = 'images/enemySevenDmg1.png';
 const ENEMY_SEVEN_ACTUAL_FRAME_WIDTH = 48;
 const ENEMY_SEVEN_ACTUAL_FRAME_HEIGHT = 64;
 const ENEMY_SEVEN_NUM_FRAMES = 4;
-const ENEMY_SEVEN_TARGET_WIDTH = ENEMY_SEVEN_ACTUAL_FRAME_WIDTH * GLOBAL_SPRITE_SCALE_FACTOR;
-const ENEMY_SEVEN_TARGET_HEIGHT = ENEMY_SEVEN_ACTUAL_FRAME_HEIGHT * GLOBAL_SPRITE_SCALE_FACTOR;
+const ENEMY_SEVEN_TARGET_WIDTH = ENEMY_SEVEN_ACTUAL_FRAME_WIDTH * GLOBAL_SPRITE_SCALE_FACTOR * 1.1;
+const ENEMY_SEVEN_TARGET_HEIGHT = ENEMY_SEVEN_ACTUAL_FRAME_HEIGHT * GLOBAL_SPRITE_SCALE_FACTOR * 1.1;
 const TOUGH_BASIC_ENEMY_HEALTH = 2;
 
 const DANGEROUS_FLYING_ENEMY_SRC = 'images/dangerousFlyingEnemy.png';
-const DANGEROUS_FLYING_ENEMY_ACTUAL_FRAME_WIDTH = 40;
-const DANGEROUS_FLYING_ENEMY_ACTUAL_FRAME_HEIGHT = 40;
+const DANGEROUS_FLYING_ENEMY_ACTUAL_FRAME_WIDTH = 32;
+const DANGEROUS_FLYING_ENEMY_ACTUAL_FRAME_HEIGHT = 32;
 const DANGEROUS_FLYING_ENEMY_NUM_FRAMES = 4;
 const DANGEROUS_FLYING_ENEMY_TARGET_WIDTH =
   DANGEROUS_FLYING_ENEMY_ACTUAL_FRAME_WIDTH * GLOBAL_SPRITE_SCALE_FACTOR;
@@ -6757,6 +6757,7 @@ function checkCollisions() {
         score += enemy.scoreValue;
         AudioManager.playSound('enemyExplode');
         gameStats.enemiesDefeated++;
+        MissionManager.updateMissionProgress('defeat_enemies');
 
         // --- INIZIO BLOCCO MODIFICATO ---
         // Droppa il power-up solo se il Purge Protocol NON è attivo
@@ -6822,6 +6823,7 @@ function checkCollisions() {
         if (removeEnemyFromAnyArray(enemy)) {
           score += enemy.scoreValue;
           gameStats.enemiesDevoured++;
+          MissionManager.updateMissionProgress('defeat_enemies')
           AudioManager.playSound('sfx_enemy_devour'); // <-- Questo ora suonerà "donkey_devouring.mp3"
           if (asyncDonkey && !asyncDonkey.isDigesting) {
             asyncDonkey.isDigesting = true;
@@ -6887,6 +6889,7 @@ function checkCollisions() {
               score += enemy.scoreValue;
               AudioManager.playSound('enemyExplode'); // Suono di esplosione nemico
               gameStats.enemiesDefeated++; // Incrementa le statistiche
+              MissionManager.updateMissionProgress('defeat_enemies');
               if (isRainRunActive) {
                 // NUOVO: Incrementa per Rain Run
                 gameStats.rainRunEnemiesDefeated++;
@@ -6982,6 +6985,7 @@ function checkCollisions() {
               score += enemy.scoreValue;
               AudioManager.playSound('enemyExplode'); // Suono di esplosione nemico
               gameStats.enemiesDefeated++; // Incrementa le statistiche
+              MissionManager.updateMissionProgress('defeat_enemies');
               if (isRainRunActive) {
                 // NUOVO: Incrementa per Rain Run
                 gameStats.rainRunEnemiesDefeated++;
